@@ -32,10 +32,15 @@ signals:
     void optZoomChanged(double optZoom);
     void exEyeChanged(double exEye);
 private:
+    //выходной зрачок (мм)
     double exEye = 0;
+    //апертура телескопа (мм)
     double apperture = 0;
+    //фокус телескопа (мм)
     double focusT = 0;
+    //фокус окуляра (мм)
     double focusO = 0;
+    //увеличение (крат)
     double optZoom = 0;
 };
 

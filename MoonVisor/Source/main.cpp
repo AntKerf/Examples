@@ -3,8 +3,7 @@
 #include <QQmlContext>
 
 #include <qdebug.h>
-
-#include "refractortelescope.h"
+#include "basetelescope.h"
 int main(int argc, char *argv[])
 {
 #if defined(Q_OS_WIN)
