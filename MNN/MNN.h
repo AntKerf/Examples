@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 #define __STDC_WANT_LIB_EXT1__ 1
 #define  _CRT_SECURE_NO_WARNINGS
 
@@ -49,7 +49,7 @@ private:
 	vector<vector<long double>> bias;
 	vector<vector<long double>> delta_bias;
 	vector<string> activation;
-	void random_insert(vector<long double> &tmp)//рандомизаия вектора
+        void random_insert(vector<long double> &tmp)//СЂР°РЅРґРѕРјРёР·Р°РёСЏ РІРµРєС‚РѕСЂР°
 	{
 		for (auto &el : tmp)
 		{
@@ -83,7 +83,7 @@ public:
 //	void read_from_directory(string path);
 	void SetDataDirectory(string Path);
 	void loadDataSet();
-	void loadpngthread(size_t, size_t, vector<long double> &, rgb8_image_t &);//многопоточная загрузка png
+	void loadpngthread(size_t, size_t, vector<long double> &, rgb8_image_t &);//РјРЅРѕРіРѕРїРѕС‚РѕС‡РЅР°СЏ Р·Р°РіСЂСѓР·РєР° png
 	void start(int iter);
 	void start(double acc);
 	void set_activasion(int n_layer, string name_function);

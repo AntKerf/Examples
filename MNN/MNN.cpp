@@ -1,4 +1,4 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 #include "MNN.h"
 
 MNN::MNN(int inputs, int outputs, int layers, ...)
@@ -6,7 +6,7 @@ MNN::MNN(int inputs, int outputs, int layers, ...)
 	I_inputs = inputs;
 	I_outputs = outputs;
 	I_layers = layers;
-	//резервация места для векторов
+	//СЂРµР·РµСЂРІР°С†РёСЏ РјРµСЃС‚Р° РґР»СЏ РІРµРєС‚РѕСЂРѕРІ
 	hiden_neirons.reserve(I_layers);
 	na_hiden_neirons.reserve(I_layers);
 	delta_neirons.reserve(I_layers);
@@ -18,11 +18,11 @@ MNN::MNN(int inputs, int outputs, int layers, ...)
 	out_neirons =vector<long double>(I_outputs,0);
 	na_out_neirons = vector<long double>(I_outputs, 0);
 	delta_out = vector<long double>(I_outputs, 0);
-	//чтение нейронов в слоях(динамические параметры)
+	//С‡С‚РµРЅРёРµ РЅРµР№СЂРѕРЅРѕРІ РІ СЃР»РѕСЏС…(РґРёРЅР°РјРёС‡РµСЃРєРёРµ РїР°СЂР°РјРµС‚СЂС‹)
 	int *tmp = new int;
 	va_list(ap);
 	va_start(ap, layers);
-	while (layers--)//инцилизация скрытых нейронов и биасов(нейронов смещения)
+	while (layers--)//РёРЅС†РёР»РёР·Р°С†РёСЏ СЃРєСЂС‹С‚С‹С… РЅРµР№СЂРѕРЅРѕРІ Рё Р±РёР°СЃРѕРІ(РЅРµР№СЂРѕРЅРѕРІ СЃРјРµС‰РµРЅРёСЏ)
 	{
 		*tmp = va_arg(ap, int);
 		hiden_neirons.push_back(vector<long double>(*tmp, 0));
@@ -36,18 +36,18 @@ MNN::MNN(int inputs, int outputs, int layers, ...)
 	delta_bias.push_back(vector<long double>(I_outputs, 0));
 
 
-	for (int i = 0; i < weights.capacity(); i++)//инцилизация и рандомизация весов
+	for (int i = 0; i < weights.capacity(); i++)//РёРЅС†РёР»РёР·Р°С†РёСЏ Рё СЂР°РЅРґРѕРјРёР·Р°С†РёСЏ РІРµСЃРѕРІ
 	{
-		if (i == 0)//веса от входов к 1 слою
+		if (i == 0)//РІРµСЃР° РѕС‚ РІС…РѕРґРѕРІ Рє 1 СЃР»РѕСЋ
 		{
 			vector<long double> *vtmp = new vector<long double>(I_inputs*hiden_neirons[0].size(),0);
 			delta_weights.push_back(*vtmp);
 			random_insert(*vtmp);
-			//xavier_insert(*vtmp,I_inputs,hiden_neirons[0].size());//инилизация Завьера
+			//xavier_insert(*vtmp,I_inputs,hiden_neirons[0].size());//РёРЅРёР»РёР·Р°С†РёСЏ Р—Р°РІСЊРµСЂР°
 			weights.push_back(*vtmp);
 			delete vtmp;
 		}
-		else if (i != weights.capacity() - 1)//веса между скрытыми нейронами
+		else if (i != weights.capacity() - 1)//РІРµСЃР° РјРµР¶РґСѓ СЃРєСЂС‹С‚С‹РјРё РЅРµР№СЂРѕРЅР°РјРё
 		{
 			vector<long double> *vtmp = new vector<long double>(hiden_neirons[i - 1].size()*hiden_neirons[i].size(),0);
 			delta_weights.push_back(*vtmp);
@@ -56,7 +56,7 @@ MNN::MNN(int inputs, int outputs, int layers, ...)
 			weights.push_back(*vtmp);
 			delete vtmp;
 		}
-		else //веса от последнего слоя к выходу
+		else //РІРµСЃР° РѕС‚ РїРѕСЃР»РµРґРЅРµРіРѕ СЃР»РѕСЏ Рє РІС‹С…РѕРґСѓ
 		{
 			vector<long double> *vtmp = new vector<long double>(hiden_neirons[i - 1].size()*I_outputs,0);
 			delta_weights.push_back(*vtmp);
@@ -66,7 +66,7 @@ MNN::MNN(int inputs, int outputs, int layers, ...)
 			delete vtmp;
 		}
 	}
-	for (int i = 0; i < bias.size(); i++)//рандомизация весов нейронов смещения
+	for (int i = 0; i < bias.size(); i++)//СЂР°РЅРґРѕРјРёР·Р°С†РёСЏ РІРµСЃРѕРІ РЅРµР№СЂРѕРЅРѕРІ СЃРјРµС‰РµРЅРёСЏ
 	{
 		random_insert(bias[i]);
 	}
@@ -167,15 +167,15 @@ void MNN::xavier_insert(vector<long double> &v, double n_in, double n_out)
 
 void MNN::calculate_hiden_neirons(vector<long double> input)
 {
-	/*если на входе 576 параметров(пикселей(фото 24*24)), то первые 576 весов относятся к 1 нейрону
-	вторые 576 весов ко 2 нейрону, и так до конца нейронов на первом слое, соотвествнно так и дальше со
-	скрытыми нейронами и выходом
-	P.S каждый биас соотвествуем своему нейрону, bias[0][0] относится к первому нейрону на первом слое и тд*/
+	/*РµСЃР»Рё РЅР° РІС…РѕРґРµ 576 РїР°СЂР°РјРµС‚СЂРѕРІ(РїРёРєСЃРµР»РµР№(С„РѕС‚Рѕ 24*24)), С‚Рѕ РїРµСЂРІС‹Рµ 576 РІРµСЃРѕРІ РѕС‚РЅРѕСЃСЏС‚СЃСЏ Рє 1 РЅРµР№СЂРѕРЅСѓ
+	РІС‚РѕСЂС‹Рµ 576 РІРµСЃРѕРІ РєРѕ 2 РЅРµР№СЂРѕРЅСѓ, Рё С‚Р°Рє РґРѕ РєРѕРЅС†Р° РЅРµР№СЂРѕРЅРѕРІ РЅР° РїРµСЂРІРѕРј СЃР»РѕРµ, СЃРѕРѕС‚РІРµСЃС‚РІРЅРЅРѕ С‚Р°Рє Рё РґР°Р»СЊС€Рµ СЃРѕ
+	СЃРєСЂС‹С‚С‹РјРё РЅРµР№СЂРѕРЅР°РјРё Рё РІС‹С…РѕРґРѕРј
+	P.S РєР°Р¶РґС‹Р№ Р±РёР°СЃ СЃРѕРѕС‚РІРµСЃС‚РІСѓРµРј СЃРІРѕРµРјСѓ РЅРµР№СЂРѕРЅСѓ, bias[0][0] РѕС‚РЅРѕСЃРёС‚СЃСЏ Рє РїРµСЂРІРѕРјСѓ РЅРµР№СЂРѕРЅСѓ РЅР° РїРµСЂРІРѕРј СЃР»РѕРµ Рё С‚Рґ*/
 	long double summ = 0;
 	summ = 0;
 	for (int i = 0; i < hiden_neirons.size(); i++)
 	{
-		if (i == 0)//первый скрытый слой
+		if (i == 0)//РїРµСЂРІС‹Р№ СЃРєСЂС‹С‚С‹Р№ СЃР»РѕР№
 		{
 			for (int j = 0; j < hiden_neirons[i].size(); j++)
 			{
@@ -184,12 +184,12 @@ void MNN::calculate_hiden_neirons(vector<long double> input)
 				{
 					summ += input[t] * weights[0][index+t];
 				}
-				hiden_neirons[i][j] = summ+bias[i][j];//записываем сумму, не активируем
+				hiden_neirons[i][j] = summ+bias[i][j];//Р·Р°РїРёСЃС‹РІР°РµРј СЃСѓРјРјСѓ, РЅРµ Р°РєС‚РёРІРёСЂСѓРµРј
 				na_hiden_neirons[i][j] = hiden_neirons[i][j];
 				summ = 0;
 			}
 		}
-		else//скрытые слои
+		else//СЃРєСЂС‹С‚С‹Рµ СЃР»РѕРё
 		{
 			for (int j = 0; j < hiden_neirons[i].size(); j++)
 			{
@@ -203,7 +203,7 @@ void MNN::calculate_hiden_neirons(vector<long double> input)
 				summ = 0;
 			}
 		}
-	activating(i);//активация нейронов на слое когда записанна сумма всех нейронов
+	activating(i);//Р°РєС‚РёРІР°С†РёСЏ РЅРµР№СЂРѕРЅРѕРІ РЅР° СЃР»РѕРµ РєРѕРіРґР° Р·Р°РїРёСЃР°РЅРЅР° СЃСѓРјРјР° РІСЃРµС… РЅРµР№СЂРѕРЅРѕРІ
 	}
 }
 
@@ -225,16 +225,16 @@ void MNN::calculate_output()
 	summ = 0;
 }
 
-void MNN::calculate_d_output(vector<long double> ideal_out) //расчет дельт выходных нейронов
+void MNN::calculate_d_output(vector<long double> ideal_out) //СЂР°СЃС‡РµС‚ РґРµР»СЊС‚ РІС‹С…РѕРґРЅС‹С… РЅРµР№СЂРѕРЅРѕРІ
 {
 	for (size_t i = 0; i <I_outputs; i++)
 	{
-		//здесь можно задать функцию потерь для нахождения дельт выходных весов
+		//Р·РґРµСЃСЊ РјРѕР¶РЅРѕ Р·Р°РґР°С‚СЊ С„СѓРЅРєС†РёСЋ РїРѕС‚РµСЂСЊ РґР»СЏ РЅР°С…РѕР¶РґРµРЅРёСЏ РґРµР»СЊС‚ РІС‹С…РѕРґРЅС‹С… РІРµСЃРѕРІ
 		delta_out[i] = (ideal_out[i] - out_neirons[i])*derivate(I_layers,i);
 	}
 }
 
-void MNN::calculate_d_neirons()//расчет дельт скрытых нейронов
+void MNN::calculate_d_neirons()//СЂР°СЃС‡РµС‚ РґРµР»СЊС‚ СЃРєСЂС‹С‚С‹С… РЅРµР№СЂРѕРЅРѕРІ
 {
 	for (size_t i = I_layers-1; i!=-1; i--)
 	{
@@ -243,17 +243,17 @@ void MNN::calculate_d_neirons()//расчет дельт скрытых нейронов
 			long double summ = 0;
 			summ = 0;
 			delta_neirons[i][j] = derivate(i, j);
-			//расчет суммы весов умноженых на дельты нейронов
-			if (i == I_layers - 1)//последний скрытый слой, берем дельты выходов
+			//СЂР°СЃС‡РµС‚ СЃСѓРјРјС‹ РІРµСЃРѕРІ СѓРјРЅРѕР¶РµРЅС‹С… РЅР° РґРµР»СЊС‚С‹ РЅРµР№СЂРѕРЅРѕРІ
+			if (i == I_layers - 1)//РїРѕСЃР»РµРґРЅРёР№ СЃРєСЂС‹С‚С‹Р№ СЃР»РѕР№, Р±РµСЂРµРј РґРµР»СЊС‚С‹ РІС‹С…РѕРґРѕРІ
 			{
-				for (int g = 0; g < I_outputs; g++)//перебор выходов
+				for (int g = 0; g < I_outputs; g++)//РїРµСЂРµР±РѕСЂ РІС‹С…РѕРґРѕРІ
 				{
 					summ += delta_out[g] * weights.back()[(g*hiden_neirons[i].size())+j];
 				}
 			}
-			else//берем дельты скрытых слоев
+			else//Р±РµСЂРµРј РґРµР»СЊС‚С‹ СЃРєСЂС‹С‚С‹С… СЃР»РѕРµРІ
 			{
-				for (size_t g = 0; g < delta_neirons[i+1].size(); g++)//перебор нейронов у предыдущего слоя(двигаемся в обратную сторону)
+				for (size_t g = 0; g < delta_neirons[i+1].size(); g++)//РїРµСЂРµР±РѕСЂ РЅРµР№СЂРѕРЅРѕРІ Сѓ РїСЂРµРґС‹РґСѓС‰РµРіРѕ СЃР»РѕСЏ(РґРІРёРіР°РµРјСЃСЏ РІ РѕР±СЂР°С‚РЅСѓСЋ СЃС‚РѕСЂРѕРЅСѓ)
 				{
 					summ += delta_neirons[i+1][g] * weights[i+1][(g*hiden_neirons[i].size()) + j];
 				}
@@ -266,22 +266,22 @@ void MNN::calculate_d_neirons()//расчет дельт скрытых нейронов
 
 void MNN::calculate_d_weights(int n_set)
 {
-	//находим градиент для всех весов(прямой проход)
+	//РЅР°С…РѕРґРёРј РіСЂР°РґРёРµРЅС‚ РґР»СЏ РІСЃРµС… РІРµСЃРѕРІ(РїСЂСЏРјРѕР№ РїСЂРѕС…РѕРґ)
 	for (size_t i = 0; i < I_layers+1; i++)
 	{
 		for (size_t j = 0; j < weights[i].size(); j++)
 		{
-			if (i == 0)//первый слой
+			if (i == 0)//РїРµСЂРІС‹Р№ СЃР»РѕР№
 			{
 				delta_weights[i][j] = (inputset[n_set][j % I_inputs] * delta_neirons[0][j / I_inputs])*E + A * delta_weights[i][j];
 				weights[i][j] += delta_weights[i][j];
 			}
-			else if (i != I_layers)//средние слои
+			else if (i != I_layers)//СЃСЂРµРґРЅРёРµ СЃР»РѕРё
 			{
 				delta_weights[i][j] = (hiden_neirons[i-1][j % hiden_neirons[i - 1].size()] * delta_neirons[i][j / delta_neirons[i-1].size()])*E + A * delta_weights[i][j];
 				weights[i][j] += delta_weights[i][j];
 			}
-			else//выходной слой
+			else//РІС‹С…РѕРґРЅРѕР№ СЃР»РѕР№
 			{
 				delta_weights[i][j] = (hiden_neirons[i - 1][j % hiden_neirons[i - 1].size()] * delta_out[j / delta_neirons[i-1].size()])*E + A * delta_weights[i][j];
 				weights[i][j] += delta_weights[i][j];
@@ -296,7 +296,7 @@ void MNN::calculate_d_bias()
 	{
 		for (size_t j = 0; j < bias[i].size(); j++)
 		{
-			if (i!=bias.size()-1)	delta_bias[i][j] = E*(1 * delta_neirons[i][j])+A*delta_bias[i][j];//если слой не последний
+			if (i!=bias.size()-1)	delta_bias[i][j] = E*(1 * delta_neirons[i][j])+A*delta_bias[i][j];//РµСЃР»Рё СЃР»РѕР№ РЅРµ РїРѕСЃР»РµРґРЅРёР№
 
 			else	delta_bias[i][j] = E * (1 * delta_out[j]) + A * delta_bias[i][j];
 
@@ -317,7 +317,7 @@ void MNN::loadpngthread(size_t begin_t, size_t end_t, vector<long double>& vec, 
 	}
 }
 
-void MNN::activating(int n_layer)//активация слоев НС
+void MNN::activating(int n_layer)//Р°РєС‚РёРІР°С†РёСЏ СЃР»РѕРµРІ РќРЎ
 {
 	string func = activation[n_layer];
 	if (func == "sigmoid")
@@ -350,7 +350,7 @@ void MNN::activating(int n_layer)//активация слоев НС
 	}
 	else 
 	{
-		cout << "Функция активации не найдена";
+		cout << "Р¤СѓРЅРєС†РёСЏ Р°РєС‚РёРІР°С†РёРё РЅРµ РЅР°Р№РґРµРЅР°";
 		system("PAUSE");
 	}
 }
@@ -382,12 +382,12 @@ long double MNN::derivate(int n_layer, int neirons)
 	}
 	else
 	{
-		cout << "Функция активации не найдена";
+		cout << "Р¤СѓРЅРєС†РёСЏ Р°РєС‚РёРІР°С†РёРё РЅРµ РЅР°Р№РґРµРЅР°";
 		system("PAUSE");
 	}
 }
 
-long double MNN::mse(vector<long double> ideal_out)//функция потерь MSE(средне квадротическое отклонение)
+long double MNN::mse(vector<long double> ideal_out)//С„СѓРЅРєС†РёСЏ РїРѕС‚РµСЂСЊ MSE(СЃСЂРµРґРЅРµ РєРІР°РґСЂРѕС‚РёС‡РµСЃРєРѕРµ РѕС‚РєР»РѕРЅРµРЅРёРµ)
 {
 	long double mse = 0;
 	mse = 0;
@@ -399,7 +399,7 @@ long double MNN::mse(vector<long double> ideal_out)//функция потерь MSE(средне к
 	return mse;
 }
 
-long double MNN::SCCE(vector<long double> ideal_out)//функция потерь SCCE(Разреженная категориальная перекрестная энтропия)
+long double MNN::SCCE(vector<long double> ideal_out)//С„СѓРЅРєС†РёСЏ РїРѕС‚РµСЂСЊ SCCE(Р Р°Р·СЂРµР¶РµРЅРЅР°СЏ РєР°С‚РµРіРѕСЂРёР°Р»СЊРЅР°СЏ РїРµСЂРµРєСЂРµСЃС‚РЅР°СЏ СЌРЅС‚СЂРѕРїРёСЏ)
 {
 	long double scce = 0;
 	scce = 0;
@@ -410,8 +410,8 @@ long double MNN::SCCE(vector<long double> ideal_out)//функция потерь SCCE(Разреж
 	}
 	return -scce;
 }
-//функции потерь для определенного выхода используются при нахождении дельт выходных нейронов с разными функциями потерь
-long double MNN::d_mse(int out, vector<long double> ideal_out)//функция потерь MSE для нахождения отклонения определнного выхода
+//С„СѓРЅРєС†РёРё РїРѕС‚РµСЂСЊ РґР»СЏ РѕРїСЂРµРґРµР»РµРЅРЅРѕРіРѕ РІС‹С…РѕРґР° РёСЃРїРѕР»СЊР·СѓСЋС‚СЃСЏ РїСЂРё РЅР°С…РѕР¶РґРµРЅРёРё РґРµР»СЊС‚ РІС‹С…РѕРґРЅС‹С… РЅРµР№СЂРѕРЅРѕРІ СЃ СЂР°Р·РЅС‹РјРё С„СѓРЅРєС†РёСЏРјРё РїРѕС‚РµСЂСЊ
+long double MNN::d_mse(int out, vector<long double> ideal_out)//С„СѓРЅРєС†РёСЏ РїРѕС‚РµСЂСЊ MSE РґР»СЏ РЅР°С…РѕР¶РґРµРЅРёСЏ РѕС‚РєР»РѕРЅРµРЅРёСЏ РѕРїСЂРµРґРµР»РЅРЅРѕРіРѕ РІС‹С…РѕРґР°
 {
 	long double mse = 0;
 	mse = 0;
@@ -420,7 +420,7 @@ long double MNN::d_mse(int out, vector<long double> ideal_out)//функция потерь M
 	return mse;
 }
 
-long double MNN::d_SCCE(int out, vector<long double> ideal_out)//SCCE для определенного выхода
+long double MNN::d_SCCE(int out, vector<long double> ideal_out)//SCCE РґР»СЏ РѕРїСЂРµРґРµР»РµРЅРЅРѕРіРѕ РІС‹С…РѕРґР°
 {
 	long double scce = 0;
 
@@ -452,15 +452,15 @@ void MNN::loadDataSet()
 	//int iter = 0;
 	for (auto el : it)
 	{
-		//формирование сета правильных ответов исходя из названия папки с нахождением фото
+		//С„РѕСЂРјРёСЂРѕРІР°РЅРёРµ СЃРµС‚Р° РїСЂР°РІРёР»СЊРЅС‹С… РѕС‚РІРµС‚РѕРІ РёСЃС…РѕРґСЏ РёР· РЅР°Р·РІР°РЅРёСЏ РїР°РїРєРё СЃ РЅР°С…РѕР¶РґРµРЅРёРµРј С„РѕС‚Рѕ
 		//cout << el << endl;
 		filename = el.path().filename().string().at(0);
-		if (filename == 'Ё') filename = 32 - 64;
+		if (filename == 'РЃ') filename = 32 - 64;
 		outputv[int(filename) + 64] = 1;
 		PREoutputset.push_back(outputv);
 		outputv[int(filename) + 64] = 0;
 		
-		//перебор фото в папке
+		//РїРµСЂРµР±РѕСЂ С„РѕС‚Рѕ РІ РїР°РїРєРµ
 		boost::filesystem::directory_iterator it2(el);
 		
 		for (size_t i = 0; i < rand() % 400; i++)
@@ -487,7 +487,7 @@ void MNN::loadDataSet()
 	}
 }
 
-void MNN::start(int iter)//обучение по определенному количеству итераций обучения
+void MNN::start(int iter)//РѕР±СѓС‡РµРЅРёРµ РїРѕ РѕРїСЂРµРґРµР»РµРЅРЅРѕРјСѓ РєРѕР»РёС‡РµСЃС‚РІСѓ РёС‚РµСЂР°С†РёР№ РѕР±СѓС‡РµРЅРёСЏ
 {
 	long double tmp = 0;
 	for (size_t i = 0; i < iter; i++)
@@ -533,7 +533,7 @@ void MNN::start(int iter)//обучение по определенному количеству итераций обучени
 	}
 
 }
-void MNN::start(double acc)//обучение до определенной точности
+void MNN::start(double acc)//РѕР±СѓС‡РµРЅРёРµ РґРѕ РѕРїСЂРµРґРµР»РµРЅРЅРѕР№ С‚РѕС‡РЅРѕСЃС‚Рё
 {
 	int i = 0;
 	long double tmp = 0;
@@ -568,8 +568,8 @@ void MNN::start(double acc)//обучение до определенной точности
 	}
 }
 /*
-Задание функии активации на слой(слои нумеруются с 0, не учитывая входной слой)
-Реализованные функции: sigmoid, softmax;
+Р—Р°РґР°РЅРёРµ С„СѓРЅРєРёРё Р°РєС‚РёРІР°С†РёРё РЅР° СЃР»РѕР№(СЃР»РѕРё РЅСѓРјРµСЂСѓСЋС‚СЃСЏ СЃ 0, РЅРµ СѓС‡РёС‚С‹РІР°СЏ РІС…РѕРґРЅРѕР№ СЃР»РѕР№)
+Р РµР°Р»РёР·РѕРІР°РЅРЅС‹Рµ С„СѓРЅРєС†РёРё: sigmoid, softmax;
 */
 void MNN::set_activasion(int n_layer, string name_function)
 {
