@@ -19,7 +19,7 @@ bool DataBaseJob::openDataBase()
 //    db.setPassword("root");
     db = QSqlDatabase::addDatabase("QSQLITE");
     db.setHostName("ed");
-    db.setDatabaseName("X:\\Users\\Documents\\Project\\EDlocal\\EDLocal\\ed.sqlite3");
+    db.setDatabaseName("ed.sqlite3");
     if(db.open()){
         is_connect=true;
         return true;
