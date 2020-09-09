@@ -23,3 +23,8 @@
 
 
 /*.cpp
+
+#unuse dir
+bearer/
+translations/
+qmltooling/
