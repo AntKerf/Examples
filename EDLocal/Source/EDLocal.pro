@@ -11,7 +11,7 @@ SOURCES += \
         edsmapiparse.cpp
 
 RESOURCES += qml.qrc
-QT_QPA_PLATFORM_PLUGIN_PATH =% QTDIR% \ plugins \ platform \
+
 
 DESTDIR = D:\Users\Documents\GitHub\Examples\EDLocal
 
@@ -20,6 +20,8 @@ QML_IMPORT_PATH =
 
 # Additional import path used to resolve QML modules just for Qt Quick Designer
 QML_DESIGNER_IMPORT_PATH =
+
+QT_QPA_PLATFORM_PLUGIN_PATH =%QTDIR%\plugins\platform\
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
