@@ -95,14 +95,19 @@ int ListModel::getCountSelectSystems()
 void ListModel::_queryFilters()
 {
     queryFilters.clear();
-    if(stringSearch.size()>0 || filterPrimaryStar.size()>0){
+    if(stringSearch.size()>0 || filterPrimaryStar.size()>0 || filterAllegiance.size()>0){
         queryFilters.append("WHERE ");
         if(stringSearch.size()>0){
             queryFilters.append(stringSearch);
-            if(filterPrimaryStar.size()>0) queryFilters.append(" AND ");
         }
-        if(filterPrimaryStar.size()>0) queryFilters.append(filterPrimaryStar);
+        if(filterPrimaryStar.size()>0){
+            queryFilters.size()>6 ? queryFilters.append(" AND "),queryFilters.append(filterPrimaryStar) : queryFilters.append(filterPrimaryStar);
+        }
+        if(filterAllegiance.size()>0){
+             queryFilters.size()>6 ? queryFilters.append(" AND "),queryFilters.append(filterAllegiance) : queryFilters.append(filterAllegiance);
+        }
     }
+    qDebug()<< queryFilters;
     select();
     _countSelectSysytems();
 }
@@ -172,12 +177,22 @@ void ListModel::setSearchString(QString str)
     _queryFilters();
 }
 
-void ListModel::setFilterPrimaryStart(QString str)
+void ListModel::setFilterPrimaryStar(QString str)
 {
     filterPrimaryStar.clear();
     if(str.size()>0)
     {
         filterPrimaryStar.append("(primarystar.type LIKE('"+str+"%'))");
+    }
+    _queryFilters();
+}
+
+void ListModel::setFilterAllegiance(QString str)
+{
+    filterAllegiance.clear();
+    if(str.size() > 0)
+    {
+        filterAllegiance.append("(information.allegiance LIKE('"+str+"%'))");
     }
     _queryFilters();
 }

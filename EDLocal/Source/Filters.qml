@@ -48,7 +48,7 @@ Rectangle {
     }
     ApplicationWindow{
         id:winfilter
-        width: 250
+        width: 300
         height: 200
         minimumHeight: 200
         minimumWidth: 200
@@ -95,7 +95,43 @@ Rectangle {
                     ListElement { text: "White Dwarf";}
                     ListElement { text: "Wolf-Rayet Star";}
                 }
-                onCurrentTextChanged: {myModel.setFilterPrimaryStart(fstar.currentText);navigation.update()}
+                onCurrentTextChanged: {myModel.setFilterPrimaryStar(fstar.currentText);navigation.update()}
+            }
+        }
+
+        Rectangle{
+            id:allegiancefilterrect
+            anchors.left: parent.left
+            anchors.top: primarystarfilterrect.bottom
+            width: parent.width
+            height: 40
+            Text{
+                id:talleg
+                anchors.margins: 5
+                anchors.left: parent.left
+                anchors.verticalCenter: parent.verticalCenter
+                text: "Принадлежность системы"
+            }
+            ComboBox {
+                id: fallegiance
+                width: 150
+                height: 30
+                anchors.margins: 5
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: talleg.right
+                wheelEnabled: true
+                editable: false
+                background: StyleBackground{}
+                model: ListModel {
+                    id: falleg
+                    ListElement { text: "";}
+                    ListElement { text: "Alliance";}
+                    ListElement { text: "Empire";}
+                    ListElement { text: "Federation";}
+                    ListElement { text: "Independent";}
+                    ListElement { text: "Pilots Federation";}
+                }
+                onCurrentTextChanged: {myModel.setFilterAllegiance(fallegiance.currentText);navigation.update()}
             }
         }
     }

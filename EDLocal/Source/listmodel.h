@@ -54,7 +54,8 @@ public slots:
     void setCountRowVisible(int countRow);
     void setNumPage(int PageSelect);
     void setSearchString(QString str);
-    void setFilterPrimaryStart(QString str);
+    void setFilterPrimaryStar(QString str);
+    void setFilterAllegiance(QString str);
 
     virtual void setSort (int column, Qt::SortOrder order);
     virtual void sort (int column, Qt::SortOrder order);
@@ -72,6 +73,7 @@ private:
     QString queryFilters;
     QString stringSearch;
     QString filterPrimaryStar;
+    QString filterAllegiance;
     int sortKeyColumn = 0;
     int countSelectSystems;
     Qt::SortOrder sortOrder = Qt::SortOrder::AscendingOrder;
