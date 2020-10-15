@@ -46,6 +46,18 @@ Rectangle {
         onClicked: {winsettingtable.show();}
 
     }
+    Button {
+        id: btn3DMap
+        anchors.margins: 5
+        anchors.left: btnsettinftable.right
+        anchors.verticalCenter: parent.verticalCenter
+        text: qsTr("3D")
+        background: StyleBackground{}
+        height: 30
+        width: 40
+        onClicked: {winmap3D.show();}
+    }
+
     ApplicationWindow{
         id:winfilter
         width: 300
@@ -304,5 +316,20 @@ Rectangle {
             }
         }
     }
+
+    ApplicationWindow{
+        id:winmap3D
+        width: 500
+        height: 500
+        minimumHeight: 200
+        minimumWidth: 200
+        title: qsTr("3D Map")
+
+        Map3D{
+        id:map3d
+        anchors.fill: parent
+        }
+    }
+
 }
 

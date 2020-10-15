@@ -6,5 +6,7 @@
         <file>StyleBackground.qml</file>
         <file>Filters.qml</file>
         <file>StyleIndicator.qml</file>
+        <file>Map3D.qml</file>
+        <file>NewButton.qml</file>
     </qresource>
 </RCC>
