@@ -16,7 +16,7 @@ RESOURCES += qml.qrc
 DESTDIR = D:\Users\Documents\GitHub\Examples\EDLocal
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
-QML_IMPORT_PATH =
+QML_IMPORT_PATH = D:\Qt\5.15.1\mingw81_32\qml\
 
 # Additional import path used to resolve QML modules just for Qt Quick Designer
 QML_DESIGNER_IMPORT_PATH =
