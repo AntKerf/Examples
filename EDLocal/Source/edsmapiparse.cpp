@@ -12,6 +12,7 @@ EdsmApiParse::~EdsmApiParse()
 
 void EdsmApiParse::getResponse(QNetworkReply *reply)
 {
+    qDebug() << "go";
 #ifndef MUTE_RESPONSE
     qDebug() << "Response";
 #endif
@@ -56,7 +57,11 @@ void EdsmApiParse::getResponse(QNetworkReply *reply)
         qDebug() <<"Processed primaryStar" << cPS;
 #endif
     }
+    else{
+        qDebug() << reply->errorString();
+    }
     reply->deleteLater();
+    is_now_request = false;
 #ifndef MUTE_RESPONSE
     qDebug()<<"Response out";
 #endif
@@ -69,7 +74,12 @@ bool EdsmApiParse::splitSystem(QJsonValueRef el)
     data.push_back(obj["id"].toVariant());
     data.push_back(obj["name"].toVariant());
     data.push_back(obj["bodyCount"].toVariant());
-    data.push_back(obj["distance"].toVariant());
+    if(!el.toObject()["coords"].isNull())
+    {
+        double dist = sqrt(pow(obj["coords"].toObject()["x"].toDouble(),2)+pow(obj["coords"].toObject()["y"].toDouble(),2)+pow(obj["coords"].toObject()["z"].toDouble(),2));
+        data.push_back(dist);
+    }
+    else    data.push_back(obj["distance"].toVariant());
 #ifdef SHOWSYSTEMS || SHOWALL
     qDebug() <<"System";
     qDebug() <<data[0].toInt()<<data[1].toString()<<data[2].toInt() <<data[3].toFloat();
@@ -176,17 +186,21 @@ void EdsmApiParse::GetCube(const QString SystemName)
     networkManager = new QNetworkAccessManager(this);
     // Подключаем networkManager к обработчику ответа
     connect(networkManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(getResponse(QNetworkReply*)));
+    is_now_request = true;
     // Получаем данные, а именно JSON файл с сайта по определённому url
     networkManager->get(QNetworkRequest(QUrl("https://www.edsm.net/api-v1/cube-systems?systemName="+SystemName+"&showInformation=1&showCoordinates=1&showId=1&showPrimaryStar=1")));
 }
 
 void EdsmApiParse::GetCube(const QString SystemName, const QString size)
 {
+
     networkManager = new QNetworkAccessManager();
     // Подключаем networkManager к обработчику ответа
-    connect(networkManager,SIGNAL(finished(QNetworkReply*)), this, SLOT(getResponse(QNetworkReply*)));
+    connect(networkManager,SIGNAL(finished(QNetworkReply*)),  this, SLOT(getResponse(QNetworkReply*)));
+    is_now_request = true;
     // Получаем данные, а именно JSON файл с сайта по определённому url
     networkManager->get(QNetworkRequest(QUrl("https://www.edsm.net/api-v1/cube-systems?systemName="+SystemName+"&showInformation=1&showCoordinates=1&size="+size+"&showId=1&showPrimaryStar=1")));
+    qDebug() << "Connect...";
 }
 
 void EdsmApiParse::FromFileJson(const QString Path)
@@ -220,4 +234,9 @@ void EdsmApiParse::FromFileJson(const QString Path)
         threadPool.clear();
     }
 
+}
+
+bool EdsmApiParse::is_requested()
+{
+    return is_now_request;
 }

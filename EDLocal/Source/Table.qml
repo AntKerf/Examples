@@ -133,7 +133,7 @@ TableView {
                         tableView.selection.select(styleData.row)
                         tableView.currentRow = styleData.row
                         tableView.focus = true
-                        console.log(myModel.rowCount())
+//                        console.log(myModel.rowCount())
                     }
                     else tableView.currentRow = -1
                     break

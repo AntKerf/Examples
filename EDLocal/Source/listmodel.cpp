@@ -53,7 +53,7 @@ void ListModel::updateModel()
                    "iNNER JOIN coords ON systems.id = coords.id "
                    "LEFT OUTER JOIN information ON systems.id = information.id "
                    "LEFT OUTER JOIN primarystar ON systems.id = primarystar.id "
-                   "LIMIT " + QString::number(numPage*countRowToVisible)+", " + QString::number(countRowToVisible));
+                   "LIMIT " + QString::number(numPage-1*countRowToVisible)+", " + QString::number(countRowToVisible));
     _countSelectSysytems();
 }
 

@@ -46,7 +46,7 @@ bool DataBaseJob::insertIntoSystems(const QVariantList data)
      * которые потом связываются методом bindValue
      * для подстановки данных из QVariantList
      * */
-    query.prepare("INSERT IGNORE INTO systems (id, Name, bodyCount, distance)"
+    query.prepare("INSERT INTO systems (id, Name, bodyCount, distance)"
                   "VALUES (:id, :Name, :bodyCount, :distance)");
     query.bindValue(":id", data[0].toInt());
     query.bindValue(":Name", data[1].toString());
@@ -67,12 +67,14 @@ bool DataBaseJob::insertIntoSystems(const QVariantList data)
 bool DataBaseJob::insertIntoCoords(const QVariantList data)
 {
     QSqlQuery query;
-    query.prepare("INSERT IGNORE INTO coords (id, x, y, z)"
+
+    query.prepare("INSERT INTO coords (id, x, y, z)"
                   "VALUES (:id, :x, :y, :z)");
     query.bindValue(":id", data[0].toInt());
     query.bindValue(":x", data[1].toFloat());
     query.bindValue(":y", data[2].toFloat());
     query.bindValue(":z", data[3].toFloat());
+
     if(!query.exec()){
 #ifndef SQL_NO_IGNORE
         qDebug() << "error insert into coords";
@@ -88,7 +90,7 @@ bool DataBaseJob::insertIntoCoords(const QVariantList data)
 bool DataBaseJob::insertIntoInformation(const QVariantList data)
 {
     QSqlQuery query;
-    query.prepare("INSERT IGNORE INTO information (id, allegiance, goverment, "
+    query.prepare("INSERT INTO information (id, allegiance, goverment, "
                   "faction, factionState, population, security, economy)"
                   "VALUES (:id, :allegiance, :goverment,"
                   ":faction, :factionState, :population, :security, :economy)");
@@ -97,7 +99,7 @@ bool DataBaseJob::insertIntoInformation(const QVariantList data)
     query.bindValue(":goverment", data[2].toString());
     query.bindValue(":faction", data[3].toString());
     query.bindValue(":factionState", data[4].toString());
-    query.bindValue(":population", data[5].toInt());
+    query.bindValue(":population", data[5].toLongLong());
     query.bindValue(":security", data[6].toString());
     query.bindValue(":economy", data[7].toString());
     if(!query.exec()){
@@ -114,7 +116,7 @@ bool DataBaseJob::insertIntoInformation(const QVariantList data)
 bool DataBaseJob::insertIntoPrimaryStar(const QVariantList data)
 {
     QSqlQuery query;
-    query.prepare("INSERT IGNORE INTO primarystar (id, type, name, isScoopable)"
+    query.prepare("INSERT INTO primarystar (id, type, name, isScoopable)"
                   "VALUES (:id, :type, :name, :isScoopable)");
     query.bindValue(":id", data[0].toInt());
     query.bindValue(":type", data[1].toString());

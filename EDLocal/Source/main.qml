@@ -38,7 +38,15 @@ ApplicationWindow {
             onClicked:Qt.openUrlExternally("https://www.edsm.net/en/system/id/"+myModel.getId(tableView.currentRow)+"/name/"+myModel.getName(tableView.currentRow))
 
         }
-        MenuItem { text: "Подробнее"}
+        MenuItem {
+            text: "Обновить (загрузить из EDSM)"
+
+            onClicked: {
+                // @disable-check M306
+                EDSM_Parse.GetCube(myModel.getName(tableView.currentRow),0);
+
+            }
+        }
     }
     MessageDialog {
         id: dialogerroedb
@@ -47,7 +55,7 @@ ApplicationWindow {
         icon: StandardIcon.Warning
         standardButtons: StandardButton.Ok | StandardButton.Cancel
         onAccepted: database.openDataBase()
-        onRejected: mainWin.close()
+        onRejected: Qt.quit(0)
     }
 }
 
