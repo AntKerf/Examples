@@ -11,6 +11,7 @@
 #include <listmodel.h>
 #include <QQmlContext>
 
+
 int main(int argc, char *argv[])
 {
 #if defined(Q_OS_WIN)
@@ -29,7 +30,6 @@ int main(int argc, char *argv[])
 
     //Добавляем парсер данных с сайта EDSM в контекст QML
     EdsmApiParse _EDSM_parse;
-    _EDSM_parse.GetCube("Sol","0");
 
     // Обеспечиваем доступ к модели и классу для работы с базой данных из QML
     engine.rootContext()->setContextProperty("myModel", model);

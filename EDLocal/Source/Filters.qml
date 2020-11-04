@@ -146,6 +146,27 @@ Rectangle {
                 onCurrentTextChanged: {myModel.setFilterAllegiance(fallegiance.currentText);navigation.update()}
             }
         }
+        Rectangle{
+            id:onlyFanCheck
+            anchors.margins: 5
+            anchors.left: parent.left
+            anchors.bottom: parent.bottom
+            height: 20
+            width: parent.width/2
+            CheckBox{
+                height: 15
+                anchors.verticalCenter: parent.verticalCenter
+                id:checkfav
+                anchors.left: parent.left
+                checked: false
+                onCheckedChanged: myModel.setOnlyFavorite(checked)
+            }
+            Text{
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: checkfav.right
+                text:"Только избранные"
+            }
+        }
     }
     ApplicationWindow{
         id:winsettingtable

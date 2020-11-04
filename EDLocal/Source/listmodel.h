@@ -8,13 +8,15 @@
 #include <QSqlQuery>
 #include <QSqlError>
 
+
 class ListModel : public QSqlQueryModel {
     Q_OBJECT
     Q_PROPERTY(int countSelectSystems READ getCountSelectSystems NOTIFY countSelectSystemsChanged)
 public:
 
     enum Roles {
-        IdRole = Qt::UserRole + 1,      // id
+        FavRole = Qt::UserRole + 1,
+        IdRole,
         NameRole,
         BodyRole,
         DistanceRole,
@@ -33,11 +35,11 @@ public:
     };
 
     explicit ListModel(QObject *parent = nullptr);
-    QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const;
+    QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const override;
 
 protected:
 
-    QHash<int, QByteArray> roleNames() const;
+    QHash<int, QByteArray> roleNames() const override;
 
 signals:
 
@@ -51,6 +53,8 @@ public slots:
     int getCountSelectSystems();
     QString getName(int row);
 
+    void setOnlyFavorite(bool check);
+    void swapFavorite(int row);
     void setCountRowVisible(int countRow);
     void setNumPage(int PageSelect);
     void setSearchString(QString str);
@@ -69,12 +73,13 @@ private slots:
 
 private:
 
+    bool onlyFavorite = false;
     QString queryClause;
     QString queryFilters;
     QString stringSearch;
     QString filterPrimaryStar;
     QString filterAllegiance;
-    int sortKeyColumn = 0;
+    int sortKeyColumn = 1;
     int countSelectSystems;
     Qt::SortOrder sortOrder = Qt::SortOrder::AscendingOrder;
     int countRowToVisible = 50;

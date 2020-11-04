@@ -1,4 +1,5 @@
 #include "listmodel.h"
+#include <QIcon>
 
 ListModel::ListModel(QObject *parent) : QSqlQueryModel(parent)
 {
@@ -13,6 +14,18 @@ QVariant ListModel::data(const QModelIndex & index, int role) const {
     // Создаём индекс с помощью новоиспечённого ID колонки
     QModelIndex modelIndex = this->index(index.row(), columnId);
 
+//    //Ваша картинки, которые Вы хотите показывать в зависимости от значения булевого поля
+//    QPixmap pxmpOnTrue = QPixmap("D:/Users/Documents/GitHub/Examples/EDLocal/Source/true.png");
+//    QPixmap pxmpOnFalse = QPixmap("D:/Users/Documents/GitHub/Examples/EDLocal/Source/false.png");
+
+//    if(columnId == 0)
+//    {
+//        if( QSqlQueryModel::data(modelIndex, Qt::DisplayRole).toBool())
+//            return QVariant::fromValue(pxmpOnTrue);
+//        else
+//            return QVariant::fromValue(pxmpOnFalse);
+//    }
+
     /* И с помощью уже метода data() базового класса
      * вытаскиваем данные для таблицы из модели
      * */
@@ -24,6 +37,7 @@ QHash<int, QByteArray> ListModel::roleNames() const {
      * по их номеру
      * */
     QHash<int, QByteArray> roles;
+    roles[FavRole] = "systems.favorites";
     roles[IdRole] = "systems.id";
     roles[NameRole] = "systems.name";
     roles[BodyRole] = "bodycount";
@@ -46,7 +60,7 @@ QHash<int, QByteArray> ListModel::roleNames() const {
 void ListModel::updateModel()
 {
     // Обновление производится SQL-запросом к базе данных
-    this->setQuery("SELECT systems.id, systems.name, bodycount, distance, x, y,"
+    this->setQuery("SELECT favorites, systems.id, systems.name, bodycount, distance, x, y,"
                    " z, allegiance, goverment, faction, factionState, population,"
                    " security, economy, type, primarystar.name "
                    "FROM systems "
@@ -68,6 +82,20 @@ QString ListModel::getName(int row)
     return this->data(this->index(row, 0), NameRole).toString();
 
 }
+
+void ListModel::setOnlyFavorite(bool check)
+{
+    onlyFavorite = check;
+    _queryFilters();
+}
+
+void ListModel::swapFavorite(int row)
+{
+    QString id = this->data(this->index(row, 0), IdRole).toString();
+    QSqlQuery("Update systems "
+                     "set favorites = NOT favorites "
+                     "where id == "+id);
+}
 void ListModel::select() {
     QString query = queryClause;
 
@@ -75,7 +103,7 @@ void ListModel::select() {
         QString orderClause;
         orderClause = "ORDER BY " + QString::number(sortKeyColumn + 1) + " " +
                 ((sortOrder == Qt::AscendingOrder) ? "ASC" : "DESC");
-        query.append("SELECT systems.id, systems.name, bodycount, distance, x, y,"
+        query.append("SELECT favorites, systems.id, systems.name, bodycount, distance, x, y,"
                      " z, allegiance, goverment, faction, factionState, population,"
                      " security, economy, type, primarystar.name "
                      "FROM systems "
@@ -95,7 +123,11 @@ int ListModel::getCountSelectSystems()
 void ListModel::_queryFilters()
 {
     queryFilters.clear();
-    if(stringSearch.size()>0 || filterPrimaryStar.size()>0 || filterAllegiance.size()>0){
+    if(stringSearch.size()>0
+            || filterPrimaryStar.size()>0
+            || filterAllegiance.size()>0
+            || onlyFavorite)
+    {
         queryFilters.append("WHERE ");
         if(stringSearch.size()>0){
             queryFilters.append(stringSearch);
@@ -104,7 +136,10 @@ void ListModel::_queryFilters()
             queryFilters.size()>6 ? queryFilters.append(" AND "),queryFilters.append(filterPrimaryStar) : queryFilters.append(filterPrimaryStar);
         }
         if(filterAllegiance.size()>0){
-             queryFilters.size()>6 ? queryFilters.append(" AND "),queryFilters.append(filterAllegiance) : queryFilters.append(filterAllegiance);
+            queryFilters.size()>6 ? queryFilters.append(" AND "),queryFilters.append(filterAllegiance) : queryFilters.append(filterAllegiance);
+        }
+        if(onlyFavorite){
+            queryFilters.size()>6 ? queryFilters.append(" AND favorites = 1 "): queryFilters.append("favorites = 1 ");
         }
     }
     qDebug()<< queryFilters;
@@ -119,10 +154,10 @@ void ListModel::_countSelectSysytems()
     if(queryFilters.size()>0)
     {
         query.prepare("SELECT COUNT(systems.id) FROM systems "
-                          "iNNER JOIN coords ON systems.id = coords.id "
-                          "LEFT OUTER JOIN information ON systems.id = information.id "
-                          "LEFT OUTER  JOIN primarystar ON systems.id = primarystar.id "
-                          + queryFilters);
+                      "iNNER JOIN coords ON systems.id = coords.id "
+                      "LEFT OUTER JOIN information ON systems.id = information.id "
+                      "LEFT OUTER  JOIN primarystar ON systems.id = primarystar.id "
+                      + queryFilters);
     }
     else{
         query.prepare("SELECT COUNT(systems.id) FROM systems ");

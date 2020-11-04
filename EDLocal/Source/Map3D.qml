@@ -62,7 +62,7 @@ Rectangle {
                 id: scatterSeries
                 //! [5]
                 //! [10]
-                itemLabelFormat: "@xLabel"
+                itemLabelFormat: "@xLabel @yLabel @zLabel"
                 //! [10]
 
                 //! [11]

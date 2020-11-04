@@ -16,6 +16,7 @@ ApplicationWindow {
             dialogerroedb.open()
         }
     }
+
     //Фильтры
     Filters{
         id:filters

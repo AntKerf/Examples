@@ -1,5 +1,7 @@
 import QtQuick 2.12
-import QtQuick.Controls 1.6
+import QtQuick.Controls 1.4
+
+
 
 TableView {
     id:tableView
@@ -9,9 +11,39 @@ TableView {
     anchors.bottom: parent.bottom
     anchors.margins: 5
     onSortIndicatorColumnChanged: myModel.sort(sortIndicatorColumn,sortIndicatorOrder)
-    onSortIndicatorOrderChanged: myModel.sort(sortIndicatorColumn,sortIndicatorOrder) 
+    onSortIndicatorOrderChanged: myModel.sort(sortIndicatorColumn,sortIndicatorOrder)
     sortIndicatorVisible: true
 
+    TableViewColumn {
+        width: 40
+        role: "systems.favorites"
+        title: "Fav"
+        visible: true
+        delegate: Component {
+            id: favoriteDelegate
+            Item {
+                Rectangle {
+                    id: rect
+                    anchors.centerIn: parent
+                    anchors.fill: parent
+                    Image{
+                        id:img
+                        source: styleData.value ?  "/true.png" : "/false.png"
+                        width: 15
+                        height: 15
+                        anchors.centerIn: parent
+                    }
+                    MouseArea{
+                        anchors.fill: parent
+                        onClicked: {
+                            myModel.swapFavorite(styleData.row)
+                            img.source=="qrc:/true.png" ? img.source="/false.png" : img.source="/true.png"
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     TableViewColumn {
         width: 80
@@ -111,17 +143,18 @@ TableView {
     rowDelegate: Rectangle {
         anchors.fill: parent
         color: styleData.selected ? 'skyblue' : (styleData.alternate ? 'whitesmoke' : 'white');
-//        Rectangle{
-//            visible: styleData.selected ? 1:0
-//            color:"whitesmoke"
-//            width: mainWin.width-40
-//            height: 100
-//            y:20
-//            z:2
-//            border.color: "grey"
-//            border.width: 2
-//            opacity: 0.9
-//        }
+        //        Rectangle{
+        //            visible: styleData.selected ? 1:0
+        //            color:"whitesmoke"
+        //            width: mainWin.width-40
+        //            height: 100
+        //            y:20
+        //            z:2
+        //            border.color: "grey"
+        //            border.width: 2
+        //            opacity: 0.9
+        //        }
+
         MouseArea {
             anchors.fill: parent
             acceptedButtons: Qt.RightButton | Qt.LeftButton
@@ -133,7 +166,7 @@ TableView {
                         tableView.selection.select(styleData.row)
                         tableView.currentRow = styleData.row
                         tableView.focus = true
-//                        console.log(myModel.rowCount())
+                        //                        console.log(myModel.rowCount())
                     }
                     else tableView.currentRow = -1
                     break
