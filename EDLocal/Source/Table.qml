@@ -67,6 +67,24 @@ TableView {
         role: "distance"
         title: "Дистанция"
     }
+    TableViewColumn{
+        width: 80
+        title:"x"
+        role:"x"
+        visible: false
+    }
+    TableViewColumn{
+        width: 80
+        title:"y"
+        role:"y"
+        visible: false
+    }
+    TableViewColumn{
+        width: 80
+        title:"z"
+        role:"z"
+        visible: false
+    }
     TableViewColumn {
         width: 80
         role: "allegiance"
@@ -109,24 +127,7 @@ TableView {
         title: "Экономика"
         visible: false
     }
-    TableViewColumn{
-        width: 80
-        title:"x"
-        role:"x"
-        visible: false
-    }
-    TableViewColumn{
-        width: 80
-        title:"y"
-        role:"y"
-        visible: false
-    }
-    TableViewColumn{
-        width: 80
-        title:"z"
-        role:"z"
-        visible: false
-    }
+
     TableViewColumn {
         width: 80
         role: "type"

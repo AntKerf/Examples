@@ -14,18 +14,6 @@ QVariant ListModel::data(const QModelIndex & index, int role) const {
     // Создаём индекс с помощью новоиспечённого ID колонки
     QModelIndex modelIndex = this->index(index.row(), columnId);
 
-//    //Ваша картинки, которые Вы хотите показывать в зависимости от значения булевого поля
-//    QPixmap pxmpOnTrue = QPixmap("D:/Users/Documents/GitHub/Examples/EDLocal/Source/true.png");
-//    QPixmap pxmpOnFalse = QPixmap("D:/Users/Documents/GitHub/Examples/EDLocal/Source/false.png");
-
-//    if(columnId == 0)
-//    {
-//        if( QSqlQueryModel::data(modelIndex, Qt::DisplayRole).toBool())
-//            return QVariant::fromValue(pxmpOnTrue);
-//        else
-//            return QVariant::fromValue(pxmpOnFalse);
-//    }
-
     /* И с помощью уже метода data() базового класса
      * вытаскиваем данные для таблицы из модели
      * */
@@ -114,6 +102,7 @@ void ListModel::select() {
                      + orderClause +
                      " LIMIT " + QString::number((numPage-1)*countRowToVisible)+", "+ QString::number(countRowToVisible));
     }
+    qDebug() << query;
     QSqlQueryModel::setQuery(query);
 }
 int ListModel::getCountSelectSystems()
