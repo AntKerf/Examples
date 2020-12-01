@@ -1,7 +1,7 @@
 # Examples
 Репозиторий с примерами моих работ.
 
-# ConvertMe
+# [ConvertMe](https://github.com/AntKerf/Examples/tree/master/ConvertMe)
 Приложение конвертер валют, работает на API центробанка.
 Позволяет переводить все валюты в рубль РФ или любую другую валюту.
 
@@ -9,26 +9,27 @@
 
 Создано на QT С++ и Qml
 
-# EDLocal
+
+# [EDLocal](https://github.com/AntKerf/Examples/tree/master/EDLocal)
 Просмотр звездных систем(в database/ed.db загружнно ~1млн звездных систем в радиусе 1000с.л. от Sol, полную информацию имеют лишь системы в радиусе 100c.л.)
 Построенна QSqlTableModel для взаимодействия qml и sql.
 Добаленны классы для просмотра бд и парсинга Json для добавления новых данных из dump файлов базы данных EDSM или через Api.
 Данные получены с помощью API EDSM.
 
-# WebScrap
+# [WebScrap](https://github.com/AntKerf/Examples/tree/master/WebScrap)
 Веб-скрапер котировок. Первый мой проект написанный на Java. 
 В основе лежит HtmlUnit. Поиск на страницах осуществляется с помощью XPath.
 
-# MNN 
+# [MNN](https://github.com/AntKerf/Examples/tree/master/MNN)
 Библиотека для обучения многослойного перцептрона. Позволяет создать перцептрон любой архитектуры. Имеет возможность задания нескольких функций активаций.
 Написана на С++ с помощью Boost.Gil. Поддерживает многопоточность.
 
-# MoonVisor
+# [MoonVisor](https://github.com/AntKerf/Examples/tree/master/MoonVisor)
 Приложение показывает как будет видно луну в телескоп с определенными настройками.
 Создано в Qt на С++ и Qml.
 Можно легко добавлять новые виды телескопов и объектов наблюдения.
 
-# IFromBook
+# [IFromBook](https://github.com/AntKerf/Examples/tree/master/IFromBook)
 Интерфейс приложения для оцифровки сканов.
 
 Создано в Qt, Qml.
