@@ -1,18 +1,19 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'convert.h'
 **
-** Created by: The Qt Meta Object Compiler version 67 (Qt 5.10.0)
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.15.1)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
 
-#include "../../qmltest/convert.h"
+#include <memory>
+#include "../../Source/convert.h"
 #include <QtCore/qbytearray.h>
 #include <QtCore/qmetatype.h>
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'convert.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
-#error "This file was generated using the moc from 5.10.0. It"
+#error "This file was generated using the moc from 5.15.1. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -70,7 +71,7 @@ QT_MOC_LITERAL(23, 227, 12) // "Convert_N_Rf"
 static const uint qt_meta_data_convert[] = {
 
  // content:
-       7,       // revision
+       8,       // revision
        0,       // classname
        0,    0, // classinfo
       12,   14, // methods
@@ -142,7 +143,7 @@ static const uint qt_meta_data_convert[] = {
 void convert::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
 {
     if (_c == QMetaObject::InvokeMetaMethod) {
-        convert *_t = static_cast<convert *>(_o);
+        auto *_t = static_cast<convert *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
         case 0: _t->valueChanged(); break;
@@ -162,70 +163,70 @@ void convert::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, voi
     } else if (_c == QMetaObject::IndexOfMethod) {
         int *result = reinterpret_cast<int *>(_a[0]);
         {
-            typedef void (convert::*_t)();
+            using _t = void (convert::*)();
             if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&convert::valueChanged)) {
                 *result = 0;
                 return;
             }
         }
         {
-            typedef void (convert::*_t)();
+            using _t = void (convert::*)();
             if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&convert::nominalChanged)) {
                 *result = 1;
                 return;
             }
         }
         {
-            typedef void (convert::*_t)();
+            using _t = void (convert::*)();
             if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&convert::value1Changed)) {
                 *result = 2;
                 return;
             }
         }
         {
-            typedef void (convert::*_t)();
+            using _t = void (convert::*)();
             if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&convert::nominal1Changed)) {
                 *result = 3;
                 return;
             }
         }
         {
-            typedef void (convert::*_t)();
+            using _t = void (convert::*)();
             if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&convert::nameChanged)) {
                 *result = 4;
                 return;
             }
         }
         {
-            typedef void (convert::*_t)();
+            using _t = void (convert::*)();
             if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&convert::name1Changed)) {
                 *result = 5;
                 return;
             }
         }
         {
-            typedef void (convert::*_t)();
+            using _t = void (convert::*)();
             if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&convert::kursChanged)) {
                 *result = 6;
                 return;
             }
         }
         {
-            typedef void (convert::*_t)();
+            using _t = void (convert::*)();
             if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&convert::kurs1Changed)) {
                 *result = 7;
                 return;
             }
         }
         {
-            typedef void (convert::*_t)();
+            using _t = void (convert::*)();
             if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&convert::modeChanged)) {
                 *result = 8;
                 return;
             }
         }
         {
-            typedef void (convert::*_t)();
+            using _t = void (convert::*)();
             if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&convert::Convert_N_RfChanged)) {
                 *result = 9;
                 return;
@@ -234,7 +235,7 @@ void convert::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, voi
     }
 #ifndef QT_NO_PROPERTIES
     else if (_c == QMetaObject::ReadProperty) {
-        convert *_t = static_cast<convert *>(_o);
+        auto *_t = static_cast<convert *>(_o);
         Q_UNUSED(_t)
         void *_v = _a[0];
         switch (_id) {
@@ -251,7 +252,7 @@ void convert::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, voi
         default: break;
         }
     } else if (_c == QMetaObject::WriteProperty) {
-        convert *_t = static_cast<convert *>(_o);
+        auto *_t = static_cast<convert *>(_o);
         Q_UNUSED(_t)
         void *_v = _a[0];
         switch (_id) {
@@ -273,10 +274,14 @@ void convert::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, voi
     Q_UNUSED(_a);
 }
 
-const QMetaObject convert::staticMetaObject = {
-    { &QObject::staticMetaObject, qt_meta_stringdata_convert.data,
-      qt_meta_data_convert,  qt_static_metacall, nullptr, nullptr}
-};
+QT_INIT_METAOBJECT const QMetaObject convert::staticMetaObject = { {
+    QMetaObject::SuperData::link<QObject::staticMetaObject>(),
+    qt_meta_stringdata_convert.data,
+    qt_meta_data_convert,
+    qt_static_metacall,
+    nullptr,
+    nullptr
+} };
 
 
 const QMetaObject *convert::metaObject() const
@@ -307,7 +312,7 @@ int convert::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         _id -= 12;
     }
 #ifndef QT_NO_PROPERTIES
-   else if (_c == QMetaObject::ReadProperty || _c == QMetaObject::WriteProperty
+    else if (_c == QMetaObject::ReadProperty || _c == QMetaObject::WriteProperty
             || _c == QMetaObject::ResetProperty || _c == QMetaObject::RegisterPropertyMetaType) {
         qt_static_metacall(this, _c, _id, _a);
         _id -= 10;
