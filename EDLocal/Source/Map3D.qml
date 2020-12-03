@@ -68,7 +68,6 @@ Rectangle {
                 //! [11]
                 ItemModelScatterDataProxy {
                     itemModel: myModel
-                    rotationRole: "systems.name"
                     xPosRole: "x"
                     yPosRole: "y"
                     zPosRole: "z"
