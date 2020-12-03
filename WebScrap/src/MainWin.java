@@ -29,41 +29,33 @@ public class MainWin extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        jExitButton = new javax.swing.JButton();
+        jCtockComboBox = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jEquitiesTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setText("Exit");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jExitButton.setText("Exit");
+        jExitButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jExitButtonActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Scrap");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(WebScrap._stocks()));
-        jComboBox1.addItemListener(new java.awt.event.ItemListener() {
+        jCtockComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(WebScrap._stocks()));
+        jCtockComboBox.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                jComboBox1ItemStateChanged(evt);
+                jCtockComboBoxItemStateChanged(evt);
             }
         });
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        jCtockComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+                jCtockComboBoxActionPerformed(evt);
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jEquitiesTable.setModel(new javax.swing.table.DefaultTableModel(
             WebScrap._data(),
             new String [] {
                 "Название", "Цена", "Макс"
@@ -84,18 +76,16 @@ public class MainWin extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(jEquitiesTable);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jCtockComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton2)
-                .addGap(18, 18, 18)
-                .addComponent(jButton1)
+                .addComponent(jExitButton)
                 .addContainerGap())
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
         );
@@ -104,9 +94,8 @@ public class MainWin extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jExitButton)
+                    .addComponent(jCtockComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 225, Short.MAX_VALUE)
                 .addContainerGap())
@@ -115,28 +104,24 @@ public class MainWin extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jExitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jExitButtonActionPerformed
         System.exit(0);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_jExitButtonActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void jCtockComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCtockComboBoxActionPerformed
 
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_jCtockComboBoxActionPerformed
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-
-    }//GEN-LAST:event_jComboBox1ActionPerformed
-
-    private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
+    private void jCtockComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCtockComboBoxItemStateChanged
         //загрузка страницы с данными выбраной биржи
-        WebScrap._loadStock(jComboBox1.getSelectedIndex());
+        WebScrap._loadStock(jCtockComboBox.getSelectedIndex());
         //установка котировок с загруженной страницы в таблицу
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jEquitiesTable.setModel(new javax.swing.table.DefaultTableModel(
             WebScrap._data(),
             new String [] {
                 "Название", "Цена", "Макс"
             }));
-    }//GEN-LAST:event_jComboBox1ItemStateChanged
+    }//GEN-LAST:event_jCtockComboBoxItemStateChanged
 
     /**
      * @param args the command line arguments
@@ -174,10 +159,9 @@ public class MainWin extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jCtockComboBox;
+    private javax.swing.JTable jEquitiesTable;
+    private javax.swing.JButton jExitButton;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }
