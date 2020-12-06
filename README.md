@@ -1,7 +1,7 @@
 # Examples
 Репозиторий с примерами моих работ.
 
-# [ConvertMe](https://github.com/AntKerf/Examples/tree/master/ConvertMe)
+# [ConvertMe](https://github.com/AntKerf/Examples/tree/master/ConvertMe) ![Actual](https://img.shields.io/badge/Release-1.0-green)
 Приложение конвертер валют, работает на API центробанка.
 Позволяет переводить все валюты в рубль РФ или любую другую валюту.
 
