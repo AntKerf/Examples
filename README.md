@@ -24,12 +24,12 @@
 Библиотека для обучения многослойного перцептрона. Позволяет создать перцептрон любой архитектуры. Имеет возможность задания нескольких функций активаций.
 Написана на С++ с помощью Boost.Gil. Поддерживает многопоточность.
 
-# [MoonVisor](https://github.com/AntKerf/Examples/tree/master/MoonVisor) ![Lang](https://img.shields.io/badge/Language-C%2B%2B%2FQml-blue)
-Приложение показывает как будет видно луну в телескоп с определенными настройками.
-Создано в Qt на С++ и Qml.
-Можно легко добавлять новые виды телескопов и объектов наблюдения.
-
 # [IFromBook](https://github.com/AntKerf/Examples/tree/master/IFromBook) ![Lang](https://img.shields.io/badge/Language-Qml-blue)
 Интерфейс приложения для оцифровки сканов.
 
 Создано в Qt, Qml.
+
+# [MoonVisor](https://github.com/AntKerf/Examples/tree/master/MoonVisor) ![Lang](https://img.shields.io/badge/Language-C%2B%2B%2FQml-blue) ![Stage](https://img.shields.io/badge/Stage-Concept-red)
+Приложение-концепт показывает как будет видно луну в телескоп с определенными настройками.
+Создано в Qt на С++ и Qml.
+Можно легко добавлять новые виды телескопов и объектов наблюдения.
