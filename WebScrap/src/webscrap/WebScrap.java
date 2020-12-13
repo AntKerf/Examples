@@ -83,6 +83,11 @@ public class WebScrap {
         //при ошибке ничего не возращаем
         return null;
     }
+    public static String goToEquities(int row){
+        String href="";
+        List<HtmlElement> item = stockPage.getByXPath("/html[1]/body[1]/div[1]/table[1]/tbody[1]/tr["+(row+1)+"]/td[2]/a[1]");
+        return href = item.get(0).getAttribute("href");
+    }
     //загрузка названий бирж
     public static String[] _stocks() {
         String stocks[];

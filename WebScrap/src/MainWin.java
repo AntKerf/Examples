@@ -35,6 +35,7 @@ public class MainWin extends javax.swing.JFrame {
         jEquitiesTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(400, 700));
 
         jExitButton.setText("Exit");
         jExitButton.addActionListener(new java.awt.event.ActionListener() {
@@ -74,6 +75,11 @@ public class MainWin extends javax.swing.JFrame {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        jEquitiesTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jEquitiesTableMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(jEquitiesTable);
@@ -122,6 +128,11 @@ public class MainWin extends javax.swing.JFrame {
                 "Название", "Цена", "Макс"
             }));
     }//GEN-LAST:event_jCtockComboBoxItemStateChanged
+
+    private void jEquitiesTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jEquitiesTableMouseClicked
+        int row = jEquitiesTable.rowAtPoint(evt.getPoint());
+        System.out.println(WebScrap.goToEquities(row));
+    }//GEN-LAST:event_jEquitiesTableMouseClicked
 
     /**
      * @param args the command line arguments
