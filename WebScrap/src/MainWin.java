@@ -17,7 +17,6 @@ public class MainWin extends javax.swing.JFrame {
      */
     public MainWin() {
         initComponents();
-
     }
 
     /**
@@ -35,6 +34,7 @@ public class MainWin extends javax.swing.JFrame {
         jEquitiesTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("WebScrap");
         setPreferredSize(new java.awt.Dimension(400, 700));
 
         jExitButton.setText("Exit");
@@ -48,11 +48,6 @@ public class MainWin extends javax.swing.JFrame {
         jCtockComboBox.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jCtockComboBoxItemStateChanged(evt);
-            }
-        });
-        jCtockComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCtockComboBoxActionPerformed(evt);
             }
         });
 
@@ -103,8 +98,7 @@ public class MainWin extends javax.swing.JFrame {
                     .addComponent(jExitButton)
                     .addComponent(jCtockComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 225, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 655, Short.MAX_VALUE))
         );
 
         pack();
@@ -114,24 +108,20 @@ public class MainWin extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_jExitButtonActionPerformed
 
-    private void jCtockComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCtockComboBoxActionPerformed
-
-    }//GEN-LAST:event_jCtockComboBoxActionPerformed
-
     private void jCtockComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCtockComboBoxItemStateChanged
         //загрузка страницы с данными выбраной биржи
         WebScrap._loadStock(jCtockComboBox.getSelectedIndex());
         //установка котировок с загруженной страницы в таблицу
         jEquitiesTable.setModel(new javax.swing.table.DefaultTableModel(
-            WebScrap._data(),
-            new String [] {
-                "Название", "Цена", "Макс"
-            }));
+                WebScrap._data(),
+                new String[]{
+                    "Название", "Цена", "Макс"
+                }));
     }//GEN-LAST:event_jCtockComboBoxItemStateChanged
 
     private void jEquitiesTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jEquitiesTableMouseClicked
         int row = jEquitiesTable.rowAtPoint(evt.getPoint());
-        System.out.println(WebScrap.goToEquities(row));
+        _FormEquitie(row);
     }//GEN-LAST:event_jEquitiesTableMouseClicked
 
     /**
@@ -162,11 +152,45 @@ public class MainWin extends javax.swing.JFrame {
         //</editor-fold>
         WebScrap._init();
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new MainWin().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new MainWin().setVisible(true);
         });
+    }
+
+    //создание окна с подробной информацией по выбранной акции
+    private void _FormEquitie(int row) {
+        //окно
+        javax.swing.JFrame tmp = new javax.swing.JFrame();
+        tmp.setTitle(jEquitiesTable.getValueAt(row, 0).toString());
+        tmp.setSize(new java.awt.Dimension(400, 400));
+        tmp.setLocation(500, 100);
+        tmp.setDefaultCloseOperation(javax.swing.JFrame.HIDE_ON_CLOSE);
+        //таблица
+        javax.swing.JScrollPane jScrPane1 = new javax.swing.JScrollPane();
+        javax.swing.JTable jHistTable = new javax.swing.JTable();
+        jScrPane1.setVerticalScrollBarPolicy(javax.swing.JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        jHistTable.setModel(new javax.swing.table.DefaultTableModel(
+                WebScrap._data(),
+                new String[]{
+                    "Название", "Цена", "Макс"
+                }
+        ));
+        jScrPane1.setViewportView(jHistTable);
+//        //кнопка
+//        javax.swing.JButton btn = new javax.swing.JButton("Hehe");
+//        btn.setLocation(200, 200);
+//        btn.setSize(new java.awt.Dimension(60, 20));
+//        btn.addMouseListener(new java.awt.event.MouseAdapter() {
+//            @Override
+//            public void mouseClicked(java.awt.event.MouseEvent evt) {
+//                System.out.println(tmp.getTitle());
+//            }
+//        });
+        //соединение компоненов с окном
+//      tmp.getContentPane().add(btn);
+        tmp.getContentPane().add(jScrPane1);
+        tmp.pack();
+        tmp.show();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

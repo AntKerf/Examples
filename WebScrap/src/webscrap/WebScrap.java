@@ -37,8 +37,8 @@ public class WebScrap {
         webClient.getOptions().setCssEnabled(false);
         webClient.getOptions().setJavaScriptEnabled(false);
         try {
-            mainPage = webClient.getPage("https://ru.investing.com/equities/");
-            stockPage = webClient.getPage("https://ru.investing.com/equities/StocksFilter?noconstruct=1&smlID=0&sid=&tabletype=price&index_id=13666");
+            mainPage = webClient.getPage("http://ru.investing.com/equities/");
+            stockPage = webClient.getPage("http://ru.investing.com/equities/StocksFilter?noconstruct=1&smlID=0&sid=&tabletype=price&index_id=13666");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -52,7 +52,7 @@ public class WebScrap {
                 //ид биржы по ее номеру в списке
                 String stock_id = items.get(index_stock).getAttribute("id");
                 //страница с котировками
-                stockPage = webClient.getPage("https://ru.investing.com/equities/StocksFilter?noconstruct=1&smlID=0&sid=&tabletype=price&index_id="+stock_id);
+                stockPage = webClient.getPage("http://ru.investing.com/equities/StocksFilter?noconstruct=1&smlID=0&sid=&tabletype=price&index_id="+stock_id);
                 //установка выбранного номера биржы как текущий
                 currentIndexStock = index_stock;
             } catch (Exception ex) {
@@ -83,7 +83,7 @@ public class WebScrap {
         //при ошибке ничего не возращаем
         return null;
     }
-    public static String goToEquities(int row){
+    public static String _goToEquities(int row){
         String href="";
         List<HtmlElement> item = stockPage.getByXPath("/html[1]/body[1]/div[1]/table[1]/tbody[1]/tr["+(row+1)+"]/td[2]/a[1]");
         return href = item.get(0).getAttribute("href");
