@@ -170,24 +170,12 @@ public class MainWin extends javax.swing.JFrame {
         javax.swing.JTable jHistTable = new javax.swing.JTable();
         jScrPane1.setVerticalScrollBarPolicy(javax.swing.JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         jHistTable.setModel(new javax.swing.table.DefaultTableModel(
-                WebScrap._data(),
+                WebScrap._GetHistoryEquitie(row),
                 new String[]{
-                    "Название", "Цена", "Макс"
+                    "Дата", "Цена", "Откр."
                 }
         ));
         jScrPane1.setViewportView(jHistTable);
-//        //кнопка
-//        javax.swing.JButton btn = new javax.swing.JButton("Hehe");
-//        btn.setLocation(200, 200);
-//        btn.setSize(new java.awt.Dimension(60, 20));
-//        btn.addMouseListener(new java.awt.event.MouseAdapter() {
-//            @Override
-//            public void mouseClicked(java.awt.event.MouseEvent evt) {
-//                System.out.println(tmp.getTitle());
-//            }
-//        });
-        //соединение компоненов с окном
-//      tmp.getContentPane().add(btn);
         tmp.getContentPane().add(jScrPane1);
         tmp.pack();
         tmp.show();

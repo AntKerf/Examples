@@ -18,10 +18,6 @@ import com.gargoylesoftware.htmlunit.html.HtmlSelect;
  * @author Windows
  */
 public class WebScrap {
-//
-//    public static void main(String[] args) {
-//
-//    }
 
     private static WebClient webClient;
     //основная страница
@@ -33,16 +29,17 @@ public class WebScrap {
 
     public static void _init() {
         System.out.println("Hello world! I`am a web  scrapper in future!");
-        webClient = new WebClient();
-        webClient.getOptions().setCssEnabled(false);
-        webClient.getOptions().setJavaScriptEnabled(false);
         try {
+            webClient = new WebClient();
+            webClient.getOptions().setCssEnabled(false);
+            webClient.getOptions().setJavaScriptEnabled(false);
             mainPage = webClient.getPage("http://ru.investing.com/equities/");
             stockPage = webClient.getPage("http://ru.investing.com/equities/StocksFilter?noconstruct=1&smlID=0&sid=&tabletype=price&index_id=13666");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
+
     //загрузка страницы с котировками выбранной биржы из списка
     public static void _loadStock(int index_stock) {
         if (index_stock != currentIndexStock) {
@@ -52,7 +49,7 @@ public class WebScrap {
                 //ид биржы по ее номеру в списке
                 String stock_id = items.get(index_stock).getAttribute("id");
                 //страница с котировками
-                stockPage = webClient.getPage("http://ru.investing.com/equities/StocksFilter?noconstruct=1&smlID=0&sid=&tabletype=price&index_id="+stock_id);
+                stockPage = webClient.getPage("http://ru.investing.com/equities/StocksFilter?noconstruct=1&smlID=0&sid=&tabletype=price&index_id=" + stock_id);
                 //установка выбранного номера биржы как текущий
                 currentIndexStock = index_stock;
             } catch (Exception ex) {
@@ -60,6 +57,7 @@ public class WebScrap {
             }
         }
     }
+
     //загруза котировок со страницы выбранной биржи
     public static Object[][] _data() {
         Object[][] data;
@@ -69,11 +67,11 @@ public class WebScrap {
             data = new Object[items.size()][3];
             for (int i = 0; i < items.size(); i++) {
                 //Название
-                data[i][0] = ((HtmlElement)items.get(i).getByXPath("td[2]").get(0)).asText();
+                data[i][0] = ((HtmlElement) items.get(i).getByXPath("td[2]").get(0)).asText();
                 //Цена
-                data[i][1] = ((HtmlElement)items.get(i).getByXPath("td[3]").get(0)).asText();
+                data[i][1] = ((HtmlElement) items.get(i).getByXPath("td[3]").get(0)).asText();
                 //Макс
-                data[i][2] = ((HtmlElement)items.get(i).getByXPath("td[4]").get(0)).asText();
+                data[i][2] = ((HtmlElement) items.get(i).getByXPath("td[4]").get(0)).asText();
             }
             //возращаем массив с данными для вставки в таблицу
             return data;
@@ -83,11 +81,39 @@ public class WebScrap {
         //при ошибке ничего не возращаем
         return null;
     }
-    public static String _goToEquities(int row){
-        String href="";
-        List<HtmlElement> item = stockPage.getByXPath("/html[1]/body[1]/div[1]/table[1]/tbody[1]/tr["+(row+1)+"]/td[2]/a[1]");
-        return href = item.get(0).getAttribute("href");
+
+    //загрузка дополнительной информации по акции
+    public static Object[][] _GetHistoryEquitie(int row) {
+        Object[][] data;
+        try {
+            //получение ссылки на страницу с допинформацией
+            String href;
+            List<HtmlElement> item = stockPage.getByXPath("/html[1]/body[1]/div[1]/table[1]/tbody[1]/tr[" + (row + 1) + "]/td[2]/a[1]");
+            href = item.get(0).getAttribute("href");
+            //форматирование ссылки на страницу
+            String URL = "http://ru.investing.com" + href.split("\\?")[0] + "-historical-data";
+            if (href.contains("\\?")) {
+                URL = URL + "?" + href.split("\\?")[1];
+            }
+            //загрузка данных
+            HtmlPage EquititePage = webClient.getPage(URL);
+            List<HtmlElement> items = EquititePage.getByXPath("/html[1]/body[1]/div[5]/section[1]/div[9]/table[1]/tbody[1]/tr");
+            data = new Object[items.size()][3];
+            for (int i = 0; i < items.size(); i++) {
+                //Дата
+                data[i][0] = ((HtmlElement) items.get(i).getByXPath("td[1]").get(0)).asText();
+                //Цена
+                data[i][1] = ((HtmlElement) items.get(i).getByXPath("td[2]").get(0)).asText();
+                //Цена откр.
+                data[i][2] = ((HtmlElement) items.get(i).getByXPath("td[3]").get(0)).asText();
+            }
+            return data;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
+
     //загрузка названий бирж
     public static String[] _stocks() {
         String stocks[];
