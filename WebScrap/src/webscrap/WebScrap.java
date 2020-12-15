@@ -88,8 +88,7 @@ public class WebScrap {
         try {
             //получение ссылки на страницу с допинформацией
             String href;
-            List<HtmlElement> item = stockPage.getByXPath("/html[1]/body[1]/div[1]/table[1]/tbody[1]/tr[" + (row + 1) + "]/td[2]/a[1]");
-            href = item.get(0).getAttribute("href");
+            href = ((HtmlElement)stockPage.getFirstByXPath("/html[1]/body[1]/div[1]/table[1]/tbody[1]/tr[" + (row + 1) + "]/td[2]/a[1]")).getAttribute("href");
             //форматирование ссылки на страницу
             String URL = "http://ru.investing.com" + href.split("\\?")[0] + "-historical-data";
             if (href.contains("\\?")) {
