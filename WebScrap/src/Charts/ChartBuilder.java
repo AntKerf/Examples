@@ -11,7 +11,6 @@ import org.jfree.chart.plot.*;
 import org.jfree.chart.*;
 import org.jfree.chart.renderer.xy.*;
 import org.jfree.chart.axis.DateAxis;
-import org.jfree.date.*;
 import org.jfree.ui.RectangleInsets;
 import java.awt.Color;
 import java.text.SimpleDateFormat;
