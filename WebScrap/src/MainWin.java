@@ -9,6 +9,7 @@
  * @author Windows
  */
 import webscrap.WebScrap;
+import Charts.ChartBuilder;
 
 public class MainWin extends javax.swing.JFrame {
 
@@ -247,7 +248,11 @@ public class MainWin extends javax.swing.JFrame {
                         .addComponent(jScrPane, javax.swing.GroupLayout.DEFAULT_SIZE, 272, Short.MAX_VALUE)
         );
         jTab.add("Таблица", jTablePanel);//привязка панели с прокруткой и таблиецй к вкладке
-        jTab.add("График", jGraphPanel);
+        
+        var demoChartPanel = new javax.swing.JPanel();
+        demoChartPanel = ChartBuilder.createDemoPanel();
+        
+        jTab.add("График", demoChartPanel);
         //выравнивание вкладок с окном
         javax.swing.GroupLayout jFrameLayout = new javax.swing.GroupLayout(tmp.getContentPane());
         tmp.getContentPane().setLayout(jFrameLayout);
@@ -263,6 +268,7 @@ public class MainWin extends javax.swing.JFrame {
         //показ окна
         tmp.setVisible(true);
     }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> jCtockComboBox;
