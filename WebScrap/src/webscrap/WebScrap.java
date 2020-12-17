@@ -30,6 +30,7 @@ public class WebScrap {
     public static void _init() {
         System.out.println("Hello world! I`am a web  scrapper in future!");
         try {
+            System.out.println("Try to connect...");
             webClient = new WebClient();
             webClient.getOptions().setCssEnabled(false);
             webClient.getOptions().setJavaScriptEnabled(false);
@@ -37,6 +38,7 @@ public class WebScrap {
             stockPage = webClient.getPage("http://ru.investing.com/equities/StocksFilter?noconstruct=1&smlID=0&sid=&tabletype=price&index_id=13666");
         } catch (Exception ex) {
             ex.printStackTrace();
+            _init();
         }
     }
 
