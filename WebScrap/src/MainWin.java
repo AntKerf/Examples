@@ -217,6 +217,8 @@ public class MainWin extends javax.swing.JFrame {
 
     //создание окна с подробной информацией по выбранной акции
     private void _FormEquitie(int row) {
+        //получение данных по акции
+        Object [][] HistData= WebScrap._GetHistoryEquitie(row);
         //окно
         javax.swing.JFrame tmp = new javax.swing.JFrame();
         tmp.setTitle(jEquitiesTable.getValueAt(row, 0).toString());
@@ -231,7 +233,7 @@ public class MainWin extends javax.swing.JFrame {
         javax.swing.JTable jHistTable = new javax.swing.JTable();//таблица
         jScrPane.setVerticalScrollBarPolicy(javax.swing.JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         jHistTable.setModel(new javax.swing.table.DefaultTableModel(
-                WebScrap._GetHistoryEquitie(row),   //заполнение таблицы
+                HistData,   //заполнение таблицы
                 new String[]{
                     "Дата", "Цена", "Откр."
                 }
@@ -249,10 +251,10 @@ public class MainWin extends javax.swing.JFrame {
         );
         jTab.add("Таблица", jTablePanel);//привязка панели с прокруткой и таблиецй к вкладке
         
-        var demoChartPanel = new javax.swing.JPanel();
-        demoChartPanel = ChartBuilder.createDemoPanel();
+        var ChartPanel = new javax.swing.JPanel();
+        ChartPanel = ChartBuilder.createPanel(tmp.getTitle(), HistData);//рисование графика
         
-        jTab.add("График", demoChartPanel);
+        jTab.add("График", ChartPanel);
         //выравнивание вкладок с окном
         javax.swing.GroupLayout jFrameLayout = new javax.swing.GroupLayout(tmp.getContentPane());
         tmp.getContentPane().setLayout(jFrameLayout);

@@ -14,7 +14,8 @@ import org.jfree.chart.axis.DateAxis;
 import org.jfree.ui.RectangleInsets;
 import java.awt.Color;
 import java.text.SimpleDateFormat;
-
+import java.text.DecimalFormat;
+import java.util.Locale;
 
 /**
  *
@@ -22,12 +23,12 @@ import java.text.SimpleDateFormat;
  */
 public class ChartBuilder {
 
-    public static JFreeChart createChart() {
-        XYDataset dataset = _datasetbuild();
+    public static JFreeChart createChart(String Name, Object[][] data) {
+        XYDataset dataset = _datasetBuilder(Name, data);
         JFreeChart chart = ChartFactory.createTimeSeriesChart(
-                "Демо версия графика", // title
+                "График акций " + Name, // title
                 "", // x-axis label
-                "Валюта", // y-axis label
+                "Рубль РФ", // y-axis label
                 dataset, // data
                 true, // create legend
                 true, // generate tooltips
@@ -52,38 +53,31 @@ public class ChartBuilder {
         }
 
         DateAxis axis = (DateAxis) plot.getDomainAxis();
-        axis.setDateFormatOverride(new SimpleDateFormat("MM.YYYY"));
+        axis.setDateFormatOverride(new SimpleDateFormat("dd.MM.YYYY"));
         return chart;
     }
 
-    private static XYDataset _datasetbuild() {
-        TimeSeries s1 = new TimeSeries("Какой либо курс");
-
-        s1.add(new Month(7, 2013), 142.9);
-        s1.add(new Month(8, 2013), 138.7);
-        s1.add(new Month(9, 2013), 137.3);
-        s1.add(new Month(10, 2013), 143.9);
-        s1.add(new Month(11, 2013), 139.8);
-        s1.add(new Month(12, 2013), 137.0);
-        s1.add(new Month(1, 2014), 132.8);
-        s1.add(new Month(2, 2014), 181.8);
-        s1.add(new Month(3, 2014), 167.3);
-        s1.add(new Month(4, 2014), 153.8);
-        s1.add(new Month(5, 2014), 167.6);
-        s1.add(new Month(6, 2014), 158.8);
-        s1.add(new Month(7, 2014), 148.3);
-        s1.add(new Month(8, 2014), 153.9);
-        s1.add(new Month(9, 2014), 142.7);
-        s1.add(new Month(10, 2014), 123.2);
-        s1.add(new Month(11, 2014), 131.8);
-        s1.add(new Month(12, 2014), 139.6);
-
-        TimeSeriesCollection dataset = new TimeSeriesCollection();
-        dataset.addSeries(s1);
-        return dataset;
+    private static XYDataset _datasetBuilder(String Name, Object[][] data) {
+        try {
+            TimeSeries s1 = new TimeSeries(Name);
+            for (var el : data) {
+                int day = Integer.parseInt(el[0].toString().split("\\.")[0]);
+                int month = Integer.parseInt(el[0].toString().split("\\.")[1]);
+                int year = Integer.parseInt(el[0].toString().split("\\.")[2]);
+                Double value = DecimalFormat.getNumberInstance(Locale.GERMAN).parse(el[1].toString()).doubleValue();
+                s1.add(new Day(day, month, year), value);
+            }
+            TimeSeriesCollection dataset = new TimeSeriesCollection();
+            dataset.addSeries(s1);
+            return dataset;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
-        public static javax.swing.JPanel createDemoPanel() {
-        JFreeChart chart = createChart();
+
+    public static javax.swing.JPanel createPanel(String name, Object[][] data) {
+        JFreeChart chart = createChart(name, data);
         chart.setPadding(new RectangleInsets(4, 8, 2, 2));
         ChartPanel panel = new ChartPanel(chart);
         panel.setFillZoomRectangle(true);
