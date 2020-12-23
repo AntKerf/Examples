@@ -6,9 +6,10 @@
 
 /**
  *
- * @author Windows
+ * @author AntKerf
  */
 import webscrap.WebScrap;
+import webscrap.MyUtil.Pair;
 import Charts.ChartBuilder;
 
 public class MainWin extends javax.swing.JFrame {
@@ -198,13 +199,7 @@ public class MainWin extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MainWin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainWin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainWin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(MainWin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
@@ -218,7 +213,12 @@ public class MainWin extends javax.swing.JFrame {
     //создание окна с подробной информацией по выбранной акции
     private void _FormEquitie(int row) {
         //получение данных по акции
-        Object [][] HistData= WebScrap._GetHistoryEquitie(row);
+        Pair<Object[][], Integer[]> EquitieData = new Pair<>(WebScrap._GetHistoryEquitie(row));
+
+//        Object [][] HistData= EquitieData.getFirst(); //таблица с данными
+//        int pairId = EquitieData.getSecond()[0];    
+//        int smlId = EquitieData.getSecond()[1];
+        //System.out.format("pairID: %d\n smlID: %d\n",pairId,smlId);
         //окно
         javax.swing.JFrame tmp = new javax.swing.JFrame();
         tmp.setTitle(jEquitiesTable.getValueAt(row, 0).toString());
@@ -229,11 +229,13 @@ public class MainWin extends javax.swing.JFrame {
         var jTab = new javax.swing.JTabbedPane();
         var jTablePanel = new javax.swing.JPanel();//вкладка с таблицей
         var jGraphPanel = new javax.swing.JPanel();//с графиком
+        
         javax.swing.JScrollPane jScrPane = new javax.swing.JScrollPane();
         javax.swing.JTable jHistTable = new javax.swing.JTable();//таблица
         jScrPane.setVerticalScrollBarPolicy(javax.swing.JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        //заполнение таблицы
         jHistTable.setModel(new javax.swing.table.DefaultTableModel(
-                HistData,   //заполнение таблицы
+                EquitieData.getFirst(), //получение данных
                 new String[]{
                     "Дата", "Цена", "Откр."
                 }
@@ -250,11 +252,9 @@ public class MainWin extends javax.swing.JFrame {
                         .addComponent(jScrPane, javax.swing.GroupLayout.DEFAULT_SIZE, 272, Short.MAX_VALUE)
         );
         jTab.add("Таблица", jTablePanel);//привязка панели с прокруткой и таблиецй к вкладке
-        
-        var ChartPanel = new javax.swing.JPanel();
-        ChartPanel = ChartBuilder.createPanel(tmp.getTitle(), HistData);//рисование графика
-        
-        jTab.add("График", ChartPanel);
+        //рисование графика
+        jGraphPanel = ChartBuilder.createPanel(tmp.getTitle(), EquitieData.getFirst());//получение графика
+        jTab.add("График", jGraphPanel);//приязка графика к вкладке
         //выравнивание вкладок с окном
         javax.swing.GroupLayout jFrameLayout = new javax.swing.GroupLayout(tmp.getContentPane());
         tmp.getContentPane().setLayout(jFrameLayout);
@@ -266,11 +266,11 @@ public class MainWin extends javax.swing.JFrame {
                 jFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jTab)
         );
-        tmp.pack();
         //показ окна
+        tmp.pack();
         tmp.setVisible(true);
     }
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> jCtockComboBox;

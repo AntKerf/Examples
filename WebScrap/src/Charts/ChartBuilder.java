@@ -19,7 +19,7 @@ import java.util.Locale;
 
 /**
  *
- * @author Windows
+ * @author AntKerf
  */
 public class ChartBuilder {
 

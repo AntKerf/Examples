@@ -6,16 +6,18 @@
 package webscrap;
 
 import java.util.List;
-
+import webscrap.MyUtil.Pair;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlElement;
-import com.gargoylesoftware.htmlunit.html.HtmlOption;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
-import com.gargoylesoftware.htmlunit.html.HtmlSelect;
+import com.gargoylesoftware.htmlunit.Page;
+import com.gargoylesoftware.htmlunit.WebRequest;
+import com.gargoylesoftware.htmlunit.HttpMethod;
+import java.net.URL;
 
 /**
  *
- * @author Windows
+ * @author AntKerf
  */
 public class WebScrap {
 
@@ -85,12 +87,13 @@ public class WebScrap {
     }
 
     //загрузка дополнительной информации по акции
-    public static Object[][] _GetHistoryEquitie(int row) {
-        Object[][] data;
+    public static Pair<Object[][], Integer[]> _GetHistoryEquitie(int row) {
+
+        Object[][] data;//таблица с историей
         try {
             //получение ссылки на страницу с допинформацией
             String href;
-            href = ((HtmlElement)stockPage.getFirstByXPath("/html[1]/body[1]/div[1]/table[1]/tbody[1]/tr[" + (row + 1) + "]/td[2]/a[1]")).getAttribute("href");
+            href = ((HtmlElement) stockPage.getFirstByXPath("/html[1]/body[1]/div[1]/table[1]/tbody[1]/tr[" + (row + 1) + "]/td[2]/a[1]")).getAttribute("href");
             //форматирование ссылки на страницу
             String URL = "http://ru.investing.com" + href.split("\\?")[0] + "-historical-data";
             if (href.contains("\\?")) {
@@ -98,6 +101,15 @@ public class WebScrap {
             }
             //загрузка данных
             HtmlPage EquititePage = webClient.getPage(URL);
+            //получение id акции для ajax запросов по определенному периоду времени
+            String idInfo = EquititePage.getFirstByXPath("/html[1]/body[1]/div[5]/section[1]/script[3]").toString();
+            idInfo = idInfo.substring(idInfo.indexOf("{") + 1, idInfo.indexOf("}")).replaceAll("\\s", "");
+            int pairId = Integer.valueOf(idInfo.split(",")[0].split(":")[1]);
+            int smlId = Integer.valueOf(idInfo.split(",")[1].split(":")[1]);
+            Integer[] IdInfo = new Integer[2]; //массив с id
+            IdInfo[0] = pairId;
+            IdInfo[1] = smlId;
+            //получение данных за последний месяц по акции(по умолчанию)
             List<HtmlElement> items = EquititePage.getByXPath("/html[1]/body[1]/div[5]/section[1]/div[9]/table[1]/tbody[1]/tr");
             data = new Object[items.size()][3];
             for (int i = 0; i < items.size(); i++) {
@@ -108,7 +120,8 @@ public class WebScrap {
                 //Цена откр.
                 data[i][2] = ((HtmlElement) items.get(i).getByXPath("td[3]").get(0)).asText();
             }
-            return data;
+
+            return new Pair<>(data, IdInfo);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -131,5 +144,33 @@ public class WebScrap {
             ex.printStackTrace();
         }
         return null;
+    }
+    
+    //получение прошлых данных акции через Ajax скрипт посредством post запроса
+    public static void post() {
+        try {
+            URL url = new URL("https://ru.investing.com/instruments/HistoricalDataAjax");
+            WebRequest requestSettings = new WebRequest(url, HttpMethod.POST);
+
+            requestSettings.setAdditionalHeader("Host", "ru.investing.com");
+            requestSettings.setAdditionalHeader("Connection", "keep-alive");
+            requestSettings.setAdditionalHeader("Accept", "text/plain, */*; q=0.01");
+            requestSettings.setAdditionalHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36");
+            requestSettings.setAdditionalHeader("Content-Type", "application/x-www-form-urlencoded");
+            requestSettings.setAdditionalHeader("Sec-Fetch-Site", "same-origin");
+            requestSettings.setAdditionalHeader("X-Requested-With", "XMLHttpRequest");
+            requestSettings.setAdditionalHeader("Sec-Fetch-Mode", "cors");
+            requestSettings.setAdditionalHeader("Sec-Fetch-Dest", "empty");
+            requestSettings.setAdditionalHeader("Accept-Encoding", "identity");
+            requestSettings.setAdditionalHeader("Accept-Language", "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7");
+            requestSettings.setAdditionalHeader("Origin", "https://ru.investing.com");
+            //  requestSettings.setAdditionalHeader("Referer", "https://ru.investing.com/equities/polymetal-historical-data?cid=44465");
+            requestSettings.setRequestBody("curr_id=44465&smlID=1163587&header=%D0%9F%D1%80%D0%BE%D1%88%D0%BB%D1%8B%D0%B5+%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D0%B5+-+POLY&st_date=22%2F11%2F2020&end_date=22%2F12%2F2020&interval_sec=Daily&sort_col=date&sort_ord=DESC&action=historical_data");
+
+            Page redirectPage = webClient.getPage(requestSettings);
+            System.out.println(((HtmlPage) redirectPage).asText());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 }
