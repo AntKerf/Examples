@@ -12,24 +12,16 @@ SOURCES += \
 
 RESOURCES += qml.qrc
 
-
-DESTDIR = D:\Users\Documents\GitHub\Examples\EDLocal
-
-# Additional import path used to resolve QML modules in Qt Creator's code model
-QML_IMPORT_PATH = D:\Qt\5.15.1\mingw81_32\qml\
-
-# Additional import path used to resolve QML modules just for Qt Quick Designer
-QML_DESIGNER_IMPORT_PATH =
-
-QT_QPA_PLATFORM_PLUGIN_PATH =%QTDIR%\plugins\platform\
-
-# Default rules for deployment.
-qnx: target.path = /tmp/$${TARGET}/bin
-else: unix:!android: target.path = /opt/$${TARGET}/bin
-!isEmpty(target.path): INSTALLS += target
-
-
 HEADERS += \
     DataBaseJob.h \
     edsmapiparse.h \
     listmodel.h
+
+CONFIG(release, debug|release){
+DESTDIR = ./bin
+}
+
+OBJECTS_DIR = $$DESTDIR/.obj
+MOC_DIR = $$DESTDIR/.moc
+RCC_DIR = $$DESTDIR/.qrc
+UI_DIR = $$DESTDIR/.ui

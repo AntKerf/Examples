@@ -12,14 +12,9 @@ DataBaseJob::~DataBaseJob()
 
 bool DataBaseJob::openDataBase()
 {
-//    db = QSqlDatabase::addDatabase("QMYSQL");
-//    db.setHostName("localhost");
-//    db.setDatabaseName("ed");
-//    db.setUserName("root");
-//    db.setPassword("root");
     db = QSqlDatabase::addDatabase("QSQLITE");
     db.setHostName("ed");
-    db.setDatabaseName("database/ed.sqlite3");
+    db.setDatabaseName("../database/ed.sqlite3");
     if(db.open()){
         is_connect=true;
         return true;
