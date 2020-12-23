@@ -1,7 +1,7 @@
 # Examples
 Репозиторий с примерами моих работ.
 
-# [ConvertMe](https://github.com/AntKerf/Examples/tree/master/ConvertMe) ![Lang](https://img.shields.io/badge/Language-C%2B%2B%2FQml-blue) [![Actual](https://img.shields.io/badge/Release-1.0-green)](https://github.com/AntKerf/Examples/releases/tag/v1.0)
+# [ConvertMe](https://github.com/AntKerf/Examples/tree/master/ConvertMe) ![Lang](https://img.shields.io/badge/Language-C%2B%2B%2FQml-blue) [![Actual](https://img.shields.io/badge/Release-1.0-green)](https://github.com/AntKerf/Examples/releases/tag/CM_v1.0)
 Приложение конвертер валют, работает на API центробанка.
 Позволяет переводить все валюты в рубль РФ или любую другую валюту.
 
@@ -29,7 +29,7 @@
 
 Создано в Qt, Qml.
 
-# [MoonVisor](https://github.com/AntKerf/Examples/tree/master/MoonVisor) ![Lang](https://img.shields.io/badge/Language-C%2B%2B%2FQml-blue) ![Stage](https://img.shields.io/badge/Stage-Concept-red)
+# [MoonVisor](https://github.com/AntKerf/Examples/tree/master/MoonVisor) ![Lang](https://img.shields.io/badge/Language-C%2B%2B%2FQml-blue) ![Stage](https://img.shields.io/badge/Stage-Concept-red) [![Actual](https://img.shields.io/badge/Build-0.1-green)](https://github.com/AntKerf/Examples/releases/tag/MV_0.1)
 Приложение-концепт показывает как будет видно луну в телескоп с определенными настройками.
 Создано в Qt на С++ и Qml.
 Можно легко добавлять новые виды телескопов и объектов наблюдения.
