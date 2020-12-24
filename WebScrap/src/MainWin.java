@@ -36,6 +36,10 @@ public class MainWin extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
+        AccesButton = new javax.swing.JButton();
+        end_data = new javax.swing.JFormattedTextField();
+        PeriodComboBox = new javax.swing.JComboBox<>();
+        st_Date = new javax.swing.JFormattedTextField();
         jExitButton = new javax.swing.JButton();
         jCtockComboBox = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -58,11 +62,11 @@ public class MainWin extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 395, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 383, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 272, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Table", jPanel1);
@@ -71,24 +75,50 @@ public class MainWin extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 395, Short.MAX_VALUE)
+            .addGap(0, 383, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 272, Short.MAX_VALUE)
+            .addGap(0, 233, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Graph", jPanel2);
+
+        AccesButton.setText("Применить");
+
+        end_data.setText("22/11/2020");
+
+        PeriodComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        st_Date.setText("22/12/2020");
 
         javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
         jFrame1.getContentPane().setLayout(jFrame1Layout);
         jFrame1Layout.setHorizontalGroup(
             jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jFrame1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(PeriodComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(st_Date, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(end_data, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(AccesButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jFrame1Layout.setVerticalGroup(
             jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jFrame1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(AccesButton)
+                    .addComponent(end_data, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(PeriodComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(st_Date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTabbedPane1))
         );
 
         jTabbedPane1.getAccessibleContext().setAccessibleName("Таблица");
@@ -225,11 +255,15 @@ public class MainWin extends javax.swing.JFrame {
         tmp.setSize(new java.awt.Dimension(400, 400));
         tmp.setLocation(500, 100);
         tmp.setDefaultCloseOperation(javax.swing.JFrame.HIDE_ON_CLOSE);
+        //кнопки и текст. поля - управление
+        var AccesButton = new javax.swing.JButton();
+        var end_data = new javax.swing.JFormattedTextField();
+        var PeriodComboBox = new javax.swing.JComboBox<>();
+        var st_Date = new javax.swing.JFormattedTextField();
         //вкладки
         var jTab = new javax.swing.JTabbedPane();
         var jTablePanel = new javax.swing.JPanel();//вкладка с таблицей
-        var jGraphPanel = new javax.swing.JPanel();//с графиком
-        
+
         javax.swing.JScrollPane jScrPane = new javax.swing.JScrollPane();
         javax.swing.JTable jHistTable = new javax.swing.JTable();//таблица
         jScrPane.setVerticalScrollBarPolicy(javax.swing.JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -253,18 +287,53 @@ public class MainWin extends javax.swing.JFrame {
         );
         jTab.add("Таблица", jTablePanel);//привязка панели с прокруткой и таблиецй к вкладке
         //рисование графика
-        jGraphPanel = ChartBuilder.createPanel(tmp.getTitle(), EquitieData.getFirst());//получение графика
-        jTab.add("График", jGraphPanel);//приязка графика к вкладке
+        jTab.add("График", ChartBuilder.createPanel(tmp.getTitle(), EquitieData.getFirst()));//приязка графика к вкладке
+        //настройка элементо управления
+        AccesButton.setText("Применить");
+        AccesButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Object[][] newData = WebScrap._postReq(EquitieData.getSecond()[0], EquitieData.getSecond()[1]);
+                jHistTable.setModel(new javax.swing.table.DefaultTableModel(
+                        newData,
+                        new String[]{
+                            "Дата", "Цена", "Откр."
+                        }
+                ));
+                jTab.setComponentAt(1, ChartBuilder.createPanel(tmp.getTitle(), newData));
+            }
+        });
+        end_data.setText("22/11/2020");
+        PeriodComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"День", "Неделя", "Месяц"}));
+        st_Date.setText("22/12/2020");
+
         //выравнивание вкладок с окном
         javax.swing.GroupLayout jFrameLayout = new javax.swing.GroupLayout(tmp.getContentPane());
         tmp.getContentPane().setLayout(jFrameLayout);
         jFrameLayout.setHorizontalGroup(
                 jFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jTab, javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jFrameLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(PeriodComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(st_Date, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(end_data, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(AccesButton)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jFrameLayout.setVerticalGroup(
                 jFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jTab)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jFrameLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(jFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(AccesButton)
+                                        .addComponent(end_data, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(PeriodComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(st_Date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTab))
         );
         //показ окна
         tmp.pack();
@@ -273,6 +342,9 @@ public class MainWin extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton AccesButton;
+    private javax.swing.JComboBox<String> PeriodComboBox;
+    private javax.swing.JFormattedTextField end_data;
     private javax.swing.JComboBox<String> jCtockComboBox;
     private javax.swing.JTable jEquitiesTable;
     private javax.swing.JButton jExitButton;
@@ -283,5 +355,6 @@ public class MainWin extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JFormattedTextField st_Date;
     // End of variables declaration//GEN-END:variables
 }

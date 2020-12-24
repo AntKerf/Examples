@@ -145,9 +145,9 @@ public class WebScrap {
         }
         return null;
     }
-    
+
     //получение прошлых данных акции через Ajax скрипт посредством post запроса
-    public static void post() {
+    public static Object[][] _postReq(int pairId, int smlId) {
         try {
             URL url = new URL("https://ru.investing.com/instruments/HistoricalDataAjax");
             WebRequest requestSettings = new WebRequest(url, HttpMethod.POST);
@@ -165,12 +165,24 @@ public class WebScrap {
             requestSettings.setAdditionalHeader("Accept-Language", "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7");
             requestSettings.setAdditionalHeader("Origin", "https://ru.investing.com");
             //  requestSettings.setAdditionalHeader("Referer", "https://ru.investing.com/equities/polymetal-historical-data?cid=44465");
-            requestSettings.setRequestBody("curr_id=44465&smlID=1163587&header=%D0%9F%D1%80%D0%BE%D1%88%D0%BB%D1%8B%D0%B5+%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D0%B5+-+POLY&st_date=22%2F11%2F2020&end_date=22%2F12%2F2020&interval_sec=Daily&sort_col=date&sort_ord=DESC&action=historical_data");
-
-            Page redirectPage = webClient.getPage(requestSettings);
-            System.out.println(((HtmlPage) redirectPage).asText());
+            requestSettings.setRequestBody("curr_id=" + pairId + "&smlID=" + smlId + "&header=%D0%9F%D1%80%D0%BE%D1%88%D0%BB%D1%8B%D0%B5+%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D0%B5+-+POLY&st_date=22%2F11%2F2020&end_date=22%2F12%2F2020&interval_sec=Daily&sort_col=date&sort_ord=DESC&action=historical_data");
+            HtmlPage redirectPage = webClient.getPage(requestSettings);
+            //парсинг полученной страницы
+            Object[][] data;
+            List<HtmlElement> items = redirectPage.getByXPath("/html[1]/body[1]/div[1]/table[1]/tbody[1]/tr");
+            data = new Object[items.size()][3];
+            for (int i = 0; i < items.size(); i++) {
+                //Дата
+                data[i][0] = ((HtmlElement) items.get(i).getByXPath("td[1]").get(0)).asText();
+                //Цена
+                data[i][1] = ((HtmlElement) items.get(i).getByXPath("td[2]").get(0)).asText();
+                //Цена откр.
+                data[i][2] = ((HtmlElement) items.get(i).getByXPath("td[3]").get(0)).asText();
+            }
+            return data;
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+        return null;
     }
 }

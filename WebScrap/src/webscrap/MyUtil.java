@@ -9,8 +9,8 @@ public class MyUtil {
     // контейнер пара
     public static class Pair<U, V> {
 
-        private final U first;
-        private final V second;
+        private U first;
+        private V second;
 
         //Конструктор с параметрами 
         public Pair(U one, V two) {
