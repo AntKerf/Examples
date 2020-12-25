@@ -147,7 +147,7 @@ public class WebScrap {
     }
 
     //получение прошлых данных акции через Ajax скрипт посредством post запроса
-    public static Object[][] _postReq(int pairId, int smlId) {
+    public static Object[][] _postReq(int pairId, int smlId, String st_date, String end_date, String interval) {
         try {
             URL url = new URL("https://ru.investing.com/instruments/HistoricalDataAjax");
             WebRequest requestSettings = new WebRequest(url, HttpMethod.POST);
@@ -165,7 +165,7 @@ public class WebScrap {
             requestSettings.setAdditionalHeader("Accept-Language", "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7");
             requestSettings.setAdditionalHeader("Origin", "https://ru.investing.com");
             //  requestSettings.setAdditionalHeader("Referer", "https://ru.investing.com/equities/polymetal-historical-data?cid=44465");
-            requestSettings.setRequestBody("curr_id=" + pairId + "&smlID=" + smlId + "&header=%D0%9F%D1%80%D0%BE%D1%88%D0%BB%D1%8B%D0%B5+%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D0%B5+-+POLY&st_date=22%2F11%2F2020&end_date=22%2F12%2F2020&interval_sec=Daily&sort_col=date&sort_ord=DESC&action=historical_data");
+            requestSettings.setRequestBody("curr_id=" + pairId + "&smlID=" + smlId + "&header=%D0%9F%D1%80%D0%BE%D1%88%D0%BB%D1%8B%D0%B5+%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D0%B5+-+POLY&st_date="+st_date+"&end_date="+end_date+"&interval_sec="+interval+"&sort_col=date&sort_ord=DESC&action=historical_data");
             HtmlPage redirectPage = webClient.getPage(requestSettings);
             //парсинг полученной страницы
             Object[][] data;

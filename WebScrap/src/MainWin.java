@@ -11,6 +11,11 @@
 import webscrap.WebScrap;
 import webscrap.MyUtil.Pair;
 import Charts.ChartBuilder;
+import com.github.lgooddatepicker.components.DatePicker;
+import com.github.lgooddatepicker.components.DatePickerSettings;
+import com.github.lgooddatepicker.components.DateTimePicker;
+import java.time.DayOfWeek;
+import java.time.LocalTime;
 
 public class MainWin extends javax.swing.JFrame {
 
@@ -257,9 +262,10 @@ public class MainWin extends javax.swing.JFrame {
         tmp.setDefaultCloseOperation(javax.swing.JFrame.HIDE_ON_CLOSE);
         //кнопки и текст. поля - управление
         var AccesButton = new javax.swing.JButton();
-        var end_data = new javax.swing.JFormattedTextField();
+
         var PeriodComboBox = new javax.swing.JComboBox<>();
-        var st_Date = new javax.swing.JFormattedTextField();
+//        var end_data = new javax.swing.JFormattedTextField();
+//        var st_Date = new javax.swing.JFormattedTextField();
         //вкладки
         var jTab = new javax.swing.JTabbedPane();
         var jTablePanel = new javax.swing.JPanel();//вкладка с таблицей
@@ -288,11 +294,24 @@ public class MainWin extends javax.swing.JFrame {
         jTab.add("Таблица", jTablePanel);//привязка панели с прокруткой и таблиецй к вкладке
         //рисование графика
         jTab.add("График", ChartBuilder.createPanel(tmp.getTitle(), EquitieData.getFirst()));//приязка графика к вкладке
-        //настройка элементо управления
+        //настройка элементов управления
+        DatePickerSettings dateSettings = new DatePickerSettings();
+        dateSettings.setFormatForDatesCommonEra("dd/MM/yyyy");
+        dateSettings.setFormatForDatesBeforeCommonEra("dd/MM/uuuu");
+
+        DatePickerSettings dateSettings1 = new DatePickerSettings();
+        dateSettings1.setFormatForDatesCommonEra("dd/MM/yyyy");
+        dateSettings1.setFormatForDatesBeforeCommonEra("dd/MM/uuuu");
+
+        DatePicker st_date = new DatePicker(dateSettings);
+        DatePicker end_date = new DatePicker(dateSettings1);
+        end_date.setDateToToday();
+        PeriodComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Daily", "Weekly", "Monthly"}));
+        
         AccesButton.setText("Применить");
         AccesButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Object[][] newData = WebScrap._postReq(EquitieData.getSecond()[0], EquitieData.getSecond()[1]);
+                Object[][] newData = WebScrap._postReq(EquitieData.getSecond()[0], EquitieData.getSecond()[1],st_date.getText(),end_date.getText(),PeriodComboBox.getModel().getSelectedItem().toString());
                 jHistTable.setModel(new javax.swing.table.DefaultTableModel(
                         newData,
                         new String[]{
@@ -302,10 +321,6 @@ public class MainWin extends javax.swing.JFrame {
                 jTab.setComponentAt(1, ChartBuilder.createPanel(tmp.getTitle(), newData));
             }
         });
-        end_data.setText("22/11/2020");
-        PeriodComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"День", "Неделя", "Месяц"}));
-        st_Date.setText("22/12/2020");
-
         //выравнивание вкладок с окном
         javax.swing.GroupLayout jFrameLayout = new javax.swing.GroupLayout(tmp.getContentPane());
         tmp.getContentPane().setLayout(jFrameLayout);
@@ -316,9 +331,9 @@ public class MainWin extends javax.swing.JFrame {
                                 .addContainerGap()
                                 .addComponent(PeriodComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(st_Date, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(st_date, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(end_data, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(end_date, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(AccesButton)
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -329,9 +344,9 @@ public class MainWin extends javax.swing.JFrame {
                                 .addContainerGap()
                                 .addGroup(jFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(AccesButton)
-                                        .addComponent(end_data, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(end_date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(PeriodComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(st_Date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(st_date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jTab))
         );
