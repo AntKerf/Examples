@@ -13,9 +13,7 @@ import webscrap.MyUtil.Pair;
 import Charts.ChartBuilder;
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
-import com.github.lgooddatepicker.components.DateTimePicker;
-import java.time.DayOfWeek;
-import java.time.LocalTime;
+import java.time.LocalDate;
 
 public class MainWin extends javax.swing.JFrame {
 
@@ -306,6 +304,7 @@ public class MainWin extends javax.swing.JFrame {
         DatePicker st_date = new DatePicker(dateSettings);
         DatePicker end_date = new DatePicker(dateSettings1);
         end_date.setDateToToday();
+        st_date.setDate(LocalDate.now().minusMonths(1));
         PeriodComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Daily", "Weekly", "Monthly"}));
         
         AccesButton.setText("Применить");
@@ -331,9 +330,9 @@ public class MainWin extends javax.swing.JFrame {
                                 .addContainerGap()
                                 .addComponent(PeriodComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(st_date, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(st_date, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(end_date, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(end_date, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(AccesButton)
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
