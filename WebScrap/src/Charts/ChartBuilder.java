@@ -16,6 +16,8 @@ import java.awt.Color;
 import java.text.SimpleDateFormat;
 import java.text.DecimalFormat;
 import java.util.Locale;
+import java.util.Date;
+import java.text.DateFormatSymbols;
 
 /**
  *
@@ -28,7 +30,7 @@ public class ChartBuilder {
         JFreeChart chart = ChartFactory.createTimeSeriesChart(
                 "График акций " + Name, // title
                 "", // x-axis label
-                "Рубль РФ", // y-axis label
+                "Стоимость", // y-axis label
                 dataset, // data
                 true, // create legend
                 true, // generate tooltips
@@ -60,12 +62,33 @@ public class ChartBuilder {
     private static XYDataset _datasetBuilder(String Name, Object[][] data) {
         try {
             TimeSeries s1 = new TimeSeries(Name);
-            for (var el : data) {
-                int day = Integer.parseInt(el[0].toString().split("\\.")[0]);
-                int month = Integer.parseInt(el[0].toString().split("\\.")[1]);
-                int year = Integer.parseInt(el[0].toString().split("\\.")[2]);
-                Double value = DecimalFormat.getNumberInstance(Locale.GERMAN).parse(el[1].toString()).doubleValue();
-                s1.add(new Day(day, month, year), value);
+            SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+            format.setLenient(false);
+            Date parsedDate = null;
+            try {
+                parsedDate = format.parse(data[0][0].toString());
+            } catch (Exception e) {
+            }
+            if (parsedDate != null) {
+                for (var el : data) {
+                    int day = Integer.parseInt(el[0].toString().split("\\.")[0]);
+                    int month = Integer.parseInt(el[0].toString().split("\\.")[1]);
+                    int year = Integer.parseInt(el[0].toString().split("\\.")[2]);
+                    Double value = DecimalFormat.getNumberInstance(Locale.GERMAN).parse(el[1].toString()).doubleValue();
+                    s1.add(new Day(day, month, year), value);
+                }
+            } else {
+                for (var el : data) {
+                    String[] RuShortMonths = {"Янв. ", "Февр. ", "Март ", "Апр. ", "Май ", "Июнь ", "Июль ", "Авг. ", "Сент. ", "Окт. ", "Нояб. ", "Дек. "};
+                    String Month = el[0].toString().split("\\'")[0];
+                    String year = el[0].toString().split("\\'")[1];
+                    Double value = DecimalFormat.getNumberInstance(Locale.GERMAN).parse(el[1].toString()).doubleValue();
+                    for (int i = 0; i < RuShortMonths.length; i++) {
+                        if (RuShortMonths[i].equals(Month)) {
+                            s1.add(new Month(i + 1, Integer.parseInt(year)), value);
+                        }
+                    }
+                }
             }
             TimeSeriesCollection dataset = new TimeSeriesCollection();
             dataset.addSeries(s1);
@@ -73,6 +96,7 @@ public class ChartBuilder {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+
         return null;
     }
 
