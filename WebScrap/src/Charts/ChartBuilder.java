@@ -55,7 +55,7 @@ public class ChartBuilder {
         }
 
         DateAxis axis = (DateAxis) plot.getDomainAxis();
-        axis.setDateFormatOverride(new SimpleDateFormat("dd.MM.YYYY"));
+        axis.setDateFormatOverride(new SimpleDateFormat("dd.MM.YY"));
         return chart;
     }
 
@@ -71,17 +71,19 @@ public class ChartBuilder {
             }
             if (parsedDate != null) {
                 for (var el : data) {
-                    int day = Integer.parseInt(el[0].toString().split("\\.")[0]);
-                    int month = Integer.parseInt(el[0].toString().split("\\.")[1]);
-                    int year = Integer.parseInt(el[0].toString().split("\\.")[2]);
+                    String[] date = el[0].toString().split("\\.");
+                    int day = Integer.parseInt(date[0]);
+                    int month = Integer.parseInt(date[1]);
+                    int year = Integer.parseInt(date[2]);
                     Double value = DecimalFormat.getNumberInstance(Locale.GERMAN).parse(el[1].toString()).doubleValue();
                     s1.add(new Day(day, month, year), value);
                 }
-            } else {
+            } else { // если формат даты == "Дек. '20"
                 for (var el : data) {
+                    String[] date = el[0].toString().split("\\'");
                     String[] RuShortMonths = {"Янв. ", "Февр. ", "Март ", "Апр. ", "Май ", "Июнь ", "Июль ", "Авг. ", "Сент. ", "Окт. ", "Нояб. ", "Дек. "};
-                    String Month = el[0].toString().split("\\'")[0];
-                    String year = el[0].toString().split("\\'")[1];
+                    String Month = date[0];
+                    String year = date[1];
                     Double value = DecimalFormat.getNumberInstance(Locale.GERMAN).parse(el[1].toString()).doubleValue();
                     for (int i = 0; i < RuShortMonths.length; i++) {
                         if (RuShortMonths[i].equals(Month)) {
