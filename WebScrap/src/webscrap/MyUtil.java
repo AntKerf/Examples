@@ -72,6 +72,8 @@ public class MyUtil {
             this.setTitle("Ошибка! Попробуйте снова.");
             label.setText(ex.getMessage());
             add(label);
+            setType(Type.POPUP);
+            setModal(true);
             // Get current screen size
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
             // Get x coordinate on screen for make JWindow locate at center

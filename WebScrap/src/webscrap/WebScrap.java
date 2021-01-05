@@ -39,8 +39,7 @@ public class WebScrap {
             mainPage = webClient.getPage("http://ru.investing.com/equities/");
             stockPage = webClient.getPage("http://ru.investing.com/equities/StocksFilter?noconstruct=1&smlID=0&sid=&tabletype=price&index_id=13666");
         } catch (Exception ex) {
-            ex.printStackTrace();
-            _init();
+           MyUtil.ErrorFrame errorFrame = new MyUtil.ErrorFrame(ex);
         }
     }
 

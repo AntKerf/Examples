@@ -16,6 +16,7 @@ import com.github.lgooddatepicker.components.DatePickerSettings;
 import java.time.LocalDate;
 
 public class MainWin extends javax.swing.JFrame {
+
     //Create & visible Splash Screen
     private static final SplashScreen Splash = new SplashScreen();
 
@@ -221,52 +222,27 @@ public class MainWin extends javax.swing.JFrame {
         _FormEquitie(row);
     }//GEN-LAST:event_jEquitiesTableMouseClicked
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                System.out.println(info.getName());
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainWin.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> {
-            new MainWin().setVisible(true);
-        });
-
-    }
-
     //создание окна с подробной информацией по выбранной акции
     private void _FormEquitie(int row) {
+        //окно
+        javax.swing.JFrame tmp = new javax.swing.JFrame();
+        tmp.setTitle("Установка соединения...");
+        tmp.setSize(new java.awt.Dimension(400, 400));
+        tmp.setLocation(500, 100);
+        tmp.setDefaultCloseOperation(javax.swing.JFrame.HIDE_ON_CLOSE);
+        //показ окна
+        tmp.setLocationRelativeTo(null);
+        tmp.setVisible(true);
+
         try {
-            //получение данных по акции
-            Pair<Object[][], Integer[]> EquitieData = new Pair<>(WebScrap._GetHistoryEquitie(row));
 
             /*      Object [][] HistData= EquitieData.getFirst(); //таблица с данными
         int pairId = EquitieData.getSecond()[0];    
         int smlId = EquitieData.getSecond()[1];*/
-            //окно
-            javax.swing.JFrame tmp = new javax.swing.JFrame();
+            
+            //получение данных по акции
+            Pair<Object[][], Integer[]> EquitieData = new Pair<>(WebScrap._GetHistoryEquitie(row));
             tmp.setTitle(jEquitiesTable.getValueAt(row, 0).toString());
-            tmp.setSize(new java.awt.Dimension(400, 400));
-            tmp.setLocation(500, 100);
-            tmp.setDefaultCloseOperation(javax.swing.JFrame.HIDE_ON_CLOSE);
-
             //кнопки и текст. поля - управление
             var AccesButton = new javax.swing.JButton();
             var PeriodComboBox = new javax.swing.JComboBox<>();
@@ -357,15 +333,43 @@ public class MainWin extends javax.swing.JFrame {
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(jTab))
             );
-            //показ окна
+
             tmp.pack();
-            tmp.setLocationRelativeTo(null);
-            tmp.setVisible(true);
         } catch (Exception ex) {
             ErrorFrame errorFrame = new ErrorFrame(ex);
+            tmp.dispose();
         }
     }
 
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                System.out.println(info.getName());
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(MainWin.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(() -> {
+            new MainWin().setVisible(true);
+        });
+
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AccesButton;
