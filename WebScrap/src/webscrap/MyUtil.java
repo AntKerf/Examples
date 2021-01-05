@@ -7,29 +7,37 @@ package webscrap;
 public class MyUtil {
 
     // контейнер пара
-    public static class Pair<U, V> {
+    public static class Pair<F, S> {
 
-        private U first;
-        private V second;
+        private F first;
+        private S second;
 
         //Конструктор с параметрами 
-        public Pair(U one, V two) {
-            this.first = one;
-            this.second = two;
+        public Pair(F _first, S _second) {
+            this.first = _first;
+            this.second = _second;
         }
 
         //Конструктор копирования
-        public Pair(Pair<U, V> toCopy) {
+        public Pair(Pair<F, S> toCopy) {
             this.first = toCopy.first;
             this.second = toCopy.second;
         }
 
-        public U getFirst() {
+        public F getFirst() {
             return this.first;
         }
 
-        public V getSecond() {
+        public S getSecond() {
             return this.second;
+        }
+
+        public void setFirst(F newFirst) {
+            this.first = newFirst;
+        }
+
+        public void setSecond(S newSecond) {
+            this.second= newSecond;
         }
 
     }

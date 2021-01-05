@@ -15,13 +15,49 @@ import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import java.time.LocalDate;
 
+class WaitMsgWin extends javax.swing.JWindow {
+
+    public WaitMsgWin() {
+        javax.swing.JLabel label1;
+        label1 = new javax.swing.JLabel();
+        this.setForeground(java.awt.Color.gray);
+        this.setType(java.awt.Window.Type.UTILITY);
+       // this.setTitle("Иницилизация");
+       // this.setDefaultCloseOperation(javax.swing.JFrame.HIDE_ON_CLOSE);
+        label1.setText("Идет попытка подключения к серверу...");
+        javax.swing.GroupLayout WaitFrameLayout = new javax.swing.GroupLayout(this.getContentPane());
+        this.getContentPane()
+                .setLayout(WaitFrameLayout);
+        WaitFrameLayout.setHorizontalGroup(
+                WaitFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(label1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+        );
+        WaitFrameLayout.setVerticalGroup(
+                WaitFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        this.pack();
+        setLocationRelativeTo(null);
+        this.setVisible(true);
+    }
+}
+
 public class MainWin extends javax.swing.JFrame {
+
+    static private WaitMsgWin MsgWin = new WaitMsgWin();
+
+    public void ShowMsg(boolean b) {
+        MsgWin.setVisible(b);
+    }
 
     /**
      * Creates new form MainWin
      */
     public MainWin() {
+        WebScrap._init();
         initComponents();
+        setLocationRelativeTo(null);
+        ShowMsg(false);
     }
 
     /**
@@ -230,40 +266,42 @@ public class MainWin extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainWin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainWin.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        WebScrap._init();
+
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
             new MainWin().setVisible(true);
         });
+
     }
 
     //создание окна с подробной информацией по выбранной акции
     private void _FormEquitie(int row) {
         //получение данных по акции
         Pair<Object[][], Integer[]> EquitieData = new Pair<>(WebScrap._GetHistoryEquitie(row));
-
-//        Object [][] HistData= EquitieData.getFirst(); //таблица с данными
-//        int pairId = EquitieData.getSecond()[0];    
-//        int smlId = EquitieData.getSecond()[1];
-        //System.out.format("pairID: %d\n smlID: %d\n",pairId,smlId);
+        
+        /*      Object [][] HistData= EquitieData.getFirst(); //таблица с данными
+        int pairId = EquitieData.getSecond()[0];    
+        int smlId = EquitieData.getSecond()[1];*/
+        
         //окно
         javax.swing.JFrame tmp = new javax.swing.JFrame();
         tmp.setTitle(jEquitiesTable.getValueAt(row, 0).toString());
         tmp.setSize(new java.awt.Dimension(400, 400));
         tmp.setLocation(500, 100);
         tmp.setDefaultCloseOperation(javax.swing.JFrame.HIDE_ON_CLOSE);
+
         //кнопки и текст. поля - управление
         var AccesButton = new javax.swing.JButton();
-
         var PeriodComboBox = new javax.swing.JComboBox<>();
-//        var end_data = new javax.swing.JFormattedTextField();
-//        var st_Date = new javax.swing.JFormattedTextField();
+
         //вкладки
         var jTab = new javax.swing.JTabbedPane();
         var jTablePanel = new javax.swing.JPanel();//вкладка с таблицей
@@ -271,6 +309,7 @@ public class MainWin extends javax.swing.JFrame {
         javax.swing.JScrollPane jScrPane = new javax.swing.JScrollPane();
         javax.swing.JTable jHistTable = new javax.swing.JTable();//таблица
         jScrPane.setVerticalScrollBarPolicy(javax.swing.JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
         //заполнение таблицы
         jHistTable.setModel(new javax.swing.table.DefaultTableModel(
                 EquitieData.getFirst(), //получение данных
@@ -306,11 +345,11 @@ public class MainWin extends javax.swing.JFrame {
         end_date.setDateToToday();
         st_date.setDate(LocalDate.now().minusMonths(1));
         PeriodComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Daily", "Weekly", "Monthly"}));
-        
+
         AccesButton.setText("Применить");
         AccesButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Object[][] newData = WebScrap._postReq(EquitieData.getSecond()[0], EquitieData.getSecond()[1],st_date.getText(),end_date.getText(),PeriodComboBox.getModel().getSelectedItem().toString());
+                Object[][] newData = WebScrap._postReq(EquitieData.getSecond()[0], EquitieData.getSecond()[1], st_date.getText(), end_date.getText(), PeriodComboBox.getModel().getSelectedItem().toString());
                 jHistTable.setModel(new javax.swing.table.DefaultTableModel(
                         newData,
                         new String[]{
@@ -351,6 +390,7 @@ public class MainWin extends javax.swing.JFrame {
         );
         //показ окна
         tmp.pack();
+        tmp.setLocationRelativeTo(null);
         tmp.setVisible(true);
     }
 
@@ -371,4 +411,5 @@ public class MainWin extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
     private javax.swing.JFormattedTextField st_Date;
     // End of variables declaration//GEN-END:variables
+
 }

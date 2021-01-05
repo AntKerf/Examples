@@ -78,7 +78,7 @@ public class ChartBuilder {
                     Double value = DecimalFormat.getNumberInstance(Locale.GERMAN).parse(el[1].toString()).doubleValue();
                     s1.add(new Day(day, month, year), value);
                 }
-            } else { // если формат даты == "Дек. '20"
+            } else if(data[0][0] != null){ // если формат даты == "Дек. '20"
                 for (var el : data) {
                     String[] date = el[0].toString().split("\\'");
                     String[] RuShortMonths = {"Янв. ", "Февр. ", "Март ", "Апр. ", "Май ", "Июнь ", "Июль ", "Авг. ", "Сент. ", "Окт. ", "Нояб. ", "Дек. "};
