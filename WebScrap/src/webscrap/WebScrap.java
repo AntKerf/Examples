@@ -87,9 +87,9 @@ public class WebScrap {
     }
 
     //загрузка дополнительной информации по акции
-    public static Pair<Object[][], Integer[]> _GetHistoryEquitie(int row) {
+    public static Pair<Object[][], Integer[]> _GetHistoryEquitie(int row) throws Exception {
+
         System.out.println(row);
-        HtmlPage EquititePage;
         Object[][] data;//таблица с историей
 
         //получение ссылки на страницу с допинформацией
@@ -101,12 +101,9 @@ public class WebScrap {
             URL = URL + "?" + href.split("\\?")[1];
         }
         //загрузка данных
-        try {
-            EquititePage = webClient.getPage(URL);
-        } catch (Exception ex) {
-            EquititePage = null;
-            ex.printStackTrace();
-        }
+
+        HtmlPage EquititePage = webClient.getPage(URL);
+
         //получение id акции для ajax запросов по определенному периоду времени
         String idInfo = EquititePage.getFirstByXPath("/html[1]/body[1]/div[5]/section[1]/script[3]").toString();
         idInfo = idInfo.substring(idInfo.indexOf("{") + 1, idInfo.indexOf("}")).replaceAll("\\s", "");
@@ -128,6 +125,7 @@ public class WebScrap {
         }
 
         return new Pair<>(data, IdInfo);
+
     }
 
     //загрузка названий бирж

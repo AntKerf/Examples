@@ -9,46 +9,15 @@
  * @author AntKerf
  */
 import webscrap.WebScrap;
-import webscrap.MyUtil.Pair;
+import webscrap.MyUtil.*;
 import Charts.ChartBuilder;
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import java.time.LocalDate;
 
-class WaitMsgWin extends javax.swing.JWindow {
-
-    public WaitMsgWin() {
-        javax.swing.JLabel label1;
-        label1 = new javax.swing.JLabel();
-        this.setForeground(java.awt.Color.gray);
-        this.setType(java.awt.Window.Type.UTILITY);
-       // this.setTitle("Иницилизация");
-       // this.setDefaultCloseOperation(javax.swing.JFrame.HIDE_ON_CLOSE);
-        label1.setText("Идет попытка подключения к серверу...");
-        javax.swing.GroupLayout WaitFrameLayout = new javax.swing.GroupLayout(this.getContentPane());
-        this.getContentPane()
-                .setLayout(WaitFrameLayout);
-        WaitFrameLayout.setHorizontalGroup(
-                WaitFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(label1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
-        );
-        WaitFrameLayout.setVerticalGroup(
-                WaitFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-        );
-        this.pack();
-        setLocationRelativeTo(null);
-        this.setVisible(true);
-    }
-}
-
 public class MainWin extends javax.swing.JFrame {
-
-    static private WaitMsgWin MsgWin = new WaitMsgWin();
-
-    public void ShowMsg(boolean b) {
-        MsgWin.setVisible(b);
-    }
+    //Create & visible Splash Screen
+    private static final SplashScreen Splash = new SplashScreen();
 
     /**
      * Creates new form MainWin
@@ -56,8 +25,7 @@ public class MainWin extends javax.swing.JFrame {
     public MainWin() {
         WebScrap._init();
         initComponents();
-        setLocationRelativeTo(null);
-        ShowMsg(false);
+        Splash.setVisible(false);
     }
 
     /**
@@ -164,6 +132,7 @@ public class MainWin extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("WebScrap");
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         jExitButton.setText("Exit");
         jExitButton.addActionListener(new java.awt.event.ActionListener() {
@@ -263,10 +232,10 @@ public class MainWin extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                System.out.println(info.getName());
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
-
                 }
             }
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
@@ -284,114 +253,117 @@ public class MainWin extends javax.swing.JFrame {
 
     //создание окна с подробной информацией по выбранной акции
     private void _FormEquitie(int row) {
-        //получение данных по акции
-        Pair<Object[][], Integer[]> EquitieData = new Pair<>(WebScrap._GetHistoryEquitie(row));
-        
-        /*      Object [][] HistData= EquitieData.getFirst(); //таблица с данными
+        try {
+            //получение данных по акции
+            Pair<Object[][], Integer[]> EquitieData = new Pair<>(WebScrap._GetHistoryEquitie(row));
+
+            /*      Object [][] HistData= EquitieData.getFirst(); //таблица с данными
         int pairId = EquitieData.getSecond()[0];    
         int smlId = EquitieData.getSecond()[1];*/
-        
-        //окно
-        javax.swing.JFrame tmp = new javax.swing.JFrame();
-        tmp.setTitle(jEquitiesTable.getValueAt(row, 0).toString());
-        tmp.setSize(new java.awt.Dimension(400, 400));
-        tmp.setLocation(500, 100);
-        tmp.setDefaultCloseOperation(javax.swing.JFrame.HIDE_ON_CLOSE);
+            //окно
+            javax.swing.JFrame tmp = new javax.swing.JFrame();
+            tmp.setTitle(jEquitiesTable.getValueAt(row, 0).toString());
+            tmp.setSize(new java.awt.Dimension(400, 400));
+            tmp.setLocation(500, 100);
+            tmp.setDefaultCloseOperation(javax.swing.JFrame.HIDE_ON_CLOSE);
 
-        //кнопки и текст. поля - управление
-        var AccesButton = new javax.swing.JButton();
-        var PeriodComboBox = new javax.swing.JComboBox<>();
+            //кнопки и текст. поля - управление
+            var AccesButton = new javax.swing.JButton();
+            var PeriodComboBox = new javax.swing.JComboBox<>();
 
-        //вкладки
-        var jTab = new javax.swing.JTabbedPane();
-        var jTablePanel = new javax.swing.JPanel();//вкладка с таблицей
+            //вкладки
+            var jTab = new javax.swing.JTabbedPane();
+            var jTablePanel = new javax.swing.JPanel();//вкладка с таблицей
 
-        javax.swing.JScrollPane jScrPane = new javax.swing.JScrollPane();
-        javax.swing.JTable jHistTable = new javax.swing.JTable();//таблица
-        jScrPane.setVerticalScrollBarPolicy(javax.swing.JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+            javax.swing.JScrollPane jScrPane = new javax.swing.JScrollPane();
+            javax.swing.JTable jHistTable = new javax.swing.JTable();//таблица
+            jScrPane.setVerticalScrollBarPolicy(javax.swing.JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
-        //заполнение таблицы
-        jHistTable.setModel(new javax.swing.table.DefaultTableModel(
-                EquitieData.getFirst(), //получение данных
-                new String[]{
-                    "Дата", "Цена", "Откр."
+            //заполнение таблицы
+            jHistTable.setModel(new javax.swing.table.DefaultTableModel(
+                    EquitieData.getFirst(), //получение данных
+                    new String[]{
+                        "Дата", "Цена", "Откр."
+                    }
+            ));
+            jScrPane.setViewportView(jHistTable);//привязка таблицы к прокрутке
+            javax.swing.GroupLayout jTableLayout = new javax.swing.GroupLayout(jTablePanel);//выравнивание по вкладке
+            jTablePanel.setLayout(jTableLayout);
+            jTableLayout.setHorizontalGroup(
+                    jTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 395, Short.MAX_VALUE)
+            );
+            jTableLayout.setVerticalGroup(
+                    jTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrPane, javax.swing.GroupLayout.DEFAULT_SIZE, 272, Short.MAX_VALUE)
+            );
+            jTab.add("Таблица", jTablePanel);//привязка панели с прокруткой и таблиецй к вкладке
+            //рисование графика
+            jTab.add("График", ChartBuilder.createPanel(tmp.getTitle(), EquitieData.getFirst()));//приязка графика к вкладке
+            //настройка элементов управления
+            DatePickerSettings dateSettings = new DatePickerSettings();
+            dateSettings.setFormatForDatesCommonEra("dd/MM/yyyy");
+            dateSettings.setFormatForDatesBeforeCommonEra("dd/MM/uuuu");
+
+            DatePickerSettings dateSettings1 = new DatePickerSettings();
+            dateSettings1.setFormatForDatesCommonEra("dd/MM/yyyy");
+            dateSettings1.setFormatForDatesBeforeCommonEra("dd/MM/uuuu");
+
+            DatePicker st_date = new DatePicker(dateSettings);
+            DatePicker end_date = new DatePicker(dateSettings1);
+            end_date.setDateToToday();
+            st_date.setDate(LocalDate.now().minusMonths(1));
+            PeriodComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Daily", "Weekly", "Monthly"}));
+
+            AccesButton.setText("Применить");
+            AccesButton.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    Object[][] newData = WebScrap._postReq(EquitieData.getSecond()[0], EquitieData.getSecond()[1], st_date.getText(), end_date.getText(), PeriodComboBox.getModel().getSelectedItem().toString());
+                    jHistTable.setModel(new javax.swing.table.DefaultTableModel(
+                            newData,
+                            new String[]{
+                                "Дата", "Цена", "Откр."
+                            }
+                    ));
+                    jTab.setComponentAt(1, ChartBuilder.createPanel(tmp.getTitle(), newData));
                 }
-        ));
-        jScrPane.setViewportView(jHistTable);//привязка таблицы к прокрутке
-        javax.swing.GroupLayout jTableLayout = new javax.swing.GroupLayout(jTablePanel);//выравнивание по вкладке
-        jTablePanel.setLayout(jTableLayout);
-        jTableLayout.setHorizontalGroup(
-                jTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jScrPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 395, Short.MAX_VALUE)
-        );
-        jTableLayout.setVerticalGroup(
-                jTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jScrPane, javax.swing.GroupLayout.DEFAULT_SIZE, 272, Short.MAX_VALUE)
-        );
-        jTab.add("Таблица", jTablePanel);//привязка панели с прокруткой и таблиецй к вкладке
-        //рисование графика
-        jTab.add("График", ChartBuilder.createPanel(tmp.getTitle(), EquitieData.getFirst()));//приязка графика к вкладке
-        //настройка элементов управления
-        DatePickerSettings dateSettings = new DatePickerSettings();
-        dateSettings.setFormatForDatesCommonEra("dd/MM/yyyy");
-        dateSettings.setFormatForDatesBeforeCommonEra("dd/MM/uuuu");
-
-        DatePickerSettings dateSettings1 = new DatePickerSettings();
-        dateSettings1.setFormatForDatesCommonEra("dd/MM/yyyy");
-        dateSettings1.setFormatForDatesBeforeCommonEra("dd/MM/uuuu");
-
-        DatePicker st_date = new DatePicker(dateSettings);
-        DatePicker end_date = new DatePicker(dateSettings1);
-        end_date.setDateToToday();
-        st_date.setDate(LocalDate.now().minusMonths(1));
-        PeriodComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Daily", "Weekly", "Monthly"}));
-
-        AccesButton.setText("Применить");
-        AccesButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Object[][] newData = WebScrap._postReq(EquitieData.getSecond()[0], EquitieData.getSecond()[1], st_date.getText(), end_date.getText(), PeriodComboBox.getModel().getSelectedItem().toString());
-                jHistTable.setModel(new javax.swing.table.DefaultTableModel(
-                        newData,
-                        new String[]{
-                            "Дата", "Цена", "Откр."
-                        }
-                ));
-                jTab.setComponentAt(1, ChartBuilder.createPanel(tmp.getTitle(), newData));
-            }
-        });
-        //выравнивание вкладок с окном
-        javax.swing.GroupLayout jFrameLayout = new javax.swing.GroupLayout(tmp.getContentPane());
-        tmp.getContentPane().setLayout(jFrameLayout);
-        jFrameLayout.setHorizontalGroup(
-                jFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jTab, javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jFrameLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(PeriodComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(st_date, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(end_date, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(AccesButton)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jFrameLayout.setVerticalGroup(
-                jFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jFrameLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(jFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(AccesButton)
-                                        .addComponent(end_date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(PeriodComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(st_date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTab))
-        );
-        //показ окна
-        tmp.pack();
-        tmp.setLocationRelativeTo(null);
-        tmp.setVisible(true);
+            });
+            //выравнивание вкладок с окном
+            javax.swing.GroupLayout jFrameLayout = new javax.swing.GroupLayout(tmp.getContentPane());
+            tmp.getContentPane().setLayout(jFrameLayout);
+            jFrameLayout.setHorizontalGroup(
+                    jFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTab, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jFrameLayout.createSequentialGroup()
+                                    .addContainerGap()
+                                    .addComponent(PeriodComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(st_date, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(end_date, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(AccesButton)
+                                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            );
+            jFrameLayout.setVerticalGroup(
+                    jFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jFrameLayout.createSequentialGroup()
+                                    .addContainerGap()
+                                    .addGroup(jFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(AccesButton)
+                                            .addComponent(end_date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(PeriodComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(st_date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jTab))
+            );
+            //показ окна
+            tmp.pack();
+            tmp.setLocationRelativeTo(null);
+            tmp.setVisible(true);
+        } catch (Exception ex) {
+            ErrorFrame errorFrame = new ErrorFrame(ex);
+        }
     }
 
 
