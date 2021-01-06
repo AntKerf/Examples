@@ -25,7 +25,7 @@ public class MainWin extends javax.swing.JFrame {
             WebScrap._init();
             initComponents();
         } catch (Exception ex) {
-            System.exit(1);//аварийное завершение при ошибки иниилизации
+            System.exit(1);//аварийное завершение при ошибки инициализации
         }
     }
 
