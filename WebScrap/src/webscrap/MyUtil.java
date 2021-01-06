@@ -3,6 +3,7 @@ package webscrap;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.Font;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 
@@ -53,7 +54,7 @@ public class MyUtil {
         public SplashScreen() {
             var image = new ImageIcon(getClass().getResource("/resources/logo.png"));
             javax.swing.JLabel label = new javax.swing.JLabel("", image, SwingConstants.CENTER);
-            getContentPane().add(label);
+            // getContentPane().add(label);
             setSize(300, 50);
             //setUndecorated(true);
             setBackground(new Color(1.0f, 1.0f, 1.0f, 0.0f));
@@ -65,6 +66,18 @@ public class MyUtil {
             int y = (screenSize.height - getSize().height) / 2;
             // Set new location for JWindow
             setLocation(x, y);
+            //выравнивание вкладок с окном
+            javax.swing.GroupLayout jFrameLayout = new javax.swing.GroupLayout(getContentPane());
+            getContentPane().setLayout(jFrameLayout);
+            jFrameLayout.setHorizontalGroup(
+                    jFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(label, javax.swing.GroupLayout.Alignment.CENTER)
+            );
+            jFrameLayout.setVerticalGroup(
+                    jFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(label,javax.swing.GroupLayout.Alignment.LEADING)
+            );
+
             // Make JWindow visible
             pack();
             setVisible(true);

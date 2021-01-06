@@ -25,7 +25,7 @@ public class MainWin extends javax.swing.JFrame {
             WebScrap._init();
             initComponents();
         } catch (Exception ex) {
-            System.exit(1);//аварийное завершение при ошибки инициализации
+            System.exit(1);//аварийное завершение при ошибке инициализации
         }
     }
 
@@ -351,7 +351,6 @@ public class MainWin extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                System.out.println(info.getName());
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
@@ -367,8 +366,7 @@ public class MainWin extends javax.swing.JFrame {
         SplashScreen Splash = new SplashScreen();
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            var mainWin = new MainWin();
-            mainWin.setVisible(true);
+            new MainWin().setVisible(true);
         });
         //dispose splash screen after mainForm display
         Splash.dispose();

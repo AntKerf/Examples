@@ -10,7 +10,6 @@ import webscrap.MyUtil.Pair;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
-import com.gargoylesoftware.htmlunit.Page;
 import com.gargoylesoftware.htmlunit.WebRequest;
 import com.gargoylesoftware.htmlunit.HttpMethod;
 import java.net.URL;
@@ -30,9 +29,7 @@ public class WebScrap {
     private static int currentIndexStock = 0;
 
     public static void _init() {
-        System.out.println("Hello world! I`am a web  scrapper in future!");
         try {
-            System.out.println("Try to connect...");
             webClient = new WebClient();
             webClient.getOptions().setCssEnabled(false);
             webClient.getOptions().setJavaScriptEnabled(false);
@@ -88,7 +85,6 @@ public class WebScrap {
     //загрузка дополнительной информации по акции
     public static Pair<Object[][], Integer[]> _GetHistoryEquitie(int row) throws Exception {
 
-        System.out.println(row);
         Object[][] data;//таблица с историей
 
         //получение ссылки на страницу с допинформацией
@@ -122,9 +118,7 @@ public class WebScrap {
             //Цена откр.
             data[i][2] = ((HtmlElement) items.get(i).getByXPath("td[3]").get(0)).asText();
         }
-
         return new Pair<>(data, IdInfo);
-
     }
 
     //загрузка названий бирж
