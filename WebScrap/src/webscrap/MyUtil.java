@@ -1,7 +1,10 @@
 package webscrap;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import javax.swing.ImageIcon;
+import javax.swing.SwingConstants;
 
 /**
  *
@@ -48,10 +51,12 @@ public class MyUtil {
     public static class SplashScreen extends javax.swing.JWindow {
 
         public SplashScreen() {
-            javax.swing.JLabel label = new javax.swing.JLabel();
-            label.setText(" Установка соединения...");
-            add(label);
-            setSize(150, 50);
+            var image = new ImageIcon(getClass().getResource("/resources/logo.png"));
+            javax.swing.JLabel label = new javax.swing.JLabel("", image, SwingConstants.CENTER);
+            getContentPane().add(label);
+            setSize(300, 50);
+            //setUndecorated(true);
+            setBackground(new Color(1.0f, 1.0f, 1.0f, 0.0f));
             // Get current screen size
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
             // Get x coordinate on screen for make JWindow locate at center
@@ -61,6 +66,7 @@ public class MyUtil {
             // Set new location for JWindow
             setLocation(x, y);
             // Make JWindow visible
+            pack();
             setVisible(true);
         }
     }

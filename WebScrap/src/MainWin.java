@@ -17,8 +17,7 @@ import java.time.LocalDate;
 
 public class MainWin extends javax.swing.JFrame {
 
-    //Create & visible Splash Screen
-    private static final SplashScreen Splash = new SplashScreen();
+    
 
     /**
      * Creates new form MainWin
@@ -26,7 +25,7 @@ public class MainWin extends javax.swing.JFrame {
     public MainWin() {
         WebScrap._init();
         initComponents();
-        Splash.setVisible(false);
+       // Splash.setVisible(false);
     }
 
     /**
@@ -364,10 +363,14 @@ public class MainWin extends javax.swing.JFrame {
         }
         //</editor-fold>
 
+        //Create & display Splash Screen
+        SplashScreen Splash = new SplashScreen();
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
             new MainWin().setVisible(true);
         });
+        //dispose splash screen after mainForm display
+        Splash.dispose();
 
     }
 
