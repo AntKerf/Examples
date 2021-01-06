@@ -17,15 +17,16 @@ import java.time.LocalDate;
 
 public class MainWin extends javax.swing.JFrame {
 
-    
-
     /**
      * Creates new form MainWin
      */
     public MainWin() {
-        WebScrap._init();
-        initComponents();
-       // Splash.setVisible(false);
+        try {
+            WebScrap._init();
+            initComponents();
+        } catch (Exception ex) {
+            System.exit(1);//аварийное завершение при ошибки иниилизации
+        }
     }
 
     /**
@@ -232,13 +233,12 @@ public class MainWin extends javax.swing.JFrame {
         //показ окна
         tmp.setLocationRelativeTo(null);
         tmp.setVisible(true);
-
+        
         try {
 
             /*      Object [][] HistData= EquitieData.getFirst(); //таблица с данными
         int pairId = EquitieData.getSecond()[0];    
         int smlId = EquitieData.getSecond()[1];*/
-            
             //получение данных по акции
             Pair<Object[][], Integer[]> EquitieData = new Pair<>(WebScrap._GetHistoryEquitie(row));
             tmp.setTitle(jEquitiesTable.getValueAt(row, 0).toString());
@@ -279,17 +279,17 @@ public class MainWin extends javax.swing.JFrame {
             DatePickerSettings dateSettings = new DatePickerSettings();
             dateSettings.setFormatForDatesCommonEra("dd/MM/yyyy");
             dateSettings.setFormatForDatesBeforeCommonEra("dd/MM/uuuu");
-
+            
             DatePickerSettings dateSettings1 = new DatePickerSettings();
             dateSettings1.setFormatForDatesCommonEra("dd/MM/yyyy");
             dateSettings1.setFormatForDatesBeforeCommonEra("dd/MM/uuuu");
-
+            
             DatePicker st_date = new DatePicker(dateSettings);
             DatePicker end_date = new DatePicker(dateSettings1);
             end_date.setDateToToday();
             st_date.setDate(LocalDate.now().minusMonths(1));
             PeriodComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Daily", "Weekly", "Monthly"}));
-
+            
             AccesButton.setText("Применить");
             AccesButton.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -332,7 +332,7 @@ public class MainWin extends javax.swing.JFrame {
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(jTab))
             );
-
+            
             tmp.pack();
         } catch (Exception ex) {
             ErrorFrame errorFrame = new ErrorFrame(ex);
@@ -367,11 +367,12 @@ public class MainWin extends javax.swing.JFrame {
         SplashScreen Splash = new SplashScreen();
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new MainWin().setVisible(true);
+            var mainWin = new MainWin();
+            mainWin.setVisible(true);
         });
         //dispose splash screen after mainForm display
         Splash.dispose();
-
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
