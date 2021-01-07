@@ -36,26 +36,25 @@ public class WebScrap {
             mainPage = webClient.getPage("http://ru.investing.com/equities/");
             stockPage = webClient.getPage("http://ru.investing.com/equities/StocksFilter?noconstruct=1&smlID=0&sid=&tabletype=price&index_id=13666");
         } catch (Exception ex) {
-           MyUtil.ErrorFrame errorFrame = new MyUtil.ErrorFrame(ex);
+            MyUtil.ErrorFrame errorFrame = new MyUtil.ErrorFrame(ex);
         }
     }
 
     //загрузка страницы с котировками выбранной биржы из списка
     public static void _loadStock(int index_stock) {
-        if (index_stock != currentIndexStock) {
-            try {
-                //список всех бирж
-                List<HtmlElement> items = mainPage.getByXPath("/html[1]/body[1]/div[5]/section[1]/div[6]/select[1]/option");
-                //ид биржы по ее номеру в списке
-                String stock_id = items.get(index_stock).getAttribute("id");
-                //страница с котировками
-                stockPage = webClient.getPage("http://ru.investing.com/equities/StocksFilter?noconstruct=1&smlID=0&sid=&tabletype=price&index_id=" + stock_id);
-                //установка выбранного номера биржы как текущий
-                currentIndexStock = index_stock;
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+        try {
+            //список всех бирж
+            List<HtmlElement> items = mainPage.getByXPath("/html[1]/body[1]/div[5]/section[1]/div[6]/select[1]/option");
+            //ид биржы по ее номеру в списке
+            String stock_id = items.get(index_stock).getAttribute("id");
+            //страница с котировками
+            stockPage = webClient.getPage("http://ru.investing.com/equities/StocksFilter?noconstruct=1&smlID=0&sid=&tabletype=price&index_id=" + stock_id);
+            //установка выбранного номера биржы как текущий
+            currentIndexStock = index_stock;
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
+
     }
 
     //загруза котировок со страницы выбранной биржи
@@ -64,7 +63,7 @@ public class WebScrap {
         try {
             //получение строк из таблицы с котироками
             List<HtmlElement> items = stockPage.getByXPath("/html[1]/body[1]/div[1]/table[1]/tbody[1]/tr");
-            data = new Object[items.size()][3];
+            data = new Object[items.size()][8];
             for (int i = 0; i < items.size(); i++) {
                 //Название
                 data[i][0] = ((HtmlElement) items.get(i).getByXPath("td[2]").get(0)).asText();
@@ -72,6 +71,16 @@ public class WebScrap {
                 data[i][1] = ((HtmlElement) items.get(i).getByXPath("td[3]").get(0)).asText();
                 //Макс
                 data[i][2] = ((HtmlElement) items.get(i).getByXPath("td[4]").get(0)).asText();
+                //Мин.
+                data[i][3] = ((HtmlElement) items.get(i).getByXPath("td[5]").get(0)).asText();
+                //Изм.
+                data[i][4] = ((HtmlElement) items.get(i).getByXPath("td[6]").get(0)).asText();
+                //Изм.%
+                data[i][5] = ((HtmlElement) items.get(i).getByXPath("td[7]").get(0)).asText();
+                //Объем
+                data[i][6] = ((HtmlElement) items.get(i).getByXPath("td[8]").get(0)).asText();
+                //Время
+                data[i][7] = ((HtmlElement) items.get(i).getByXPath("td[9]").get(0)).asText();
             }
             //возращаем массив с данными для вставки в таблицу
             return data;
@@ -109,14 +118,22 @@ public class WebScrap {
         IdInfo[1] = smlId;
         //получение данных за последний месяц по акции(по умолчанию)
         List<HtmlElement> items = EquititePage.getByXPath("/html[1]/body[1]/div[5]/section[1]/div[9]/table[1]/tbody[1]/tr");
-        data = new Object[items.size()][3];
+        data = new Object[items.size()][7];
         for (int i = 0; i < items.size(); i++) {
             //Дата
             data[i][0] = ((HtmlElement) items.get(i).getByXPath("td[1]").get(0)).asText();
             //Цена
             data[i][1] = ((HtmlElement) items.get(i).getByXPath("td[2]").get(0)).asText();
-            //Цена откр.
+            //Откр.
             data[i][2] = ((HtmlElement) items.get(i).getByXPath("td[3]").get(0)).asText();
+            //Макс.
+            data[i][3] = ((HtmlElement) items.get(i).getByXPath("td[4]").get(0)).asText();
+            //Мин.
+            data[i][4] = ((HtmlElement) items.get(i).getByXPath("td[5]").get(0)).asText();
+            //Объем
+            data[i][5] = ((HtmlElement) items.get(i).getByXPath("td[6]").get(0)).asText();
+            //Изм.%
+            data[i][6] = ((HtmlElement) items.get(i).getByXPath("td[7]").get(0)).asText();
         }
         return new Pair<>(data, IdInfo);
     }
@@ -169,8 +186,16 @@ public class WebScrap {
                 data[i][0] = ((HtmlElement) items.get(i).getByXPath("td[1]").get(0)).asText();
                 //Цена
                 data[i][1] = ((HtmlElement) items.get(i).getByXPath("td[2]").get(0)).asText();
-                //Цена откр.
+                //Откр.
                 data[i][2] = ((HtmlElement) items.get(i).getByXPath("td[3]").get(0)).asText();
+                //Макс.
+                data[i][3] = ((HtmlElement) items.get(i).getByXPath("td[4]").get(0)).asText();
+                //Мин.
+                data[i][4] = ((HtmlElement) items.get(i).getByXPath("td[5]").get(0)).asText();
+                //Объем
+                data[i][5] = ((HtmlElement) items.get(i).getByXPath("td[6]").get(0)).asText();
+                //Изм.%
+                data[i][6] = ((HtmlElement) items.get(i).getByXPath("td[7]").get(0)).asText();
             }
             return data;
         } catch (Exception ex) {

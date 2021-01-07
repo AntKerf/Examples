@@ -48,10 +48,18 @@ public class MainWin extends javax.swing.JFrame {
         end_data = new javax.swing.JFormattedTextField();
         PeriodComboBox = new javax.swing.JComboBox<>();
         st_Date = new javax.swing.JFormattedTextField();
-        jExitButton = new javax.swing.JButton();
         jCtockComboBox = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         jEquitiesTable = new javax.swing.JTable();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        FileMenu = new javax.swing.JMenu();
+        ExitInMenu = new javax.swing.JMenuItem();
+        ParamMenu = new javax.swing.JMenu();
+        ReloadInMenu = new javax.swing.JMenuItem();
+        DesignInMenu = new javax.swing.JMenu();
+        jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -135,13 +143,6 @@ public class MainWin extends javax.swing.JFrame {
         setTitle("WebScrap");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        jExitButton.setText("Exit");
-        jExitButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jExitButtonActionPerformed(evt);
-            }
-        });
-
         jCtockComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(WebScrap._stocks()));
         jCtockComboBox.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -152,14 +153,14 @@ public class MainWin extends javax.swing.JFrame {
         jEquitiesTable.setModel(new javax.swing.table.DefaultTableModel(
             WebScrap._data(),
             new String [] {
-                "Название", "Цена", "Макс"
+                "Название", "Цена", "Макс.", "Мин.", "Изм.", "Изм.%", "Объем", "Время"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                true, false, true
+                false, false, false, false, false, false, false, false,
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -177,34 +178,67 @@ public class MainWin extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jEquitiesTable);
 
+        FileMenu.setText("Файл");
+
+        ExitInMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.SHIFT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        ExitInMenu.setText("Выход");
+        ExitInMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ExitInMenuActionPerformed(evt);
+            }
+        });
+        FileMenu.add(ExitInMenu);
+
+        jMenuBar1.add(FileMenu);
+
+        ParamMenu.setText("Параметры");
+
+        ReloadInMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        ReloadInMenu.setText("Обновить");
+        ReloadInMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ReloadInMenuActionPerformed(evt);
+            }
+        });
+        ParamMenu.add(ReloadInMenu);
+
+        DesignInMenu.setText("Дизайн");
+
+        jMenuItem4.setText("Nimbus");
+        DesignInMenu.add(jMenuItem4);
+
+        jMenuItem5.setText("Windows");
+        DesignInMenu.add(jMenuItem5);
+
+        ParamMenu.add(DesignInMenu);
+
+        jMenuItem2.setText("Шрифт");
+        ParamMenu.add(jMenuItem2);
+
+        jMenuBar1.add(ParamMenu);
+
+        setJMenuBar(jMenuBar1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jCtockComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jExitButton)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jExitButton)
-                    .addComponent(jCtockComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jCtockComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 655, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 635, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jExitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jExitButtonActionPerformed
-        System.exit(0);
-    }//GEN-LAST:event_jExitButtonActionPerformed
 
     private void jCtockComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCtockComboBoxItemStateChanged
         //загрузка страницы с данными выбраной биржи
@@ -213,7 +247,7 @@ public class MainWin extends javax.swing.JFrame {
         jEquitiesTable.setModel(new javax.swing.table.DefaultTableModel(
                 WebScrap._data(),
                 new String[]{
-                    "Название", "Цена", "Макс"
+                    "Название", "Цена", "Макс.", "Мин.", "Изм.", "Изм.%", "Объем", "Время"
                 }));
     }//GEN-LAST:event_jCtockComboBoxItemStateChanged
 
@@ -221,6 +255,21 @@ public class MainWin extends javax.swing.JFrame {
         int row = jEquitiesTable.rowAtPoint(evt.getPoint());
         _FormEquitie(row);
     }//GEN-LAST:event_jEquitiesTableMouseClicked
+
+    private void ExitInMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitInMenuActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_ExitInMenuActionPerformed
+
+    private void ReloadInMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReloadInMenuActionPerformed
+        //загрузка страницы с данными выбраной биржи
+        WebScrap._loadStock(jCtockComboBox.getSelectedIndex());
+        //установка котировок с загруженной страницы в таблицу
+        jEquitiesTable.setModel(new javax.swing.table.DefaultTableModel(
+                WebScrap._data(),
+                new String[]{
+                    "Название", "Цена", "Макс.", "Мин.", "Изм.", "Изм.%", "Объем", "Время"
+                }));
+    }//GEN-LAST:event_ReloadInMenuActionPerformed
 
     //создание окна с подробной информацией по выбранной акции
     private void _FormEquitie(int row) {
@@ -233,7 +282,7 @@ public class MainWin extends javax.swing.JFrame {
         //показ окна
         tmp.setLocationRelativeTo(null);
         tmp.setVisible(true);
-        
+
         try {
 
             /*      Object [][] HistData= EquitieData.getFirst(); //таблица с данными
@@ -258,7 +307,7 @@ public class MainWin extends javax.swing.JFrame {
             jHistTable.setModel(new javax.swing.table.DefaultTableModel(
                     EquitieData.getFirst(), //получение данных
                     new String[]{
-                        "Дата", "Цена", "Откр."
+                        "Дата", "Цена", "Откр.", "Макс.", "Мин.", "Объем", "Изм.%"
                     }
             ));
             jScrPane.setViewportView(jHistTable);//привязка таблицы к прокрутке
@@ -279,17 +328,17 @@ public class MainWin extends javax.swing.JFrame {
             DatePickerSettings dateSettings = new DatePickerSettings();
             dateSettings.setFormatForDatesCommonEra("dd/MM/yyyy");
             dateSettings.setFormatForDatesBeforeCommonEra("dd/MM/uuuu");
-            
+
             DatePickerSettings dateSettings1 = new DatePickerSettings();
             dateSettings1.setFormatForDatesCommonEra("dd/MM/yyyy");
             dateSettings1.setFormatForDatesBeforeCommonEra("dd/MM/uuuu");
-            
+
             DatePicker st_date = new DatePicker(dateSettings);
             DatePicker end_date = new DatePicker(dateSettings1);
             end_date.setDateToToday();
             st_date.setDate(LocalDate.now().minusMonths(1));
             PeriodComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Daily", "Weekly", "Monthly"}));
-            
+
             AccesButton.setText("Применить");
             AccesButton.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -297,7 +346,7 @@ public class MainWin extends javax.swing.JFrame {
                     jHistTable.setModel(new javax.swing.table.DefaultTableModel(
                             newData,
                             new String[]{
-                                "Дата", "Цена", "Откр."
+                                "Дата", "Цена", "Откр.", "Макс.", "Мин.", "Объем", "Изм.%"
                             }
                     ));
                     jTab.setComponentAt(1, ChartBuilder.createPanel(tmp.getTitle(), newData));
@@ -332,7 +381,7 @@ public class MainWin extends javax.swing.JFrame {
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(jTab))
             );
-            
+
             tmp.pack();
         } catch (Exception ex) {
             ErrorFrame errorFrame = new ErrorFrame(ex);
@@ -370,17 +419,25 @@ public class MainWin extends javax.swing.JFrame {
         });
         //dispose splash screen after mainForm display
         Splash.dispose();
-        
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AccesButton;
+    private javax.swing.JMenu DesignInMenu;
+    private javax.swing.JMenuItem ExitInMenu;
+    private javax.swing.JMenu FileMenu;
+    private javax.swing.JMenu ParamMenu;
     private javax.swing.JComboBox<String> PeriodComboBox;
+    private javax.swing.JMenuItem ReloadInMenu;
     private javax.swing.JFormattedTextField end_data;
     private javax.swing.JComboBox<String> jCtockComboBox;
     private javax.swing.JTable jEquitiesTable;
-    private javax.swing.JButton jExitButton;
     private javax.swing.JFrame jFrame1;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
