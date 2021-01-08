@@ -11,9 +11,15 @@
 import webscrap.WebScrap;
 import webscrap.MyUtil.*;
 import Charts.ChartBuilder;
+import com.formdev.flatlaf.FlatDarkLaf;
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import java.time.LocalDate;
+import javax.swing.SwingUtilities;
+import com.formdev.flatlaf.FlatLightLaf;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.UnsupportedLookAndFeelException;
 
 public class MainWin extends javax.swing.JFrame {
 
@@ -48,6 +54,7 @@ public class MainWin extends javax.swing.JFrame {
         end_data = new javax.swing.JFormattedTextField();
         PeriodComboBox = new javax.swing.JComboBox<>();
         st_Date = new javax.swing.JFormattedTextField();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jCtockComboBox = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         jEquitiesTable = new javax.swing.JTable();
@@ -59,7 +66,16 @@ public class MainWin extends javax.swing.JFrame {
         DesignInMenu = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
+        jMenuItem9 = new javax.swing.JMenuItem();
+        jMenuItem10 = new javax.swing.JMenuItem();
+        TextInMenu = new javax.swing.JMenu();
+        FontSizeInMenu = new javax.swing.JMenu();
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem6 = new javax.swing.JMenuItem();
+        jMenuItem7 = new javax.swing.JMenuItem();
+        FontInSize = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem8 = new javax.swing.JMenuItem();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -139,6 +155,8 @@ public class MainWin extends javax.swing.JFrame {
 
         jTabbedPane1.getAccessibleContext().setAccessibleName("Таблица");
 
+        jMenuItem1.setText("jMenuItem1");
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("WebScrap");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -150,6 +168,7 @@ public class MainWin extends javax.swing.JFrame {
             }
         });
 
+        jEquitiesTable.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jEquitiesTable.setModel(new javax.swing.table.DefaultTableModel(
             WebScrap._data(),
             new String [] {
@@ -205,15 +224,65 @@ public class MainWin extends javax.swing.JFrame {
         DesignInMenu.setText("Дизайн");
 
         jMenuItem4.setText("Nimbus");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
         DesignInMenu.add(jMenuItem4);
 
         jMenuItem5.setText("Windows");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
         DesignInMenu.add(jMenuItem5);
+
+        jMenuItem9.setText("FlatLaf Dark");
+        jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem9ActionPerformed(evt);
+            }
+        });
+        DesignInMenu.add(jMenuItem9);
+
+        jMenuItem10.setText("FlatLaf Light");
+        jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem10ActionPerformed(evt);
+            }
+        });
+        DesignInMenu.add(jMenuItem10);
 
         ParamMenu.add(DesignInMenu);
 
-        jMenuItem2.setText("Шрифт");
-        ParamMenu.add(jMenuItem2);
+        TextInMenu.setText("Текст");
+
+        FontSizeInMenu.setText("Размер");
+
+        jMenuItem3.setText("15");
+        FontSizeInMenu.add(jMenuItem3);
+
+        jMenuItem6.setText("20");
+        FontSizeInMenu.add(jMenuItem6);
+
+        jMenuItem7.setText("25");
+        FontSizeInMenu.add(jMenuItem7);
+
+        TextInMenu.add(FontSizeInMenu);
+
+        FontInSize.setText("Шрифт");
+
+        jMenuItem2.setText("Courier");
+        FontInSize.add(jMenuItem2);
+
+        jMenuItem8.setText("jMenuItem8");
+        FontInSize.add(jMenuItem8);
+
+        TextInMenu.add(FontInSize);
+
+        ParamMenu.add(TextInMenu);
 
         jMenuBar1.add(ParamMenu);
 
@@ -270,6 +339,58 @@ public class MainWin extends javax.swing.JFrame {
                     "Название", "Цена", "Макс.", "Мин.", "Изм.", "Изм.%", "Объем", "Время"
                 }));
     }//GEN-LAST:event_ReloadInMenuActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    SwingUtilities.updateComponentTreeUI(this);
+                    pack();
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(MainWin.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        };
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Windows".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    SwingUtilities.updateComponentTreeUI(this);
+                    pack();
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(MainWin.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
+
+    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
+        try {
+            javax.swing.UIManager.setLookAndFeel(new FlatDarkLaf());
+            SwingUtilities.updateComponentTreeUI(this);
+            pack();
+        } catch (UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(MainWin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jMenuItem9ActionPerformed
+
+    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
+        try {
+            javax.swing.UIManager.setLookAndFeel(new FlatLightLaf());
+            SwingUtilities.updateComponentTreeUI(this);
+            pack();
+        } catch (UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(MainWin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jMenuItem10ActionPerformed
 
     //создание окна с подробной информацией по выбранной акции
     private void _FormEquitie(int row) {
@@ -427,17 +548,27 @@ public class MainWin extends javax.swing.JFrame {
     private javax.swing.JMenu DesignInMenu;
     private javax.swing.JMenuItem ExitInMenu;
     private javax.swing.JMenu FileMenu;
+    private javax.swing.JMenu FontInSize;
+    private javax.swing.JMenu FontSizeInMenu;
     private javax.swing.JMenu ParamMenu;
     private javax.swing.JComboBox<String> PeriodComboBox;
     private javax.swing.JMenuItem ReloadInMenu;
+    private javax.swing.JMenu TextInMenu;
     private javax.swing.JFormattedTextField end_data;
     private javax.swing.JComboBox<String> jCtockComboBox;
     private javax.swing.JTable jEquitiesTable;
     private javax.swing.JFrame jFrame1;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuItem7;
+    private javax.swing.JMenuItem jMenuItem8;
+    private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
