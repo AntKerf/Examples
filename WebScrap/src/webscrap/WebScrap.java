@@ -28,7 +28,7 @@ public class WebScrap {
     //номер биржи из списка на главной странице
     private static int currentIndexStock = 0;
 
-    public static void _init() {
+    public static void init() {
         try {
             webClient = new WebClient();
             webClient.getOptions().setCssEnabled(false);
@@ -36,12 +36,12 @@ public class WebScrap {
             mainPage = webClient.getPage("http://ru.investing.com/equities/");
             stockPage = webClient.getPage("http://ru.investing.com/equities/StocksFilter?noconstruct=1&smlID=0&sid=&tabletype=price&index_id=13666");
         } catch (Exception ex) {
-            MyUtil.ErrorFrame errorFrame = new MyUtil.ErrorFrame(ex);
+            new MyUtil.ErrorDialog(ex);
         }
     }
 
     //загрузка страницы с котировками выбранной биржы из списка
-    public static void _loadStock(int index_stock) {
+    public static void loadStock(int index_stock) {
         try {
             //список всех бирж
             List<HtmlElement> items = mainPage.getByXPath("/html[1]/body[1]/div[5]/section[1]/div[6]/select[1]/option");
@@ -57,8 +57,9 @@ public class WebScrap {
         }
 
     }
+
     //загруза котировок со страницы выбранной биржи
-    public static Object[][] _data() {
+    public static Object[][] data() {
         Object[][] data;
         try {
             //получение строк из таблицы с котироками
@@ -92,7 +93,7 @@ public class WebScrap {
     }
 
     //загрузка дополнительной информации по акции
-    public static Pair<Object[][], Integer[]> _GetHistoryEquitie(int row) throws Exception {
+    public static Pair<Object[][], Integer[]> historyEquitie(int row) throws Exception {
 
         Object[][] data;//таблица с историей
 
@@ -139,7 +140,7 @@ public class WebScrap {
     }
 
     //загрузка названий бирж
-    public static String[] _stocks() {
+    public static String[] stockNames() {
         String stocks[];
         try {
             //получение всех индексов из списка
@@ -157,7 +158,7 @@ public class WebScrap {
     }
 
     //получение прошлых данных акции через Ajax скрипт посредством post запроса
-    public static Object[][] _postReq(int pairId, int smlId, String st_date, String end_date, String interval) {
+    public static Object[][] postHistoryReq(int pairId, int smlId, String st_date, String end_date, String interval) {
         try {
             URL url = new URL("https://ru.investing.com/instruments/HistoricalDataAjax");
             WebRequest requestSettings = new WebRequest(url, HttpMethod.POST);

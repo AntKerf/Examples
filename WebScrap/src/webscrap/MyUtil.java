@@ -3,7 +3,6 @@ package webscrap;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.awt.Font;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 
@@ -75,7 +74,7 @@ public class MyUtil {
             );
             jFrameLayout.setVerticalGroup(
                     jFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(label,javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(label, javax.swing.GroupLayout.Alignment.LEADING)
             );
 
             // Make JWindow visible
@@ -84,9 +83,9 @@ public class MyUtil {
         }
     }
 
-    public static class ErrorFrame extends javax.swing.JDialog {
+    public static class ErrorDialog extends javax.swing.JDialog {
 
-        public ErrorFrame(Exception ex) {
+        public ErrorDialog(Exception ex) {
             javax.swing.JLabel label = new javax.swing.JLabel();
             this.setTitle("Ошибка! Попробуйте снова.");
             label.setText(ex.getMessage());

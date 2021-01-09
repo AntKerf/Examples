@@ -24,86 +24,6 @@ import org.xml.sax.SAXException;
 import webscrap.MyUtil;
 
 public class MainWin extends javax.swing.JFrame {
-    
-    private static void _initUIConfig() {
-        try {
-            // Создается построитель документа
-            DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            // Создается дерево DOM документа из файла
-            org.w3c.dom.Document document = documentBuilder.parse("Config.xml");
-            // Получаем корневой элемент
-            Node root = document.getDocumentElement();
-            // Просматриваем все подэлементы корневого
-            NodeList Settings = root.getChildNodes();
-            //default
-            String FontName = "Tahoma";
-            Integer FontSize = 11;
-            int FontStyle = 0;
-            //чтение параметров из файла
-            for (int i = 0; i < Settings.getLength(); i++) {
-                Node Param = Settings.item(i);
-                if (Param.getNodeType() != Node.TEXT_NODE) {
-                    switch (Param.getNodeName()) {
-                        case "Theme" -> //установка темы из конфига
-                            SetUITheme(Param.getChildNodes().item(0).getTextContent());
-                        case "TextStyle" -> {
-                            switch (Param.getChildNodes().item(0).getTextContent()) {
-                                case "Plain" ->
-                                    FontStyle = Font.PLAIN;
-                                case "Bold" ->
-                                    FontStyle = Font.BOLD;
-                                case "Italic" ->
-                                    FontStyle = Font.ITALIC;
-                            }
-                        }
-                        case "Font" ->
-                            FontName = Param.getChildNodes().item(0).getTextContent();
-                        case "FontSize" ->
-                            FontSize = Integer.parseInt(Param.getChildNodes().item(0).getTextContent());
-                        default -> {
-                            break;
-                        }
-                    }
-                }
-            }
-            SetUIFont(new javax.swing.plaf.FontUIResource(new Font(FontName, FontStyle, FontSize)));
-        } catch (ParserConfigurationException | SAXException | IOException ex) {
-            ex.printStackTrace(System.out);
-        }
-    }
-    
-    private static void SetUIFont(javax.swing.plaf.FontUIResource f) {
-        java.util.Enumeration<Object> keys = UIManager.getDefaults().keys();
-        while (keys.hasMoreElements()) {
-            Object key = keys.nextElement();
-            Object value = UIManager.get(key);
-            if (value instanceof javax.swing.plaf.FontUIResource) {
-                UIManager.put(key, f);
-            }
-        }
-    }
-    
-    private static void SetUITheme(String ThemeName) {
-        try {
-            switch (ThemeName) {
-                case "FlatLaf Dark" ->
-                    UIManager.setLookAndFeel(new FlatDarkLaf());
-                case "FlatLaf Light" ->
-                    UIManager.setLookAndFeel(new FlatLightLaf());
-                default -> {
-                    for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-                        if (ThemeName.equals(info.getName())) {
-                            UIManager.setLookAndFeel(info.getClassName());
-                            break;
-                        }
-                    }
-                }
-            }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainWin.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-    }
 
     /**
      * Creates new form MainWin
@@ -125,17 +45,6 @@ public class MainWin extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jFrame1 = new javax.swing.JFrame();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
-        jPanel1 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jPanel2 = new javax.swing.JPanel();
-        AccesButton = new javax.swing.JButton();
-        end_data = new javax.swing.JFormattedTextField();
-        PeriodComboBox = new javax.swing.JComboBox<>();
-        st_Date = new javax.swing.JFormattedTextField();
-        jMenuItem1 = new javax.swing.JMenuItem();
         jCtockComboBox = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         jEquitiesTable = new javax.swing.JTable();
@@ -163,91 +72,11 @@ public class MainWin extends javax.swing.JFrame {
         SetItalic = new javax.swing.JMenuItem();
         SetBold = new javax.swing.JMenuItem();
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane2.setViewportView(jTable1);
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 383, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)
-        );
-
-        jTabbedPane1.addTab("Table", jPanel1);
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 383, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 233, Short.MAX_VALUE)
-        );
-
-        jTabbedPane1.addTab("Graph", jPanel2);
-
-        AccesButton.setText("Применить");
-
-        end_data.setText("22/11/2020");
-
-        PeriodComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        st_Date.setText("22/12/2020");
-
-        javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
-        jFrame1.getContentPane().setLayout(jFrame1Layout);
-        jFrame1Layout.setHorizontalGroup(
-            jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jFrame1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(PeriodComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(st_Date, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(end_data, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(AccesButton)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jFrame1Layout.setVerticalGroup(
-            jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jFrame1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(AccesButton)
-                    .addComponent(end_data, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(PeriodComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(st_Date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTabbedPane1))
-        );
-
-        jTabbedPane1.getAccessibleContext().setAccessibleName("Таблица");
-
-        jMenuItem1.setText("jMenuItem1");
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("WebScrap");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        jCtockComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(WebScrap._stocks()));
+        jCtockComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(WebScrap.stockNames()));
         jCtockComboBox.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jCtockComboBoxItemStateChanged(evt);
@@ -255,7 +84,7 @@ public class MainWin extends javax.swing.JFrame {
         });
 
         jEquitiesTable.setModel(new javax.swing.table.DefaultTableModel(
-            WebScrap._data(),
+            WebScrap.data(),
             new String [] {
                 "Название", "Цена", "Макс.", "Мин.", "Изм.", "Изм.%", "Объем", "Время"
             }
@@ -417,17 +246,17 @@ public class MainWin extends javax.swing.JFrame {
 
     private void jCtockComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCtockComboBoxItemStateChanged
         //загрузка страницы с данными выбраной биржи
-        WebScrap._loadStock(jCtockComboBox.getSelectedIndex());
+        WebScrap.loadStock(jCtockComboBox.getSelectedIndex());
         //установка котировок с загруженной страницы в таблицу
         jEquitiesTable.setModel(new javax.swing.table.DefaultTableModel(
-                WebScrap._data(),
+                WebScrap.data(),
                 new String[]{
                     "Название", "Цена", "Макс.", "Мин.", "Изм.", "Изм.%", "Объем", "Время"
                 }));
     }//GEN-LAST:event_jCtockComboBoxItemStateChanged
 
     private void jEquitiesTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jEquitiesTableMouseClicked
-        _FormEquitie(jEquitiesTable.rowAtPoint(evt.getPoint()));
+        EquitieWin(jEquitiesTable.rowAtPoint(evt.getPoint()));//создание окна с информацией по акции
     }//GEN-LAST:event_jEquitiesTableMouseClicked
 
     private void ExitInMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitInMenuActionPerformed
@@ -436,35 +265,35 @@ public class MainWin extends javax.swing.JFrame {
 
     private void ReloadInMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReloadInMenuActionPerformed
         //загрузка страницы с данными выбраной биржи
-        WebScrap._loadStock(jCtockComboBox.getSelectedIndex());
+        WebScrap.loadStock(jCtockComboBox.getSelectedIndex());
         //установка котировок с загруженной страницы в таблицу
         jEquitiesTable.setModel(new javax.swing.table.DefaultTableModel(
-                WebScrap._data(),
+                WebScrap.data(),
                 new String[]{
                     "Название", "Цена", "Макс.", "Мин.", "Изм.", "Изм.%", "Объем", "Время"
                 }));
     }//GEN-LAST:event_ReloadInMenuActionPerformed
 
     private void SetNimbusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SetNimbusActionPerformed
-        SetUITheme("Nimbus");
+        setUITheme("Nimbus");
         SwingUtilities.updateComponentTreeUI(this);
         pack();
     }//GEN-LAST:event_SetNimbusActionPerformed
 
     private void SetWindowsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SetWindowsActionPerformed
-        SetUITheme("Windows");
+        setUITheme("Windows");
         SwingUtilities.updateComponentTreeUI(this);
         pack();
     }//GEN-LAST:event_SetWindowsActionPerformed
 
     private void SetDarkFLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SetDarkFLActionPerformed
-        SetUITheme("FlatLaf Dark");
+        setUITheme("FlatLaf Dark");
         SwingUtilities.updateComponentTreeUI(this);
         pack();
     }//GEN-LAST:event_SetDarkFLActionPerformed
 
     private void SetLightFLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SetLightFLActionPerformed
-        SetUITheme("FlatLaf Light");
+        setUITheme("FlatLaf Light");
         SwingUtilities.updateComponentTreeUI(this);
         pack();
     }//GEN-LAST:event_SetLightFLActionPerformed
@@ -472,34 +301,36 @@ public class MainWin extends javax.swing.JFrame {
     private void AutoReloadCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AutoReloadCheckActionPerformed
         //автообновление данных, в главном фрейме, раз в 5 секунд (1 запрос в 5 секунд)
         if (AutoReloadCheck.isSelected()) {
-            autoReloadThread = new Thread(() -> {
+            autoReloadThread_ = new Thread(() -> {
                 try {
                     while (true) {
                         //загрузка страницы с данными
-                        WebScrap._loadStock(jCtockComboBox.getSelectedIndex());
+                        WebScrap.loadStock(jCtockComboBox.getSelectedIndex());
                         int row = jEquitiesTable.getSelectedRow();//запоминаем выбранную строку
                         System.out.println(row);
                         //установка котировок с загруженной страницы в таблицу
                         jEquitiesTable.setModel(new javax.swing.table.DefaultTableModel(
-                                WebScrap._data(),
+                                WebScrap.data(),
                                 new String[]{
                                     "Название", "Цена", "Макс.", "Мин.", "Изм.", "Изм.%", "Объем", "Время"
                                 }));
-                        if(row >= 0) jEquitiesTable.setRowSelectionInterval(row, row);//устанавливаем выбранную ранее строку
+                        if (row >= 0) {
+                            jEquitiesTable.setRowSelectionInterval(row, row);//устанавливаем выбранную ранее строку
+                        }
                         sleep(5000);//ожидание 5 секунд
                     }
                 } catch (InterruptedException ex) {
-                    new MyUtil.ErrorFrame(ex);
+                    new MyUtil.ErrorDialog(ex);
                 }
             });
-            autoReloadThread.start();
+            autoReloadThread_.start();
         } else {
-            autoReloadThread.stop();
+            autoReloadThread_.stop();
         }
     }//GEN-LAST:event_AutoReloadCheckActionPerformed
 
     //создание окна с подробной информацией по выбранной акции
-    private void _FormEquitie(int row) {
+    private void EquitieWin(int row) {
         //окно
         javax.swing.JFrame tmp = new javax.swing.JFrame();
         tmp.setTitle("Установка соединения...");
@@ -509,14 +340,14 @@ public class MainWin extends javax.swing.JFrame {
         //показ окна
         tmp.setLocationRelativeTo(null);
         tmp.setVisible(true);
-        
+
         try {
 
             /*      Object [][] HistData= EquitieData.getFirst(); //таблица с данными
         int pairId = EquitieData.getSecond()[0];    
         int smlId = EquitieData.getSecond()[1];*/
             //получение данных по акции
-            Pair<Object[][], Integer[]> EquitieData = new Pair<>(WebScrap._GetHistoryEquitie(row));
+            Pair<Object[][], Integer[]> EquitieData = new Pair<>(WebScrap.historyEquitie(row));
             tmp.setTitle(jEquitiesTable.getValueAt(row, 0).toString());
             //кнопки и текст. поля - управление
             var AccesButton = new javax.swing.JButton();
@@ -555,21 +386,21 @@ public class MainWin extends javax.swing.JFrame {
             DatePickerSettings dateSettings = new DatePickerSettings();
             dateSettings.setFormatForDatesCommonEra("dd/MM/yyyy");
             dateSettings.setFormatForDatesBeforeCommonEra("dd/MM/uuuu");
-            
+
             DatePickerSettings dateSettings1 = new DatePickerSettings();
             dateSettings1.setFormatForDatesCommonEra("dd/MM/yyyy");
             dateSettings1.setFormatForDatesBeforeCommonEra("dd/MM/uuuu");
-            
+
             DatePicker st_date = new DatePicker(dateSettings);
             DatePicker end_date = new DatePicker(dateSettings1);
             end_date.setDateToToday();
             st_date.setDate(LocalDate.now().minusMonths(1));
             PeriodComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Daily", "Weekly", "Monthly"}));
-            
+
             AccesButton.setText("Применить");
             AccesButton.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    Object[][] newData = WebScrap._postReq(EquitieData.getSecond()[0], EquitieData.getSecond()[1], st_date.getText(), end_date.getText(), PeriodComboBox.getModel().getSelectedItem().toString());
+                    Object[][] newData = WebScrap.postHistoryReq(EquitieData.getSecond()[0], EquitieData.getSecond()[1], st_date.getText(), end_date.getText(), PeriodComboBox.getModel().getSelectedItem().toString());
                     jHistTable.setModel(new javax.swing.table.DefaultTableModel(
                             newData,
                             new String[]{
@@ -608,11 +439,91 @@ public class MainWin extends javax.swing.JFrame {
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(jTab))
             );
-            
+
             tmp.pack();
         } catch (Exception ex) {
-            ErrorFrame errorFrame = new ErrorFrame(ex);
+            new ErrorDialog(ex);
             tmp.dispose();
+        }
+    }
+
+    private static void loadUIConfig() {
+        try {
+            // Создается построитель документа
+            DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            // Создается дерево DOM документа из файла
+            org.w3c.dom.Document document = documentBuilder.parse("Config.xml");
+            // Получаем корневой элемент
+            Node root = document.getDocumentElement();
+            // Просматриваем все подэлементы корневого
+            NodeList Settings = root.getChildNodes();
+            //default
+            String FontName = "Tahoma";
+            Integer FontSize = 11;
+            int FontStyle = 0;
+            //чтение параметров из файла
+            for (int i = 0; i < Settings.getLength(); i++) {
+                Node Param = Settings.item(i);
+                if (Param.getNodeType() != Node.TEXT_NODE) {
+                    switch (Param.getNodeName()) {
+                        case "Theme" -> //установка темы из конфига
+                            setUITheme(Param.getChildNodes().item(0).getTextContent());
+                        case "TextStyle" -> {
+                            switch (Param.getChildNodes().item(0).getTextContent()) {
+                                case "Plain" ->
+                                    FontStyle = Font.PLAIN;
+                                case "Bold" ->
+                                    FontStyle = Font.BOLD;
+                                case "Italic" ->
+                                    FontStyle = Font.ITALIC;
+                            }
+                        }
+                        case "Font" ->
+                            FontName = Param.getChildNodes().item(0).getTextContent();
+                        case "FontSize" ->
+                            FontSize = Integer.parseInt(Param.getChildNodes().item(0).getTextContent());
+                        default -> {
+                            break;
+                        }
+                    }
+                }
+            }
+            setUIFont(new javax.swing.plaf.FontUIResource(new Font(FontName, FontStyle, FontSize)));
+        } catch (ParserConfigurationException | SAXException | IOException ex) {
+            ex.printStackTrace(System.out);
+        }
+    }
+
+    private static void setUIFont(javax.swing.plaf.FontUIResource f) {
+        java.util.Enumeration<Object> keys = UIManager.getDefaults().keys();
+        while (keys.hasMoreElements()) {
+            Object key = keys.nextElement();
+            Object value = UIManager.get(key);
+            if (value instanceof javax.swing.plaf.FontUIResource) {
+                UIManager.put(key, f);
+            }
+        }
+    }
+
+    private static void setUITheme(String ThemeName) {
+        try {
+            switch (ThemeName) {
+                case "FlatLaf Dark" ->
+                    UIManager.setLookAndFeel(new FlatDarkLaf());
+                case "FlatLaf Light" ->
+                    UIManager.setLookAndFeel(new FlatLightLaf());
+                default -> {
+                    for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+                        if (ThemeName.equals(info.getName())) {
+                            UIManager.setLookAndFeel(info.getClassName());
+                            break;
+                        }
+                    }
+                }
+            }
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(MainWin.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
     }
 
@@ -623,9 +534,9 @@ public class MainWin extends javax.swing.JFrame {
         //Create & display Splash Screen
         SplashScreen Splash = new SplashScreen();
         //загрузка настроек UIMahager из конфига
-        _initUIConfig();
+        loadUIConfig();
         //init WebScrap library 
-        WebScrap._init();
+        WebScrap.init();
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
             new MainWin().setVisible(true);
@@ -633,10 +544,9 @@ public class MainWin extends javax.swing.JFrame {
         //dispose splash screen after mainForm display
         Splash.dispose();
     }
-    
-    static private Thread autoReloadThread;
+
+    static private Thread autoReloadThread_; //поток для автообновления
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton AccesButton;
     private javax.swing.JCheckBoxMenuItem AutoReloadCheck;
     private javax.swing.JMenu DesignInMenu;
     private javax.swing.JMenuItem ExitInMenu;
@@ -644,7 +554,6 @@ public class MainWin extends javax.swing.JFrame {
     private javax.swing.JMenu FontInSize;
     private javax.swing.JMenu FontSizeInMenu;
     private javax.swing.JMenu ParamMenu;
-    private javax.swing.JComboBox<String> PeriodComboBox;
     private javax.swing.JMenuItem ReloadInMenu;
     private javax.swing.JMenuItem SetBold;
     private javax.swing.JMenuItem SetDarkFL;
@@ -655,24 +564,15 @@ public class MainWin extends javax.swing.JFrame {
     private javax.swing.JMenu SetTextStyle;
     private javax.swing.JMenuItem SetWindows;
     private javax.swing.JMenu TextInMenu;
-    private javax.swing.JFormattedTextField end_data;
     private javax.swing.JComboBox<String> jCtockComboBox;
     private javax.swing.JTable jEquitiesTable;
-    private javax.swing.JFrame jFrame1;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JFormattedTextField st_Date;
     // End of variables declaration//GEN-END:variables
 
 }
