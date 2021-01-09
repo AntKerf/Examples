@@ -1,13 +1,7 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- *
  * @author AntKerf
  */
+
 import webscrap.WebScrap;
 import webscrap.MyUtil.*;
 import Charts.ChartBuilder;
@@ -17,18 +11,105 @@ import com.github.lgooddatepicker.components.DatePickerSettings;
 import java.time.LocalDate;
 import javax.swing.SwingUtilities;
 import com.formdev.flatlaf.FlatLightLaf;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.UnsupportedLookAndFeelException;
+import java.awt.Font;
+import java.io.IOException;
+import static java.lang.Thread.sleep;
+import javax.swing.UIManager;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+import webscrap.MyUtil;
 
 public class MainWin extends javax.swing.JFrame {
+    
+    private static void _initUIConfig() {
+        try {
+            // Создается построитель документа
+            DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            // Создается дерево DOM документа из файла
+            org.w3c.dom.Document document = documentBuilder.parse("Config.xml");
+            // Получаем корневой элемент
+            Node root = document.getDocumentElement();
+            // Просматриваем все подэлементы корневого
+            NodeList Settings = root.getChildNodes();
+            //default
+            String FontName = "Tahoma";
+            Integer FontSize = 11;
+            int FontStyle = 0;
+            //чтение параметров из файла
+            for (int i = 0; i < Settings.getLength(); i++) {
+                Node Param = Settings.item(i);
+                if (Param.getNodeType() != Node.TEXT_NODE) {
+                    switch (Param.getNodeName()) {
+                        case "Theme" -> //установка темы из конфига
+                            SetUITheme(Param.getChildNodes().item(0).getTextContent());
+                        case "TextStyle" -> {
+                            switch (Param.getChildNodes().item(0).getTextContent()) {
+                                case "Plain" ->
+                                    FontStyle = Font.PLAIN;
+                                case "Bold" ->
+                                    FontStyle = Font.BOLD;
+                                case "Italic" ->
+                                    FontStyle = Font.ITALIC;
+                            }
+                        }
+                        case "Font" ->
+                            FontName = Param.getChildNodes().item(0).getTextContent();
+                        case "FontSize" ->
+                            FontSize = Integer.parseInt(Param.getChildNodes().item(0).getTextContent());
+                        default -> {
+                            break;
+                        }
+                    }
+                }
+            }
+            SetUIFont(new javax.swing.plaf.FontUIResource(new Font(FontName, FontStyle, FontSize)));
+        } catch (ParserConfigurationException | SAXException | IOException ex) {
+            ex.printStackTrace(System.out);
+        }
+    }
+    
+    private static void SetUIFont(javax.swing.plaf.FontUIResource f) {
+        java.util.Enumeration<Object> keys = UIManager.getDefaults().keys();
+        while (keys.hasMoreElements()) {
+            Object key = keys.nextElement();
+            Object value = UIManager.get(key);
+            if (value instanceof javax.swing.plaf.FontUIResource) {
+                UIManager.put(key, f);
+            }
+        }
+    }
+    
+    private static void SetUITheme(String ThemeName) {
+        try {
+            switch (ThemeName) {
+                case "FlatLaf Dark" ->
+                    UIManager.setLookAndFeel(new FlatDarkLaf());
+                case "FlatLaf Light" ->
+                    UIManager.setLookAndFeel(new FlatLightLaf());
+                default -> {
+                    for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+                        if (ThemeName.equals(info.getName())) {
+                            UIManager.setLookAndFeel(info.getClassName());
+                            break;
+                        }
+                    }
+                }
+            }
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(MainWin.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+    }
 
     /**
      * Creates new form MainWin
      */
     public MainWin() {
         try {
-            WebScrap._init();
             initComponents();
         } catch (Exception ex) {
             System.exit(1);//аварийное завершение при ошибке инициализации
@@ -63,11 +144,12 @@ public class MainWin extends javax.swing.JFrame {
         ExitInMenu = new javax.swing.JMenuItem();
         ParamMenu = new javax.swing.JMenu();
         ReloadInMenu = new javax.swing.JMenuItem();
+        AutoReloadCheck = new javax.swing.JCheckBoxMenuItem();
         DesignInMenu = new javax.swing.JMenu();
-        jMenuItem4 = new javax.swing.JMenuItem();
-        jMenuItem5 = new javax.swing.JMenuItem();
-        jMenuItem9 = new javax.swing.JMenuItem();
-        jMenuItem10 = new javax.swing.JMenuItem();
+        SetNimbus = new javax.swing.JMenuItem();
+        SetWindows = new javax.swing.JMenuItem();
+        SetDarkFL = new javax.swing.JMenuItem();
+        SetLightFL = new javax.swing.JMenuItem();
         TextInMenu = new javax.swing.JMenu();
         FontSizeInMenu = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
@@ -76,6 +158,10 @@ public class MainWin extends javax.swing.JFrame {
         FontInSize = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem8 = new javax.swing.JMenuItem();
+        SetTextStyle = new javax.swing.JMenu();
+        SetPlain = new javax.swing.JMenuItem();
+        SetItalic = new javax.swing.JMenuItem();
+        SetBold = new javax.swing.JMenuItem();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -168,7 +254,6 @@ public class MainWin extends javax.swing.JFrame {
             }
         });
 
-        jEquitiesTable.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jEquitiesTable.setModel(new javax.swing.table.DefaultTableModel(
             WebScrap._data(),
             new String [] {
@@ -221,39 +306,47 @@ public class MainWin extends javax.swing.JFrame {
         });
         ParamMenu.add(ReloadInMenu);
 
+        AutoReloadCheck.setText("Автообноление");
+        AutoReloadCheck.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AutoReloadCheckActionPerformed(evt);
+            }
+        });
+        ParamMenu.add(AutoReloadCheck);
+
         DesignInMenu.setText("Дизайн");
 
-        jMenuItem4.setText("Nimbus");
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+        SetNimbus.setText("Nimbus");
+        SetNimbus.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
+                SetNimbusActionPerformed(evt);
             }
         });
-        DesignInMenu.add(jMenuItem4);
+        DesignInMenu.add(SetNimbus);
 
-        jMenuItem5.setText("Windows");
-        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+        SetWindows.setText("Windows");
+        SetWindows.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem5ActionPerformed(evt);
+                SetWindowsActionPerformed(evt);
             }
         });
-        DesignInMenu.add(jMenuItem5);
+        DesignInMenu.add(SetWindows);
 
-        jMenuItem9.setText("FlatLaf Dark");
-        jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
+        SetDarkFL.setText("FlatLaf Dark");
+        SetDarkFL.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem9ActionPerformed(evt);
+                SetDarkFLActionPerformed(evt);
             }
         });
-        DesignInMenu.add(jMenuItem9);
+        DesignInMenu.add(SetDarkFL);
 
-        jMenuItem10.setText("FlatLaf Light");
-        jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
+        SetLightFL.setText("FlatLaf Light");
+        SetLightFL.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem10ActionPerformed(evt);
+                SetLightFLActionPerformed(evt);
             }
         });
-        DesignInMenu.add(jMenuItem10);
+        DesignInMenu.add(SetLightFL);
 
         ParamMenu.add(DesignInMenu);
 
@@ -281,6 +374,19 @@ public class MainWin extends javax.swing.JFrame {
         FontInSize.add(jMenuItem8);
 
         TextInMenu.add(FontInSize);
+
+        SetTextStyle.setText("Стиль");
+
+        SetPlain.setText("Обычный");
+        SetTextStyle.add(SetPlain);
+
+        SetItalic.setText("Курсив");
+        SetTextStyle.add(SetItalic);
+
+        SetBold.setText("Жирный");
+        SetTextStyle.add(SetBold);
+
+        TextInMenu.add(SetTextStyle);
 
         ParamMenu.add(TextInMenu);
 
@@ -321,8 +427,7 @@ public class MainWin extends javax.swing.JFrame {
     }//GEN-LAST:event_jCtockComboBoxItemStateChanged
 
     private void jEquitiesTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jEquitiesTableMouseClicked
-        int row = jEquitiesTable.rowAtPoint(evt.getPoint());
-        _FormEquitie(row);
+        _FormEquitie(jEquitiesTable.rowAtPoint(evt.getPoint()));
     }//GEN-LAST:event_jEquitiesTableMouseClicked
 
     private void ExitInMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitInMenuActionPerformed
@@ -340,57 +445,58 @@ public class MainWin extends javax.swing.JFrame {
                 }));
     }//GEN-LAST:event_ReloadInMenuActionPerformed
 
-    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    SwingUtilities.updateComponentTreeUI(this);
-                    pack();
-                    break;
+    private void SetNimbusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SetNimbusActionPerformed
+        SetUITheme("Nimbus");
+        SwingUtilities.updateComponentTreeUI(this);
+        pack();
+    }//GEN-LAST:event_SetNimbusActionPerformed
+
+    private void SetWindowsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SetWindowsActionPerformed
+        SetUITheme("Windows");
+        SwingUtilities.updateComponentTreeUI(this);
+        pack();
+    }//GEN-LAST:event_SetWindowsActionPerformed
+
+    private void SetDarkFLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SetDarkFLActionPerformed
+        SetUITheme("FlatLaf Dark");
+        SwingUtilities.updateComponentTreeUI(this);
+        pack();
+    }//GEN-LAST:event_SetDarkFLActionPerformed
+
+    private void SetLightFLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SetLightFLActionPerformed
+        SetUITheme("FlatLaf Light");
+        SwingUtilities.updateComponentTreeUI(this);
+        pack();
+    }//GEN-LAST:event_SetLightFLActionPerformed
+
+    private void AutoReloadCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AutoReloadCheckActionPerformed
+        //автообновление данных, в главном фрейме, раз в 5 секунд (1 запрос в 5 секунд)
+        if (AutoReloadCheck.isSelected()) {
+            autoReloadThread = new Thread(() -> {
+                try {
+                    while (true) {
+                        //загрузка страницы с данными
+                        WebScrap._loadStock(jCtockComboBox.getSelectedIndex());
+                        int row = jEquitiesTable.getSelectedRow();//запоминаем выбранную строку
+                        System.out.println(row);
+                        //установка котировок с загруженной страницы в таблицу
+                        jEquitiesTable.setModel(new javax.swing.table.DefaultTableModel(
+                                WebScrap._data(),
+                                new String[]{
+                                    "Название", "Цена", "Макс.", "Мин.", "Изм.", "Изм.%", "Объем", "Время"
+                                }));
+                        if(row >= 0) jEquitiesTable.setRowSelectionInterval(row, row);//устанавливаем выбранную ранее строку
+                        sleep(5000);//ожидание 5 секунд
+                    }
+                } catch (InterruptedException ex) {
+                    new MyUtil.ErrorFrame(ex);
                 }
-            }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainWin.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        };
-    }//GEN-LAST:event_jMenuItem4ActionPerformed
-
-    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Windows".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    SwingUtilities.updateComponentTreeUI(this);
-                    pack();
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainWin.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            });
+            autoReloadThread.start();
+        } else {
+            autoReloadThread.stop();
         }
-    }//GEN-LAST:event_jMenuItem5ActionPerformed
-
-    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
-        try {
-            javax.swing.UIManager.setLookAndFeel(new FlatDarkLaf());
-            SwingUtilities.updateComponentTreeUI(this);
-            pack();
-        } catch (UnsupportedLookAndFeelException ex) {
-            Logger.getLogger(MainWin.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_jMenuItem9ActionPerformed
-
-    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
-        try {
-            javax.swing.UIManager.setLookAndFeel(new FlatLightLaf());
-            SwingUtilities.updateComponentTreeUI(this);
-            pack();
-        } catch (UnsupportedLookAndFeelException ex) {
-            Logger.getLogger(MainWin.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_jMenuItem10ActionPerformed
+    }//GEN-LAST:event_AutoReloadCheckActionPerformed
 
     //создание окна с подробной информацией по выбранной акции
     private void _FormEquitie(int row) {
@@ -403,7 +509,7 @@ public class MainWin extends javax.swing.JFrame {
         //показ окна
         tmp.setLocationRelativeTo(null);
         tmp.setVisible(true);
-
+        
         try {
 
             /*      Object [][] HistData= EquitieData.getFirst(); //таблица с данными
@@ -449,17 +555,17 @@ public class MainWin extends javax.swing.JFrame {
             DatePickerSettings dateSettings = new DatePickerSettings();
             dateSettings.setFormatForDatesCommonEra("dd/MM/yyyy");
             dateSettings.setFormatForDatesBeforeCommonEra("dd/MM/uuuu");
-
+            
             DatePickerSettings dateSettings1 = new DatePickerSettings();
             dateSettings1.setFormatForDatesCommonEra("dd/MM/yyyy");
             dateSettings1.setFormatForDatesBeforeCommonEra("dd/MM/uuuu");
-
+            
             DatePicker st_date = new DatePicker(dateSettings);
             DatePicker end_date = new DatePicker(dateSettings1);
             end_date.setDateToToday();
             st_date.setDate(LocalDate.now().minusMonths(1));
             PeriodComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Daily", "Weekly", "Monthly"}));
-
+            
             AccesButton.setText("Применить");
             AccesButton.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -502,7 +608,7 @@ public class MainWin extends javax.swing.JFrame {
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(jTab))
             );
-
+            
             tmp.pack();
         } catch (Exception ex) {
             ErrorFrame errorFrame = new ErrorFrame(ex);
@@ -514,37 +620,24 @@ public class MainWin extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainWin.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
         //Create & display Splash Screen
         SplashScreen Splash = new SplashScreen();
+        //загрузка настроек UIMahager из конфига
+        _initUIConfig();
+        //init WebScrap library 
+        WebScrap._init();
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
             new MainWin().setVisible(true);
         });
         //dispose splash screen after mainForm display
         Splash.dispose();
-
     }
-
+    
+    static private Thread autoReloadThread;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AccesButton;
+    private javax.swing.JCheckBoxMenuItem AutoReloadCheck;
     private javax.swing.JMenu DesignInMenu;
     private javax.swing.JMenuItem ExitInMenu;
     private javax.swing.JMenu FileMenu;
@@ -553,6 +646,14 @@ public class MainWin extends javax.swing.JFrame {
     private javax.swing.JMenu ParamMenu;
     private javax.swing.JComboBox<String> PeriodComboBox;
     private javax.swing.JMenuItem ReloadInMenu;
+    private javax.swing.JMenuItem SetBold;
+    private javax.swing.JMenuItem SetDarkFL;
+    private javax.swing.JMenuItem SetItalic;
+    private javax.swing.JMenuItem SetLightFL;
+    private javax.swing.JMenuItem SetNimbus;
+    private javax.swing.JMenuItem SetPlain;
+    private javax.swing.JMenu SetTextStyle;
+    private javax.swing.JMenuItem SetWindows;
     private javax.swing.JMenu TextInMenu;
     private javax.swing.JFormattedTextField end_data;
     private javax.swing.JComboBox<String> jCtockComboBox;
@@ -560,15 +661,11 @@ public class MainWin extends javax.swing.JFrame {
     private javax.swing.JFrame jFrame1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
-    private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;

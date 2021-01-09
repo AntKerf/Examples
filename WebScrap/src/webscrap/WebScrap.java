@@ -51,12 +51,12 @@ public class WebScrap {
             stockPage = webClient.getPage("http://ru.investing.com/equities/StocksFilter?noconstruct=1&smlID=0&sid=&tabletype=price&index_id=" + stock_id);
             //установка выбранного номера биржы как текущий
             currentIndexStock = index_stock;
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
 
     }
-
     //загруза котировок со страницы выбранной биржи
     public static Object[][] _data() {
         Object[][] data;
@@ -180,7 +180,7 @@ public class WebScrap {
             //парсинг полученной страницы
             Object[][] data;
             List<HtmlElement> items = redirectPage.getByXPath("/html[1]/body[1]/div[1]/table[1]/tbody[1]/tr");
-            data = new Object[items.size()][3];
+            data = new Object[items.size()][7];
             for (int i = 0; i < items.size(); i++) {
                 //Дата
                 data[i][0] = ((HtmlElement) items.get(i).getByXPath("td[1]").get(0)).asText();
