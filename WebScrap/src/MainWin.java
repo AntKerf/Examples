@@ -5,23 +5,13 @@
 import webscrap.WebScrap;
 import webscrap.MyUtil.*;
 import Charts.ChartBuilder;
-import com.formdev.flatlaf.FlatDarkLaf;
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import java.time.LocalDate;
 import javax.swing.SwingUtilities;
-import com.formdev.flatlaf.FlatLightLaf;
 import java.awt.Font;
-import java.io.IOException;
 import static java.lang.Thread.sleep;
 import javax.swing.UIManager;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-import webscrap.MyUtil;
 
 public class MainWin extends javax.swing.JFrame {
 
@@ -207,9 +197,19 @@ public class MainWin extends javax.swing.JFrame {
         SetTextStyle.setText("Стиль");
 
         SetPlain.setText("Обычный");
+        SetPlain.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SetPlainActionPerformed(evt);
+            }
+        });
         SetTextStyle.add(SetPlain);
 
         SetItalic.setText("Курсив");
+        SetItalic.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SetItalicActionPerformed(evt);
+            }
+        });
         SetTextStyle.add(SetItalic);
 
         SetBold.setText("Жирный");
@@ -275,39 +275,42 @@ public class MainWin extends javax.swing.JFrame {
     }//GEN-LAST:event_ReloadInMenuActionPerformed
 
     private void SetNimbusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SetNimbusActionPerformed
-        setUITheme("Nimbus");
+        UIConfigController.setUITheme("Nimbus");
         SwingUtilities.updateComponentTreeUI(this);
         pack();
+        UIConfigController.saveUIConfig();
     }//GEN-LAST:event_SetNimbusActionPerformed
 
     private void SetWindowsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SetWindowsActionPerformed
-        setUITheme("Windows");
+        UIConfigController.setUITheme("Windows");
         SwingUtilities.updateComponentTreeUI(this);
         pack();
+        UIConfigController.saveUIConfig();
     }//GEN-LAST:event_SetWindowsActionPerformed
 
     private void SetDarkFLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SetDarkFLActionPerformed
-        setUITheme("FlatLaf Dark");
+        UIConfigController.setUITheme("Flat Dark");
         SwingUtilities.updateComponentTreeUI(this);
         pack();
+        UIConfigController.saveUIConfig();
     }//GEN-LAST:event_SetDarkFLActionPerformed
 
     private void SetLightFLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SetLightFLActionPerformed
-        setUITheme("FlatLaf Light");
+        UIConfigController.setUITheme("Flat Light");
         SwingUtilities.updateComponentTreeUI(this);
         pack();
+        UIConfigController.saveUIConfig();
     }//GEN-LAST:event_SetLightFLActionPerformed
 
     private void AutoReloadCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AutoReloadCheckActionPerformed
         //автообновление данных, в главном фрейме, раз в 5 секунд (1 запрос в 5 секунд)
         if (AutoReloadCheck.isSelected()) {
-            autoReloadThread_ = new Thread(() -> {
+            new Thread(() -> {
                 try {
-                    while (true) {
+                    while (AutoReloadCheck.isSelected()) {//выход из цикла при отжатии кнопки 
                         //загрузка страницы с данными
                         WebScrap.loadStock(jCtockComboBox.getSelectedIndex());
                         int row = jEquitiesTable.getSelectedRow();//запоминаем выбранную строку
-                        System.out.println(row);
                         //установка котировок с загруженной страницы в таблицу
                         jEquitiesTable.setModel(new javax.swing.table.DefaultTableModel(
                                 WebScrap.data(),
@@ -319,15 +322,35 @@ public class MainWin extends javax.swing.JFrame {
                         }
                         sleep(5000);//ожидание 5 секунд
                     }
+                    if (Thread.currentThread().isAlive()) {
+                        Thread.currentThread().join();//завершение потока
+                    }
                 } catch (InterruptedException ex) {
-                    new MyUtil.ErrorDialog(ex);
+                    new ErrorDialog(ex);
                 }
-            });
-            autoReloadThread_.start();
-        } else {
-            autoReloadThread_.stop();
+            }).start();
         }
     }//GEN-LAST:event_AutoReloadCheckActionPerformed
+
+    private void SetPlainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SetPlainActionPerformed
+        UIConfigController.setUIFont(new javax.swing.plaf.FontUIResource(
+                new Font(UIManager.getFont("TextField.font").getName(),
+                        Font.PLAIN,
+                        UIManager.getFont("TextField.font").getSize())));
+        SwingUtilities.updateComponentTreeUI(this);
+        pack();
+        UIConfigController.saveUIConfig();
+    }//GEN-LAST:event_SetPlainActionPerformed
+
+    private void SetItalicActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SetItalicActionPerformed
+        UIConfigController.setUIFont(new javax.swing.plaf.FontUIResource(
+                new Font(UIManager.getFont("TextField.font").getName(),
+                        Font.ITALIC,
+                        UIManager.getFont("TextField.font").getSize())));
+        SwingUtilities.updateComponentTreeUI(this);
+        pack();
+        UIConfigController.saveUIConfig();
+    }//GEN-LAST:event_SetItalicActionPerformed
 
     //создание окна с подробной информацией по выбранной акции
     private void EquitieWin(int row) {
@@ -447,86 +470,6 @@ public class MainWin extends javax.swing.JFrame {
         }
     }
 
-    private static void loadUIConfig() {
-        try {
-            // Создается построитель документа
-            DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            // Создается дерево DOM документа из файла
-            org.w3c.dom.Document document = documentBuilder.parse("Config.xml");
-            // Получаем корневой элемент
-            Node root = document.getDocumentElement();
-            // Просматриваем все подэлементы корневого
-            NodeList Settings = root.getChildNodes();
-            //default
-            String FontName = "Tahoma";
-            Integer FontSize = 11;
-            int FontStyle = 0;
-            //чтение параметров из файла
-            for (int i = 0; i < Settings.getLength(); i++) {
-                Node Param = Settings.item(i);
-                if (Param.getNodeType() != Node.TEXT_NODE) {
-                    switch (Param.getNodeName()) {
-                        case "Theme" -> //установка темы из конфига
-                            setUITheme(Param.getChildNodes().item(0).getTextContent());
-                        case "TextStyle" -> {
-                            switch (Param.getChildNodes().item(0).getTextContent()) {
-                                case "Plain" ->
-                                    FontStyle = Font.PLAIN;
-                                case "Bold" ->
-                                    FontStyle = Font.BOLD;
-                                case "Italic" ->
-                                    FontStyle = Font.ITALIC;
-                            }
-                        }
-                        case "Font" ->
-                            FontName = Param.getChildNodes().item(0).getTextContent();
-                        case "FontSize" ->
-                            FontSize = Integer.parseInt(Param.getChildNodes().item(0).getTextContent());
-                        default -> {
-                            break;
-                        }
-                    }
-                }
-            }
-            setUIFont(new javax.swing.plaf.FontUIResource(new Font(FontName, FontStyle, FontSize)));
-        } catch (ParserConfigurationException | SAXException | IOException ex) {
-            ex.printStackTrace(System.out);
-        }
-    }
-
-    private static void setUIFont(javax.swing.plaf.FontUIResource f) {
-        java.util.Enumeration<Object> keys = UIManager.getDefaults().keys();
-        while (keys.hasMoreElements()) {
-            Object key = keys.nextElement();
-            Object value = UIManager.get(key);
-            if (value instanceof javax.swing.plaf.FontUIResource) {
-                UIManager.put(key, f);
-            }
-        }
-    }
-
-    private static void setUITheme(String ThemeName) {
-        try {
-            switch (ThemeName) {
-                case "FlatLaf Dark" ->
-                    UIManager.setLookAndFeel(new FlatDarkLaf());
-                case "FlatLaf Light" ->
-                    UIManager.setLookAndFeel(new FlatLightLaf());
-                default -> {
-                    for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-                        if (ThemeName.equals(info.getName())) {
-                            UIManager.setLookAndFeel(info.getClassName());
-                            break;
-                        }
-                    }
-                }
-            }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainWin.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-    }
-
     /**
      * @param args the command line arguments
      */
@@ -534,7 +477,7 @@ public class MainWin extends javax.swing.JFrame {
         //Create & display Splash Screen
         SplashScreen Splash = new SplashScreen();
         //загрузка настроек UIMahager из конфига
-        loadUIConfig();
+        UIConfigController.loadUIConfig();
         //init WebScrap library 
         WebScrap.init();
         /* Create and display the form */
@@ -545,7 +488,7 @@ public class MainWin extends javax.swing.JFrame {
         Splash.dispose();
     }
 
-    static private Thread autoReloadThread_; //поток для автообновления
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBoxMenuItem AutoReloadCheck;
     private javax.swing.JMenu DesignInMenu;
@@ -574,5 +517,4 @@ public class MainWin extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
-
 }

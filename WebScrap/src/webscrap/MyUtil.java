@@ -7,7 +7,6 @@ import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 
 /**
- *
  * @author AntKerf
  */
 public class MyUtil {

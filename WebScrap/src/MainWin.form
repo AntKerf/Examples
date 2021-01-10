@@ -138,11 +138,17 @@
                       <Properties>
                         <Property name="text" type="java.lang.String" value="&#x41e;&#x431;&#x44b;&#x447;&#x43d;&#x44b;&#x439;"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SetPlainActionPerformed"/>
+                      </Events>
                     </MenuItem>
                     <MenuItem class="javax.swing.JMenuItem" name="SetItalic">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="&#x41a;&#x443;&#x440;&#x441;&#x438;&#x432;"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SetItalicActionPerformed"/>
+                      </Events>
                     </MenuItem>
                     <MenuItem class="javax.swing.JMenuItem" name="SetBold">
                       <Properties>
