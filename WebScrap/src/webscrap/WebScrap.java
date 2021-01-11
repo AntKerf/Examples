@@ -7,6 +7,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.WebRequest;
 import com.gargoylesoftware.htmlunit.HttpMethod;
+import java.io.IOException;
 import java.net.URL;
 
 /**
@@ -22,68 +23,56 @@ public class WebScrap {
     //номер биржи из списка на главной странице
     private static int currentIndexStock = 0;
 
-    public static void init() {
-        try {
-            webClient = new WebClient();
-            webClient.getOptions().setCssEnabled(false);
-            webClient.getOptions().setJavaScriptEnabled(false);
-            mainPage = webClient.getPage("http://ru.investing.com/equities/");
-            stockPage = webClient.getPage("http://ru.investing.com/equities/StocksFilter?noconstruct=1&smlID=0&sid=&tabletype=price&index_id=13666");
-        } catch (Exception ex) {
-            new MyUtil.ErrorDialog(ex);
-        }
+    public static void init() throws Exception {
+
+        webClient = new WebClient();
+        webClient.getOptions().setCssEnabled(false);
+        webClient.getOptions().setJavaScriptEnabled(false);
+        mainPage = webClient.getPage("http://ru.investing.com/equities/");
+        stockPage = webClient.getPage("http://ru.investing.com/equities/StocksFilter?noconstruct=1&smlID=0&sid=&tabletype=price&index_id=13666");
+
     }
 
     //загрузка страницы с котировками выбранной биржы из списка
-    public static void loadStock(int index_stock) {
-        try {
-            //список всех бирж
-            List<HtmlElement> items = mainPage.getByXPath("/html[1]/body[1]/div[5]/section[1]/div[6]/select[1]/option");
-            //ид биржы по ее номеру в списке
-            String stock_id = items.get(index_stock).getAttribute("id");
-            //страница с котировками
-            stockPage = webClient.getPage("http://ru.investing.com/equities/StocksFilter?noconstruct=1&smlID=0&sid=&tabletype=price&index_id=" + stock_id);
-            //установка выбранного номера биржы как текущий
-            currentIndexStock = index_stock;
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
+    public static void loadStock(int index_stock) throws Exception {
+        //список всех бирж
+        List<HtmlElement> items = mainPage.getByXPath("/html[1]/body[1]/div[5]/section[1]/div[6]/select[1]/option");
+        //ид биржы по ее номеру в списке
+        String stock_id = items.get(index_stock).getAttribute("id");
+        //страница с котировками
+        stockPage = webClient.getPage("http://ru.investing.com/equities/StocksFilter?noconstruct=1&smlID=0&sid=&tabletype=price&index_id=" + stock_id);
+        //установка выбранного номера биржы как текущий
+        currentIndexStock = index_stock;
     }
 
     //загруза котировок со страницы выбранной биржи
-    public static Object[][] data() {
+    public static Object[][] data() throws Exception {
         Object[][] data;
-        try {
-            //получение строк из таблицы с котироками
-            List<HtmlElement> items = stockPage.getByXPath("/html[1]/body[1]/div[1]/table[1]/tbody[1]/tr");
-            data = new Object[items.size()][8];
-            for (int i = 0; i < items.size(); i++) {
-                //Название
-                data[i][0] = ((HtmlElement) items.get(i).getByXPath("td[2]").get(0)).asText();
-                //Цена
-                data[i][1] = ((HtmlElement) items.get(i).getByXPath("td[3]").get(0)).asText();
-                //Макс
-                data[i][2] = ((HtmlElement) items.get(i).getByXPath("td[4]").get(0)).asText();
-                //Мин.
-                data[i][3] = ((HtmlElement) items.get(i).getByXPath("td[5]").get(0)).asText();
-                //Изм.
-                data[i][4] = ((HtmlElement) items.get(i).getByXPath("td[6]").get(0)).asText();
-                //Изм.%
-                data[i][5] = ((HtmlElement) items.get(i).getByXPath("td[7]").get(0)).asText();
-                //Объем
-                data[i][6] = ((HtmlElement) items.get(i).getByXPath("td[8]").get(0)).asText();
-                //Время
-                data[i][7] = ((HtmlElement) items.get(i).getByXPath("td[9]").get(0)).asText();
-            }
-            //возращаем массив с данными для вставки в таблицу
-            return data;
-        } catch (Exception ex) {
-            ex.printStackTrace();
+
+        //получение строк из таблицы с котироками
+        List<HtmlElement> items = stockPage.getByXPath("/html[1]/body[1]/div[1]/table[1]/tbody[1]/tr");
+        data = new Object[items.size()][8];
+        for (int i = 0; i < items.size(); i++) {
+            //Название
+            data[i][0] = ((HtmlElement) items.get(i).getByXPath("td[2]").get(0)).asText();
+            //Цена
+            data[i][1] = ((HtmlElement) items.get(i).getByXPath("td[3]").get(0)).asText();
+            //Макс
+            data[i][2] = ((HtmlElement) items.get(i).getByXPath("td[4]").get(0)).asText();
+            //Мин.
+            data[i][3] = ((HtmlElement) items.get(i).getByXPath("td[5]").get(0)).asText();
+            //Изм.
+            data[i][4] = ((HtmlElement) items.get(i).getByXPath("td[6]").get(0)).asText();
+            //Изм.%
+            data[i][5] = ((HtmlElement) items.get(i).getByXPath("td[7]").get(0)).asText();
+            //Объем
+            data[i][6] = ((HtmlElement) items.get(i).getByXPath("td[8]").get(0)).asText();
+            //Время
+            data[i][7] = ((HtmlElement) items.get(i).getByXPath("td[9]").get(0)).asText();
         }
-        //при ошибке ничего не возращаем
-        return null;
+        //возращаем массив с данными для вставки в таблицу
+        return data;
+
     }
 
     //загрузка дополнительной информации по акции
@@ -134,26 +123,23 @@ public class WebScrap {
     }
 
     //загрузка названий бирж
-    public static String[] stockNames() {
+    public static String[] stockNames() throws Exception{
         String stocks[];
-        try {
-            //получение всех индексов из списка
-            List<HtmlElement> items = mainPage.getByXPath("/html[1]/body[1]/div[5]/section[1]/div[6]/select[1]/option");
-            stocks = new String[items.size()];
-            for (int i = 0; i < items.size(); i++) {
-                //вывод всех названий
-                stocks[i] = items.get(i).asText();
-            }
-            return stocks;
-        } catch (Exception ex) {
-            ex.printStackTrace();
+
+        //получение всех индексов из списка
+        List<HtmlElement> items = mainPage.getByXPath("/html[1]/body[1]/div[5]/section[1]/div[6]/select[1]/option");
+        stocks = new String[items.size()];
+        for (int i = 0; i < items.size(); i++) {
+            //вывод всех названий
+            stocks[i] = items.get(i).asText();
         }
-        return null;
+        return stocks;
+
     }
 
     //получение прошлых данных акции через Ajax скрипт посредством post запроса
-    public static Object[][] postHistoryReq(int pairId, int smlId, String st_date, String end_date, String interval) {
-        try {
+    public static Object[][] postHistoryReq(int pairId, int smlId, String st_date, String end_date, String interval) throws Exception {
+   
             URL url = new URL("https://ru.investing.com/instruments/HistoricalDataAjax");
             WebRequest requestSettings = new WebRequest(url, HttpMethod.POST);
 
@@ -193,9 +179,6 @@ public class WebScrap {
                 data[i][6] = ((HtmlElement) items.get(i).getByXPath("td[7]").get(0)).asText();
             }
             return data;
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return null;
+
     }
 }

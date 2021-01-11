@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import javax.swing.SwingUtilities;
 import java.awt.Font;
 import static java.lang.Thread.sleep;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 public class MainWin extends javax.swing.JFrame {
@@ -22,7 +23,8 @@ public class MainWin extends javax.swing.JFrame {
         try {
             initComponents();
         } catch (Exception ex) {
-            System.exit(1);//аварийное завершение при ошибке инициализации
+            JOptionPane.showMessageDialog(null, ex, ex.getMessage(), JOptionPane.ERROR_MESSAGE);
+            System.exit(2);
         }
     }
 
@@ -45,6 +47,7 @@ public class MainWin extends javax.swing.JFrame {
         ReloadInMenu = new javax.swing.JMenuItem();
         AutoReloadCheck = new javax.swing.JCheckBoxMenuItem();
         DesignInMenu = new javax.swing.JMenu();
+        SetMetal = new javax.swing.JMenuItem();
         SetNimbus = new javax.swing.JMenuItem();
         SetWindows = new javax.swing.JMenuItem();
         SetDarkFL = new javax.swing.JMenuItem();
@@ -66,34 +69,63 @@ public class MainWin extends javax.swing.JFrame {
         setTitle("WebScrap");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        jCtockComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(WebScrap.stockNames()));
+        try{
+            jCtockComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(WebScrap.stockNames()));
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this,ex, ex.getMessage(), JOptionPane.ERROR_MESSAGE);;
+        }
         jCtockComboBox.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jCtockComboBoxItemStateChanged(evt);
             }
         });
 
-        jEquitiesTable.setModel(new javax.swing.table.DefaultTableModel(
-            WebScrap.data(),
-            new String [] {
-                "Название", "Цена", "Макс.", "Мин.", "Изм.", "Изм.%", "Объем", "Время"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false,
-            };
+        try{
+            jEquitiesTable.setModel(new javax.swing.table.DefaultTableModel(
+                WebScrap.data(),
+                new String [] {
+                    "Название", "Цена", "Макс.", "Мин.", "Изм.", "Изм.%", "Объем", "Время"
+                }
+            ) {
+                Class[] types = new Class [] {
+                    java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                };
+                boolean[] canEdit = new boolean [] {
+                    false, false, false, false, false, false, false, false,
+                };
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
+                public Class getColumnClass(int columnIndex) {
+                    return types [columnIndex];
+                }
 
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+                public boolean isCellEditable(int rowIndex, int columnIndex) {
+                    return canEdit [columnIndex];
+                }
+            });
+            jEquitiesTable.setModel(new javax.swing.table.DefaultTableModel(
+                WebScrap.data(),
+                new String [] {
+                    "Название", "Цена", "Макс.", "Мин.", "Изм.", "Изм.%", "Объем", "Время"
+                }
+            ) {
+                Class[] types = new Class [] {
+                    java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                };
+                boolean[] canEdit = new boolean [] {
+                    false, false, false, false, false, false, false, false,
+                };
+
+                public Class getColumnClass(int columnIndex) {
+                    return types [columnIndex];
+                }
+
+                public boolean isCellEditable(int rowIndex, int columnIndex) {
+                    return canEdit [columnIndex];
+                }
+            });
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this,ex, ex.getMessage(), JOptionPane.ERROR_MESSAGE);;
+        }
         jEquitiesTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jEquitiesTableMouseClicked(evt);
@@ -133,7 +165,15 @@ public class MainWin extends javax.swing.JFrame {
         });
         ParamMenu.add(AutoReloadCheck);
 
-        DesignInMenu.setText("Дизайн");
+        DesignInMenu.setText("Тема");
+
+        SetMetal.setText("Metal");
+        SetMetal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SetMetalActionPerformed(evt);
+            }
+        });
+        DesignInMenu.add(SetMetal);
 
         SetNimbus.setText("Nimbus");
         SetNimbus.addActionListener(new java.awt.event.ActionListener() {
@@ -245,14 +285,18 @@ public class MainWin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jCtockComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCtockComboBoxItemStateChanged
-        //загрузка страницы с данными выбраной биржи
-        WebScrap.loadStock(jCtockComboBox.getSelectedIndex());
-        //установка котировок с загруженной страницы в таблицу
-        jEquitiesTable.setModel(new javax.swing.table.DefaultTableModel(
-                WebScrap.data(),
-                new String[]{
-                    "Название", "Цена", "Макс.", "Мин.", "Изм.", "Изм.%", "Объем", "Время"
-                }));
+        try {
+            //загрузка страницы с данными выбраной биржи
+            WebScrap.loadStock(jCtockComboBox.getSelectedIndex());
+            //установка котировок с загруженной страницы в таблицу
+            jEquitiesTable.setModel(new javax.swing.table.DefaultTableModel(
+                    WebScrap.data(),
+                    new String[]{
+                        "Название", "Цена", "Макс.", "Мин.", "Изм.", "Изм.%", "Объем", "Время"
+                    }));
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex, ex.getMessage(), JOptionPane.ERROR_MESSAGE);;
+        }
     }//GEN-LAST:event_jCtockComboBoxItemStateChanged
 
     private void jEquitiesTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jEquitiesTableMouseClicked
@@ -264,14 +308,18 @@ public class MainWin extends javax.swing.JFrame {
     }//GEN-LAST:event_ExitInMenuActionPerformed
 
     private void ReloadInMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReloadInMenuActionPerformed
-        //загрузка страницы с данными выбраной биржи
-        WebScrap.loadStock(jCtockComboBox.getSelectedIndex());
-        //установка котировок с загруженной страницы в таблицу
-        jEquitiesTable.setModel(new javax.swing.table.DefaultTableModel(
-                WebScrap.data(),
-                new String[]{
-                    "Название", "Цена", "Макс.", "Мин.", "Изм.", "Изм.%", "Объем", "Время"
-                }));
+        try {
+//загрузка страницы с данными выбраной биржи
+            WebScrap.loadStock(jCtockComboBox.getSelectedIndex());
+            //установка котировок с загруженной страницы в таблицу
+            jEquitiesTable.setModel(new javax.swing.table.DefaultTableModel(
+                    WebScrap.data(),
+                    new String[]{
+                        "Название", "Цена", "Макс.", "Мин.", "Изм.", "Изм.%", "Объем", "Время"
+                    }));
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex, ex.getMessage(), JOptionPane.ERROR_MESSAGE);;
+        }
     }//GEN-LAST:event_ReloadInMenuActionPerformed
 
     private void SetNimbusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SetNimbusActionPerformed
@@ -325,8 +373,8 @@ public class MainWin extends javax.swing.JFrame {
                     if (Thread.currentThread().isAlive()) {
                         Thread.currentThread().join();//завершение потока
                     }
-                } catch (InterruptedException ex) {
-                    new ErrorDialog(ex);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, ex, ex.getMessage(), JOptionPane.ERROR_MESSAGE);;
                 }
             }).start();
         }
@@ -351,6 +399,13 @@ public class MainWin extends javax.swing.JFrame {
         pack();
         UIConfigController.saveUIConfig();
     }//GEN-LAST:event_SetItalicActionPerformed
+
+    private void SetMetalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SetMetalActionPerformed
+        UIConfigController.setUITheme("Metal");
+        SwingUtilities.updateComponentTreeUI(this);
+        pack();
+        UIConfigController.saveUIConfig();
+    }//GEN-LAST:event_SetMetalActionPerformed
 
     //создание окна с подробной информацией по выбранной акции
     private void EquitieWin(int row) {
@@ -423,14 +478,18 @@ public class MainWin extends javax.swing.JFrame {
             AccesButton.setText("Применить");
             AccesButton.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    Object[][] newData = WebScrap.postHistoryReq(EquitieData.getSecond()[0], EquitieData.getSecond()[1], st_date.getText(), end_date.getText(), PeriodComboBox.getModel().getSelectedItem().toString());
-                    jHistTable.setModel(new javax.swing.table.DefaultTableModel(
-                            newData,
-                            new String[]{
-                                "Дата", "Цена", "Откр.", "Макс.", "Мин.", "Объем", "Изм.%"
-                            }
-                    ));
-                    jTab.setComponentAt(1, ChartBuilder.createPanel(tmp.getTitle(), newData));
+                    try {
+                        Object[][] newData = WebScrap.postHistoryReq(EquitieData.getSecond()[0], EquitieData.getSecond()[1], st_date.getText(), end_date.getText(), PeriodComboBox.getModel().getSelectedItem().toString());
+                        jHistTable.setModel(new javax.swing.table.DefaultTableModel(
+                                newData,
+                                new String[]{
+                                    "Дата", "Цена", "Откр.", "Макс.", "Мин.", "Объем", "Изм.%"
+                                }
+                        ));
+                        jTab.setComponentAt(1, ChartBuilder.createPanel(tmp.getTitle(), newData));
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(tmp, ex, ex.getMessage(), JOptionPane.ERROR_MESSAGE);;
+                    }
                 }
             });
             //выравнивание вкладок с окном
@@ -465,7 +524,7 @@ public class MainWin extends javax.swing.JFrame {
 
             tmp.pack();
         } catch (Exception ex) {
-            new ErrorDialog(ex);
+            JOptionPane.showMessageDialog(tmp, ex, ex.getMessage(), JOptionPane.ERROR_MESSAGE);;
             tmp.dispose();
         }
     }
@@ -474,18 +533,24 @@ public class MainWin extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        //Create & display Splash Screen
-        SplashScreen Splash = new SplashScreen();
-        //загрузка настроек UIMahager из конфига
-        UIConfigController.loadUIConfig();
-        //init WebScrap library 
-        WebScrap.init();
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> {
-            new MainWin().setVisible(true);
-        });
-        //dispose splash screen after mainForm display
-        Splash.dispose();
+        try {
+            //Create & display Splash Screen
+            SplashScreen Splash = new SplashScreen();
+            //загрузка настроек UIMahager из конфига
+            UIConfigController.loadUIConfig();
+            //init WebScrap library 
+            WebScrap.init();
+
+            /* Create and display the form */
+            java.awt.EventQueue.invokeLater(() -> {
+                new MainWin().setVisible(true);
+            });
+            //dispose splash screen after mainForm display
+            Splash.dispose();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex, ex.getMessage(), JOptionPane.ERROR_MESSAGE);
+            System.exit(1);
+        }
     }
 
 
@@ -502,6 +567,7 @@ public class MainWin extends javax.swing.JFrame {
     private javax.swing.JMenuItem SetDarkFL;
     private javax.swing.JMenuItem SetItalic;
     private javax.swing.JMenuItem SetLightFL;
+    private javax.swing.JMenuItem SetMetal;
     private javax.swing.JMenuItem SetNimbus;
     private javax.swing.JMenuItem SetPlain;
     private javax.swing.JMenu SetTextStyle;

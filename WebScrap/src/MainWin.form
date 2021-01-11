@@ -48,9 +48,17 @@
             </MenuItem>
             <Menu class="javax.swing.JMenu" name="DesignInMenu">
               <Properties>
-                <Property name="text" type="java.lang.String" value="&#x414;&#x438;&#x437;&#x430;&#x439;&#x43d;"/>
+                <Property name="text" type="java.lang.String" value="&#x422;&#x435;&#x43c;&#x430;"/>
               </Properties>
               <SubComponents>
+                <MenuItem class="javax.swing.JMenuItem" name="SetMetal">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Metal"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SetMetalActionPerformed"/>
+                  </Events>
+                </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="SetNimbus">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Nimbus"/>
@@ -220,6 +228,8 @@
         <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="jCtockComboBoxItemStateChanged"/>
       </Events>
       <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="} catch (Exception ex) {&#xa;            JOptionPane.showMessageDialog(this,ex, ex.getMessage(), JOptionPane.ERROR_MESSAGE);;&#xa;        }"/>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="try{"/>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
     </Component>
@@ -232,7 +242,7 @@
       <SubComponents>
         <Component class="javax.swing.JTable" name="jEquitiesTable">
           <Properties>
-            <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+            <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor" postCode="} catch (Exception ex) {&#xa;            JOptionPane.showMessageDialog(this,ex, ex.getMessage(), JOptionPane.ERROR_MESSAGE);;&#xa;        }">
               <Connection code="new javax.swing.table.DefaultTableModel(&#xa;    WebScrap.data(),&#xa;    new String [] {&#xa;        &quot;&#x41d;&#x430;&#x437;&#x432;&#x430;&#x43d;&#x438;&#x435;&quot;, &quot;&#x426;&#x435;&#x43d;&#x430;&quot;, &quot;&#x41c;&#x430;&#x43a;&#x441;.&quot;, &quot;&#x41c;&#x438;&#x43d;.&quot;, &quot;&#x418;&#x437;&#x43c;.&quot;, &quot;&#x418;&#x437;&#x43c;.%&quot;, &quot;&#x41e;&#x431;&#x44a;&#x435;&#x43c;&quot;, &quot;&#x412;&#x440;&#x435;&#x43c;&#x44f;&quot;&#xa;    }&#xa;) {&#xa;    Class[] types = new Class [] {&#xa;        java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class&#xa;    };&#xa;    boolean[] canEdit = new boolean [] {&#xa;        false, false, false, false, false, false, false, false,&#xa;    };&#xa;&#xa;    public Class getColumnClass(int columnIndex) {&#xa;        return types [columnIndex];&#xa;    }&#xa;&#xa;    public boolean isCellEditable(int rowIndex, int columnIndex) {&#xa;        return canEdit [columnIndex];&#xa;    }&#xa;}" type="code"/>
             </Property>
             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -245,6 +255,10 @@
           <Events>
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jEquitiesTableMouseClicked"/>
           </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JTable()"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="try{&#xa;jEquitiesTable.setModel(new javax.swing.table.DefaultTableModel(&#xa;    WebScrap.data(),&#xa;    new String [] {&#xa;        &quot;&#x41d;&#x430;&#x437;&#x432;&#x430;&#x43d;&#x438;&#x435;&quot;, &quot;&#x426;&#x435;&#x43d;&#x430;&quot;, &quot;&#x41c;&#x430;&#x43a;&#x441;.&quot;, &quot;&#x41c;&#x438;&#x43d;.&quot;, &quot;&#x418;&#x437;&#x43c;.&quot;, &quot;&#x418;&#x437;&#x43c;.%&quot;, &quot;&#x41e;&#x431;&#x44a;&#x435;&#x43c;&quot;, &quot;&#x412;&#x440;&#x435;&#x43c;&#x44f;&quot;&#xa;    }&#xa;) {&#xa;    Class[] types = new Class [] {&#xa;        java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class&#xa;    };&#xa;    boolean[] canEdit = new boolean [] {&#xa;        false, false, false, false, false, false, false, false,&#xa;    };&#xa;&#xa;    public Class getColumnClass(int columnIndex) {&#xa;        return types [columnIndex];&#xa;    }&#xa;&#xa;    public boolean isCellEditable(int rowIndex, int columnIndex) {&#xa;        return canEdit [columnIndex];&#xa;    }&#xa;});"/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>
