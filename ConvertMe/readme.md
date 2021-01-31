@@ -7,3 +7,5 @@
 Сборка через qmake: qmake.exe -o Makefile "Source\ConvertMe.pro"
 
 Скачать приложение: [![Actual](https://img.shields.io/badge/Release-1.0-green)](https://github.com/AntKerf/Examples/releases/tag/v1.0)
+### Скриншот
+![screen](https://i.ibb.co/7KDgy68/image.png)
