@@ -5,3 +5,5 @@
 Скачать приложение: [![Actual](https://img.shields.io/badge/Build-0.5-green)](https://github.com/AntKerf/Examples/releases/tag/EDL_0.5)
 
 Если возникает ошибка отсутвия базы данных, переместите папку database на уровень с папкой bin
+### Скриншот
+![screen](https://i.ibb.co/gj8nTDT/image.png)
